@@ -1,0 +1,12 @@
+﻿<html>
+	<head>
+		<title><:data title/:></title>
+	</head>
+	<body>
+		<h1><:data title /:></h1><br>
+		<h3><:data date /:></h3><br>
+		<p>
+			<:data content /:>
+		</p>
+	</body>
+</html>
