@@ -1,5 +1,0 @@
-﻿<html>
-	<:array users:>
-		Title
-	<:end array users:>
-</html>
