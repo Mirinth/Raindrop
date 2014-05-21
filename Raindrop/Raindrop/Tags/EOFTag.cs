@@ -25,7 +25,7 @@ namespace Raindrop
             /// </summary>
             /// <param name="data">The data to be applied to.</param>
             /// <param name="output">The place to put the output.</param>
-            public void Apply(
+            public override void Apply(
                 ViewDataDictionary data,
                 TextWriter output)
             {
