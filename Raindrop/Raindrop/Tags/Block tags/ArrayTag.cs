@@ -45,6 +45,7 @@ namespace Raindrop
                 }
 
                 // Convert data[Param] to an IEnumerable
+                // TODO: Should probably be IEnumerable<ViewDataDictionary>
                 IEnumerable<object> items = (IEnumerable<object>)data[Param];
 
                 // Repeat the child nodes for each item in the IEnumerable
