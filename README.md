@@ -146,7 +146,7 @@ ViewDataDictionary data = {
 Explanation
 -----------
 
-The template inserts the data named 'page-title' inside the HTML <title> element and 'page-head' in the <h1> elements. It checks if 'posts' is *not* true and prints a message telling the user there were no posts if so. Next, it checks if 'posts' *is* true and prints them out if so. Printing involves outputting a <table> element, followed by two <tr>s and three <td>s for each element in an array and completed by closing the <table> tag. Finally, it closes the <body> and <html> tags.
+The template inserts the data named 'page-title' inside the HTML < title > element and 'page-head' in the < h1 > element. It checks if 'posts' is *not* true and prints a message telling the user there were no posts if so. Next, it checks if 'posts' *is* true and prints them out if so. Printing involves outputting a < table > element, followed by two < tr >s and three < td >s for each element in an array and completed by closing the < table > tag. Finally, it closes the < body > and < html > tags.
 
 Result
 ------
