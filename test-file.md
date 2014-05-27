@@ -1,1 +1,1 @@
-<script type='text/javascript'>window.location="example.com";</script>
+<blink>Hello, world!</blink>
