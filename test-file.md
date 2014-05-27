@@ -1,1 +1,0 @@
-<blink>Hello, world!</blink>
