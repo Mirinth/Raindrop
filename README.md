@@ -214,3 +214,6 @@ While Raindrop is useful as-is, it still has a few rough edges to be smoothed ou
 - Templates aren't cached, even though they could benefit from it (I just haven't learned how to cache them yet)
 - Raindrop needs to be recompiled to add new tags, even though it isn't absolutely necessary (I'm just not familiar with reflection yet).
 - The parser leaves blank/whitespace-filled lines if a Raindrop tag was the only thing there. Fixing this is going to be complicated because some tags (e.g. <:data:>) need the whitespace while others (e.g. <:cond:>) don't, so the parser will need knowledge of tags, which means a lot of added complexity.
+
+
+<blink>Just doing a test...</blink>
