@@ -23,7 +23,7 @@ using System.Web.Mvc;
 
 namespace Raindrop
 {
-    partial class Raindrop
+    public partial class Raindrop
     {
         private class Helpers
         {

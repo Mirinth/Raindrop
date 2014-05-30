@@ -32,7 +32,7 @@ using System.Web.Mvc;
 
 namespace Raindrop
 {
-    partial class Raindrop
+    public partial class Raindrop
     {
         private abstract class BlockTag<T> : Tag where T : ITag
         {

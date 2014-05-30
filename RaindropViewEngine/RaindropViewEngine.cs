@@ -18,43 +18,29 @@
  * <http://www.gnu.org/licenses/>. 
  */
 
-using System;
-using System.Text;
+using System.Web.Mvc;
 
 namespace Raindrop
 {
-    partial class Raindrop
+    public class RaindropViewEngine : VirtualPathProviderViewEngine
     {
-        public enum ErrorCode
+        public RaindropViewEngine()
         {
-            TagStreamEmpty,
-            TagStreamAtTag,
-            TagStreamAtText,
-            TemplateFormat,
-            TagNotSupported,
-            ParameterMissing,
-            AppliedEOF,
-            EndTagMismatch,
-            MissingKey,
+            // This is where we tell MVC where to look for our files. This says
+            // to look for a file at "Views/Controller/Action.html"
+            base.ViewLocationFormats = new string[] { "~/Views/{1}/{0}.rdt" };
+
+            base.PartialViewLocationFormats = base.ViewLocationFormats;
         }
 
-        public class RaindropException : Exception
+        protected override IView CreateView(ControllerContext context, string viewPath, string masterPath)
         {
-            public ErrorCode Code { get; set; }
-            public int Index { get; set; }
-            public string FilePath { get; set; }
+            return new RaindropView(viewPath, masterPath);
+        }
 
-            public RaindropException(
-                string message,
-                string filePath,
-                int templateIndex,
-                ErrorCode code)
-                : base(message)
-            {
-                Code = code;
-                Index = templateIndex;
-                FilePath = filePath;
-            }
+        protected override IView CreatePartialView(ControllerContext context, string partialPath)
+        {
+            return new RaindropView(partialPath, "");
         }
     }
 }
