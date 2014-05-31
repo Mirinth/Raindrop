@@ -30,10 +30,11 @@
 
 using System.IO;
 using System.Web.Mvc;
+using Raindrop.Backend;
 
 namespace Raindrop
 {
-    partial class Raindrop
+    class Raindrop
     {
         ITag template;
 

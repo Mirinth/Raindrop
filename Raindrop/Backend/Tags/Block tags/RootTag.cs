@@ -19,30 +19,26 @@
  */
 
 /*
- * ArrayEndTag.cs
+ * RootTag.cs
  * By Mirinth (mirinth@gmail.com)
  * 
- * The ArrayEndTag file contains the ArrayEndTag class, which represents
- * the end of an ArrayTag block.
+ * The RootTag file contains the RootTag class, which represents a
+ * Tag containing other Tags. RootTag is just a generic container.
  */
 
+using System.Collections.Generic;
 using System.IO;
-using System.Web.Mvc;
 
-namespace Raindrop
+namespace Raindrop.Backend
 {
-    partial class Raindrop
+    class RootTag : BlockTag<EOFTag>
     {
-        private class ArrayEndTag : EndTag
-        {
-            public static string ID = "<:/array";
-
-            /// <summary>
-            /// The ArrayEndTag constructor.
-            /// </summary>
-            /// <param name="ts">A TagStream to construct the EndTag from.</param>
-            public ArrayEndTag(TagStream ts)
-                : base(ts) { }
-        }
+        /// <summary>
+        /// The RootTag constructor.
+        /// </summary>
+        /// <param name="param">The parameter to use for the RootTag.</param>
+        /// <param name="children">A List of child Tags for the RootTag to contain.</param>
+        public RootTag(TagStream ts)
+            : base(ts, false) { }
     }
 }

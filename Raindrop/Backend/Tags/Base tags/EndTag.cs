@@ -30,34 +30,31 @@
 using System.IO;
 using System.Web.Mvc;
 
-namespace Raindrop
+namespace Raindrop.Backend
 {
-    partial class Raindrop
+    class EndTag : Tag
     {
-        private class EndTag : Tag
+        /// <summary>
+        /// The EndTag constructor.
+        /// </summary>
+        /// <param name="ts">A TagStream to construct the EndTag from.</param>
+        public EndTag(TagStream ts)
+            : base(ts) { }
+
+        public EndTag()
+        { }
+
+        /// <summary>
+        /// Applies the EndTag to the given data and outputs the result.
+        /// </summary>
+        /// <param name="data">The data to be applied to.</param>
+        /// <param name="output">The place to put the output.</param>
+        public override void Apply(
+            ViewDataDictionary data,
+            TextWriter output)
         {
-            /// <summary>
-            /// The EndTag constructor.
-            /// </summary>
-            /// <param name="ts">A TagStream to construct the EndTag from.</param>
-            public EndTag(TagStream ts)
-                : base(ts) { }
-
-            public EndTag()
-            { }
-
-            /// <summary>
-            /// Applies the EndTag to the given data and outputs the result.
-            /// </summary>
-            /// <param name="data">The data to be applied to.</param>
-            /// <param name="output">The place to put the output.</param>
-            public override void Apply(
-                ViewDataDictionary data,
-                TextWriter output)
-            {
-                // Do nothing
-                return;
-            }
+            // Do nothing
+            return;
         }
     }
 }

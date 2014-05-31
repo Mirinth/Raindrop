@@ -19,42 +19,27 @@
  */
 
 /*
- * EOFTag.cs
+ * ArrayEndTag.cs
  * By Mirinth (mirinth@gmail.com)
  * 
- * The EOFTag file contains the EOFTag class, which represents
- * the end of the file.
+ * The NCondEndTag file contains the NCondEndTag class, which represents
+ * the end of an NCondTag block.
  */
 
 using System.IO;
 using System.Web.Mvc;
 
-namespace Raindrop
+namespace Raindrop.Backend
 {
-    partial class Raindrop
+    class NCondEndTag : EndTag
     {
-        private class EOFTag : EndTag
-        {
-            public EOFTag()
-            {
-                Param = "EOF";
-            }
+        public static string ID = "<:/ncond";
 
-            /// <summary>
-            /// Applies the Tag to the given data and outputs the result.
-            /// </summary>
-            /// <param name="data">The data to be applied to.</param>
-            /// <param name="output">The place to put the output.</param>
-            public override void Apply(
-                ViewDataDictionary data,
-                TextWriter output)
-            {
-                throw new RaindropException(
-                    "Cannot apply EOFTag.",
-                    null,
-                    0,
-                    ErrorCode.AppliedEOF);
-            }
-        }
+        /// <summary>
+        /// The ArrayEndTag constructor.
+        /// </summary>
+        /// <param name="ts">A TagStream to construct the EndTag from.</param>
+        public NCondEndTag(TagStream ts)
+            : base(ts) { }
     }
 }

@@ -19,42 +19,24 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Raindrop
+namespace Raindrop.Backend
 {
-    partial class Raindrop
+    class Settings
     {
-        public enum ErrorCode
+        public enum MissingKeyFailMode
         {
-            TagStreamEmpty,
-            TagStreamAtTag,
-            TagStreamAtText,
-            TemplateFormat,
-            TagNotSupported,
-            ParameterMissing,
-            AppliedEOF,
-            EndTagMismatch,
-            MissingKey,
+            Crash,
+            Ignore
         }
 
-        public class RaindropException : Exception
-        {
-            public ErrorCode Code { get; set; }
-            public int Index { get; set; }
-            public string FilePath { get; set; }
-
-            public RaindropException(
-                string message,
-                string filePath,
-                int templateIndex,
-                ErrorCode code)
-                : base(message)
-            {
-                Code = code;
-                Index = templateIndex;
-                FilePath = filePath;
-            }
-        }
+        public static string LeftCap = "<:";
+        public static string RightCap = ":>";
+        public static char TagSplitter = ' ';
+        public static char[] TrimChars = { ' ', '/' };
+        public static MissingKeyFailMode FailMode = MissingKeyFailMode.Ignore;
     }
 }

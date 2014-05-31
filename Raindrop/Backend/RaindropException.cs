@@ -18,31 +18,40 @@
  * <http://www.gnu.org/licenses/>. 
  */
 
-/*
- * ArrayEndTag.cs
- * By Mirinth (mirinth@gmail.com)
- * 
- * The NCondEndTag file contains the NCondEndTag class, which represents
- * the end of an NCondTag block.
- */
+using System;
+using System.Text;
 
-using System.IO;
-using System.Web.Mvc;
-
-namespace Raindrop
+namespace Raindrop.Backend
 {
-    partial class Raindrop
+    enum ErrorCode
     {
-        private class NCondEndTag : EndTag
-        {
-            public static string ID = "<:/ncond";
+        TagStreamEmpty,
+        TagStreamAtTag,
+        TagStreamAtText,
+        TemplateFormat,
+        TagNotSupported,
+        ParameterMissing,
+        AppliedEOF,
+        EndTagMismatch,
+        MissingKey,
+    }
 
-            /// <summary>
-            /// The ArrayEndTag constructor.
-            /// </summary>
-            /// <param name="ts">A TagStream to construct the EndTag from.</param>
-            public NCondEndTag(TagStream ts)
-                : base(ts) { }
+    class RaindropException : Exception
+    {
+        public ErrorCode Code { get; set; }
+        public int Index { get; set; }
+        public string FilePath { get; set; }
+
+        public RaindropException(
+            string message,
+            string filePath,
+            int templateIndex,
+            ErrorCode code)
+            : base(message)
+        {
+            Code = code;
+            Index = templateIndex;
+            FilePath = filePath;
         }
     }
 }

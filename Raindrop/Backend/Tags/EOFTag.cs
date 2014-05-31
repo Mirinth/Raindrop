@@ -18,28 +18,40 @@
  * <http://www.gnu.org/licenses/>. 
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+/*
+ * EOFTag.cs
+ * By Mirinth (mirinth@gmail.com)
+ * 
+ * The EOFTag file contains the EOFTag class, which represents
+ * the end of the file.
+ */
 
-namespace Raindrop
+using System.IO;
+using System.Web.Mvc;
+
+namespace Raindrop.Backend
 {
-    partial class Raindrop
+    class EOFTag : EndTag
     {
-        private class Settings
+        public EOFTag()
         {
-            public enum MissingKeyFailMode
-            {
-                Crash,
-                Ignore
-            }
+            Param = "EOF";
+        }
 
-            public static string LeftCap = "<:";
-            public static string RightCap = ":>";
-            public static char TagSplitter = ' ';
-            public static char[] TrimChars = { ' ', '/' };
-            public static MissingKeyFailMode FailMode = MissingKeyFailMode.Ignore;
+        /// <summary>
+        /// Applies the Tag to the given data and outputs the result.
+        /// </summary>
+        /// <param name="data">The data to be applied to.</param>
+        /// <param name="output">The place to put the output.</param>
+        public override void Apply(
+            ViewDataDictionary data,
+            TextWriter output)
+        {
+            throw new RaindropException(
+                "Cannot apply EOFTag.",
+                null,
+                0,
+                ErrorCode.AppliedEOF);
         }
     }
 }
