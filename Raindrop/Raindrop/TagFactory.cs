@@ -22,7 +22,7 @@ using System;
 
 namespace Raindrop
 {
-    public partial class Raindrop
+    partial class Raindrop
     {
         private class TagFactory
         {

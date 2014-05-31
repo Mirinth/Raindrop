@@ -25,7 +25,7 @@ using System.Text;
 
 namespace Raindrop
 {
-    public partial class Raindrop
+    partial class Raindrop
     {
         private class Settings
         {

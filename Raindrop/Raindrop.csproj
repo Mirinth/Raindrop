@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,26 +43,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Helpers.cs" />
-    <Compile Include="Raindrop.cs" />
-    <Compile Include="RaindropException.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="TagFactory.cs" />
-    <Compile Include="TagStream.cs" />
-    <Compile Include="Tags\Base tags\BlockTag.cs" />
-    <Compile Include="Tags\Base tags\EndTag.cs" />
-    <Compile Include="Tags\Base tags\ITag.cs" />
-    <Compile Include="Tags\Base tags\Tag.cs" />
-    <Compile Include="Tags\Block tags\ArrayEndTag.cs" />
-    <Compile Include="Tags\Block tags\ArrayTag.cs" />
-    <Compile Include="Tags\Block tags\CondEndTag.cs" />
-    <Compile Include="Tags\Block tags\CondTag.cs" />
-    <Compile Include="Tags\Block tags\NCondEndTag.cs" />
-    <Compile Include="Tags\Block tags\NCondTag.cs" />
-    <Compile Include="Tags\Block tags\RootTag.cs" />
-    <Compile Include="Tags\Empty tags\DataTag.cs" />
-    <Compile Include="Tags\Empty tags\TextTag.cs" />
-    <Compile Include="Tags\EOFTag.cs" />
+    <Compile Include="RaindropView.cs" />
+    <Compile Include="RaindropViewEngine.cs" />
+    <Compile Include="Raindrop\Helpers.cs" />
+    <Compile Include="Raindrop\Raindrop.cs" />
+    <Compile Include="Raindrop\RaindropException.cs" />
+    <Compile Include="Raindrop\RaindropViewEngine.cs" />
+    <Compile Include="Raindrop\Settings.cs" />
+    <Compile Include="Raindrop\TagFactory.cs" />
+    <Compile Include="Raindrop\TagStream.cs" />
+    <Compile Include="Raindrop\Tags\Base tags\BlockTag.cs" />
+    <Compile Include="Raindrop\Tags\Base tags\EndTag.cs" />
+    <Compile Include="Raindrop\Tags\Base tags\ITag.cs" />
+    <Compile Include="Raindrop\Tags\Base tags\Tag.cs" />
+    <Compile Include="Raindrop\Tags\Block tags\ArrayEndTag.cs" />
+    <Compile Include="Raindrop\Tags\Block tags\ArrayTag.cs" />
+    <Compile Include="Raindrop\Tags\Block tags\CondEndTag.cs" />
+    <Compile Include="Raindrop\Tags\Block tags\CondTag.cs" />
+    <Compile Include="Raindrop\Tags\Block tags\NCondEndTag.cs" />
+    <Compile Include="Raindrop\Tags\Block tags\NCondTag.cs" />
+    <Compile Include="Raindrop\Tags\Block tags\RootTag.cs" />
+    <Compile Include="Raindrop\Tags\Empty tags\DataTag.cs" />
+    <Compile Include="Raindrop\Tags\Empty tags\TextTag.cs" />
+    <Compile Include="Raindrop\Tags\EOFTag.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

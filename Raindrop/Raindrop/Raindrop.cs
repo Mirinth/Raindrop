@@ -33,7 +33,7 @@ using System.Web.Mvc;
 
 namespace Raindrop
 {
-    public partial class Raindrop
+    partial class Raindrop
     {
         ITag template;
 
