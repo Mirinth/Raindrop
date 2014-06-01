@@ -32,15 +32,15 @@ namespace Raindrop.Backend
         private int index;
 
         /// <summary>
-        /// Initializes the TagStream with the contents of the
-        /// file given by path.
+        /// Initializes the TagStream with template as its data source.
         /// </summary>
-        /// <param name="path">The file to extract template data from.</param>
-        public TagStream(string path)
+        /// <param name="template">The stream to initialize the TagStream with.</param>
+        /// <param name="path">The name of the template. Used for error reporting.</param>
+        public TagStream(TextReader template, string path)
         {
             leftCap = Settings.LeftCap;
             rightCap = Settings.RightCap;
-            contents = File.ReadAllText(path);
+            contents = template.ReadToEnd();
             filePath = path;
             index = 0;
         }

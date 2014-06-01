@@ -34,7 +34,9 @@ public class RaindropView : IView
    {
        string filePath = viewContext.HttpContext.Server.MapPath(this.ViewPath);
 
-       Raindrop.Raindrop template = new Raindrop.Raindrop(filePath);
+       FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+       StreamReader sr = new StreamReader(fs);
+       Raindrop.Raindrop template = new Raindrop.Raindrop(sr, filePath);
 
        template.Apply(viewContext.ViewData, writer);
    }

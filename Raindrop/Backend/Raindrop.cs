@@ -45,9 +45,9 @@ namespace Raindrop
         /// <param name="fileName">
         /// The path to a file containing the template.
         /// </param>
-        public Raindrop(string fileName)
+        public Raindrop(TextReader data, string fileName)
         {
-            TagStream ts = new TagStream(fileName);
+            TagStream ts = new TagStream(data, fileName);
             template = new RootTag(ts);
         }
 
