@@ -28,26 +28,38 @@
  * dictionary.
  */
 
+using System;
 using System.IO;
 using System.Web.Mvc;
 using Raindrop.Backend;
 
 namespace Raindrop
 {
-    class Raindrop
+    public class Raindrop
     {
         ITag template;
 
         /// <summary>
         /// The Raindrop constructor. Constructs a template using the
-        /// given file name.
+        /// given data source.
         /// </summary>
-        /// <param name="fileName">
-        /// The path to a file containing the template.
+        /// <param name="templateSource">The data source to construct from.</param>
+        /// <param name="templateName">
+        /// The name of the data source. Used for error reporting.
         /// </param>
-        public Raindrop(TextReader data, string fileName)
+        public Raindrop(TextReader templateSource, string templateName)
         {
-            TagStream ts = new TagStream(data, fileName);
+            if (templateSource == null)
+            {
+                throw new ArgumentNullException("templateSource");
+            }
+            if (string.IsNullOrEmpty(templateName))
+            {
+                throw new ArgumentException(
+                    "A name for this template source is required for error reporting.",
+                    "templateName");
+            }
+            TagStream ts = new TagStream(templateSource, templateName);
             template = new RootTag(ts);
         }
 
@@ -55,8 +67,8 @@ namespace Raindrop
         /// Applies the Raindrop template to data, placing the
         /// output in output.
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="output"></param>
+        /// <param name="data">The data source to use.</param>
+        /// <param name="output">The location to write the output.</param>
         public void Apply(
             ViewDataDictionary data,
             TextWriter output)
