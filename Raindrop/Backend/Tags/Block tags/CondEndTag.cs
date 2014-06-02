@@ -26,9 +26,6 @@
  * the end of a CondTag block.
  */
 
-using System.IO;
-using System.Web.Mvc;
-
 namespace Raindrop.Backend
 {
     class CondEndTag : EndTag

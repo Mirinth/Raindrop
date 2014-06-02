@@ -26,8 +26,8 @@
  * tag that is just plain text (nothing fancy).
  */
 
+using System.Collections.Generic;
 using System.IO;
-using System.Web.Mvc;
 
 namespace Raindrop.Backend
 {
@@ -56,7 +56,7 @@ namespace Raindrop.Backend
         /// <param name="data">The data to apply the TextTag to.</param>
         /// <param name="output">The place to put the output.</param>
         public void Apply(
-            ViewDataDictionary data,
+            IDictionary<string, object> data,
             TextWriter output)
         {
             output.Write(Param);

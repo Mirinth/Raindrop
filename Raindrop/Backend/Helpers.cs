@@ -19,7 +19,6 @@
  */
 
 using System.Collections.Generic;
-using System.Web.Mvc;
 
 namespace Raindrop.Backend
 {
@@ -47,7 +46,7 @@ namespace Raindrop.Backend
         }
 
         public static bool Pass(
-            ViewDataDictionary data,
+            IDictionary<string, object> data,
             string param)
         {
             // If the element doesn't exist, it's false.
@@ -63,16 +62,16 @@ namespace Raindrop.Backend
             }
 
             // If the element is an IEnumerable with contents, it's true.
-            else if (data[param] is IEnumerable<ViewDataDictionary>)
+            else if (data[param] is IEnumerable<IDictionary<string, object>>)
             {
                 // IEnumerable doesn't expose a Count variable, so test if it's
                 // populated by trying to enumerate it and return true on
                 // the first element.
-                IEnumerable<ViewDataDictionary> dummy =
-                    (IEnumerable<ViewDataDictionary>)data[param];
+                IEnumerable<IDictionary<string, object>> dummy =
+                    (IEnumerable<IDictionary<string, object>>)data[param];
 
                 // Loop will be skipped if dummy is empty.
-                foreach (ViewDataDictionary vdd in dummy)
+                foreach (IDictionary<string, object> vdd in dummy)
                 {
                     return true;
                 }

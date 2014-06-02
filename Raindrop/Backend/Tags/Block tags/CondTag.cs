@@ -28,7 +28,7 @@
  */
 
 using System.IO;
-using System.Web.Mvc;
+using System.Collections.Generic;
 
 namespace Raindrop.Backend
 {
@@ -58,7 +58,7 @@ namespace Raindrop.Backend
         /// <param name="data">The data to be applied to.</param>
         /// <param name="output">The place to put the output.</param>
         public override void Apply(
-            ViewDataDictionary data,
+            IDictionary<string, object> data,
             TextWriter output)
         {
             if (Helpers.Pass(data, Param))

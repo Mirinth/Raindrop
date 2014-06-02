@@ -29,8 +29,8 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Web.Mvc;
 using Raindrop.Backend;
 
 namespace Raindrop
@@ -70,7 +70,7 @@ namespace Raindrop
         /// <param name="data">The data source to use.</param>
         /// <param name="output">The location to write the output.</param>
         public void Apply(
-            ViewDataDictionary data,
+            IDictionary<string, object> data,
             TextWriter output)
         {
             template.Apply(data, output);

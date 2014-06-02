@@ -28,7 +28,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Web.Mvc;
 
 namespace Raindrop.Backend
 {
@@ -52,7 +51,7 @@ namespace Raindrop.Backend
         /// <param name="data">The data to be applied to.</param>
         /// <param name="output">The place to put the output.</param>
         public override void Apply(
-            ViewDataDictionary data,
+            IDictionary<string, object> data,
             TextWriter output)
         {
             // If there's no data for the array, then skip it.
@@ -69,7 +68,7 @@ namespace Raindrop.Backend
             // Repeat the child nodes for each item in the IEnumerable
             foreach (object item in items)
             {
-                ViewDataDictionary newData = (ViewDataDictionary)item;
+                IDictionary<string, object> newData = (IDictionary<string, object>)item;
                 base.Apply(newData, output);
             }
         }
