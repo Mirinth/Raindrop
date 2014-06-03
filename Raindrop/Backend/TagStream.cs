@@ -22,12 +22,18 @@ using System.IO;
 
 namespace Raindrop.Backend
 {
+    struct TagData
+    {
+        public string ID;
+        public string Param;
+    }
+
     class TagStream
     {
-        public static string LeftCap = "<:";
-        public static string RightCap = ":>";
-        public static char TagSplitter = ' ';
-        public static char[] TrimChars = { ' ', '/' };
+        private static string leftCap = "<:";
+        private static string rightCap = ":>";
+        private static char tagSplitter = ' ';
+        private static char[] trimChars = { ' ', '/' };
 
         private string contents;
         private string templateName;
@@ -72,44 +78,54 @@ namespace Raindrop.Backend
         }
 
         /// <summary>
-        /// Gets the ID of the current tag.
+        /// Checks if the TagStream is at a tag.
         /// </summary>
-        /// <returns>A string representing the ID of the current tag.</returns>
-        public string GetId()
+        /// <returns>Whether the TagStream is currently at a tag.</returns>
+        public bool AtTag()
         {
-            int spaceIndex = contents.IndexOf(TagSplitter, index);
-            int capIndex = contents.IndexOf(RightCap, index);
+            return (contents.IndexOf(leftCap, index) == index);
+        }
 
-            int endIndex = -1;
-
-            if (capIndex < spaceIndex && capIndex != -1)
+        /// <summary>
+        /// Gets the next tag (or text) in the TagStream.
+        /// </summary>
+        /// <returns>The next tag (or text) in the TagStream.</returns>
+        public TagData GetTag()
+        {
+            if (EOF)
             {
-                endIndex = capIndex;
+                return new TagData() { ID = "EOF", Param = "EOF" };
+            }
+            if (AtTag())
+            {
+                return ReadTag();
             }
             else
             {
-                endIndex = spaceIndex;
+                return ReadText();
             }
+        }
 
-            if (endIndex == -1)
-            {
-                endIndex = contents.Length;
-            }
-
-            string result = contents.Substring(index, endIndex - index);
-
+        /// <summary>
+        /// Strips the endcaps off of a tag string.
+        /// </summary>
+        /// <param name="tag">The tag to strip endcaps from.</param>
+        /// <returns>The input with the endcaps stripped.</returns>
+        private string StripCaps(string tagString)
+        {
+            string result = tagString.Substring(
+                TagStream.leftCap.Length,
+                tagString.Length - TagStream.leftCap.Length - TagStream.rightCap.Length);
             return result;
         }
 
         /// <summary>
-        /// Reads from the stream until a left cap is found.
-        /// The left cap is not included in the result.
+        /// Reads from the stream when it is at text.
         /// </summary>
         /// <returns>
-        /// The string of text from the current index to
-        /// the next left cap.
+        /// A TagData representing the read tag.
         /// </returns>
-        public string ReadText()
+        public TagData ReadText()
         {
             if (EOF)
             {
@@ -120,7 +136,7 @@ namespace Raindrop.Backend
                     ErrorCode.TagStreamEmpty);
             }
 
-            int endIndex = contents.IndexOf(LeftCap, index);
+            int endIndex = contents.IndexOf(leftCap, index);
 
             if (endIndex == index)
             {
@@ -140,18 +156,16 @@ namespace Raindrop.Backend
             string result = contents.Substring(index, endIndex - index);
             index = endIndex;
 
-            return result;
+            return new TagData() { ID = "", Param = result };
         }
 
         /// <summary>
-        /// Reads from the stream until a right cap is found.
-        /// The caps are included in the result.
+        /// Reads from the stream when it is at a tag.
         /// </summary>
         /// <returns>
-        /// The string of text from the current index to
-        /// the next right cap.
+        /// A TagData representing the read tag.
         /// </returns>
-        public string ReadTag()
+        public TagData ReadTag()
         {
             if (EOF)
             {
@@ -162,7 +176,7 @@ namespace Raindrop.Backend
                     ErrorCode.TagStreamEmpty);
             }
 
-            if (contents.IndexOf(LeftCap, index) != index)
+            if (contents.IndexOf(leftCap, index) != index)
             {
                 throw new RaindropException(
                     "Tried to read a Tag when the TagStream is at text.",
@@ -171,13 +185,13 @@ namespace Raindrop.Backend
                     ErrorCode.TagStreamAtText);
             }
 
-            int endIndex = contents.IndexOf(RightCap, index);
+            int endIndex = contents.IndexOf(rightCap, index);
 
             if (endIndex == -1)
             {
                 string msg = string.Format(
                     "'{0}' not found before end of file.",
-                    RightCap);
+                    rightCap);
 
                 throw new RaindropException(
                     msg,
@@ -191,13 +205,30 @@ namespace Raindrop.Backend
              * to include it. Already know the string is long enough
              * to do this because rightCap was found.
              */
-            endIndex += RightCap.Length;
+            endIndex += rightCap.Length;
 
-            string result = contents.Substring(index, endIndex - index);
+            string tagString = contents.Substring(index, endIndex - index);
 
             index = endIndex;
 
-            return result;
+            tagString = StripCaps(tagString);
+            tagString = tagString.TrimEnd(trimChars);
+
+            string[] pieces = tagString.Split(new char[] { tagSplitter }, 2);
+
+            TagData tag = new TagData();
+            tag.ID = pieces[0];
+
+            if (pieces.Length > 1)
+            {
+                tag.Param = pieces[1];
+            }
+            else
+            {
+                tag.Param = string.Empty;
+            }
+
+            return tag;
         }
     }
 }
