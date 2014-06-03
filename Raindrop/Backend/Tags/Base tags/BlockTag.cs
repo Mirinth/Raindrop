@@ -38,20 +38,16 @@ namespace Raindrop.Backend
         /// <summary>
         /// The BlockTag constructor.
         /// </summary>
-        /// <param name="ts">A TagStream to construct the BlockTag from.</param>
-        public BlockTag(TagStream ts)
-            : base(ts)
-        {
-            GetChildren(ts);
-        }
-
-        public BlockTag(TagStream ts, bool dummy)
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public BlockTag(string param, TagStream ts)
+            : base(param, ts)
         {
             GetChildren(ts);
         }
 
         /// <summary>
-        /// Populates the given List with child tags.
+        /// Populates the children List with child tags.
         /// </summary>
         /// <param name="ts">A TagStream to extract children from.</param>
         /// <param name="children">The List to put children into.</param>

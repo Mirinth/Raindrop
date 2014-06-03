@@ -30,13 +30,14 @@ namespace Raindrop.Backend
 {
     class NCondEndTag : EndTag
     {
-        public static string ID = "<:/ncond";
+        public static string ID = "/ncond";
 
         /// <summary>
         /// The ArrayEndTag constructor.
         /// </summary>
-        /// <param name="ts">A TagStream to construct the EndTag from.</param>
-        public NCondEndTag(TagStream ts)
-            : base(ts) { }
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public NCondEndTag(string param, TagStream ts)
+            : base(param, ts) { }
     }
 }

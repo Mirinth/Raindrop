@@ -45,11 +45,11 @@ namespace Raindrop.Backend
         /// The Tag constructor. Reads a Tag string from the TagStream,
         /// extracts a parameter, and stores the result.
         /// </summary>
-        /// <param name="ts">A TagStream to construct the Tag from.</param>
-        public Tag(TagStream ts)
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public Tag(string param, TagStream ts)
         {
-            string tagString = ts.ReadTag();
-            Param = GetParam(tagString);
+            Param = param;
         }
 
         /// <summary>
@@ -88,40 +88,6 @@ namespace Raindrop.Backend
         public abstract void Apply(
             IDictionary<string, object> data,
             TextWriter output);
-
-        /// <summary>
-        /// Strips the endcaps off of a tag string.
-        /// </summary>
-        /// <param name="tag">The tag to strip endcaps from.</param>
-        /// <returns>The input with the endcaps stripped.</returns>
-        private string StripCaps(string tagString)
-        {
-            string result = tagString.Substring(
-                TagStream.LeftCap.Length,
-                tagString.Length - TagStream.LeftCap.Length - TagStream.RightCap.Length);
-            return result;
-        }
-
-        /// <summary>
-        /// Gets a tag string's parameter.
-        /// </summary>
-        /// <param name="tag">The tag string containing a parameter.</param>
-        /// <returns>The parameter contained in the string, or null if none.</returns>
-        public string GetParam(string tagString)
-        {
-            const int max_pieces = 2;
-            tagString = StripCaps(tagString);
-            string[] pieces = tagString.Split(
-                new char[] { TagStream.TagSplitter },
-                max_pieces);
-
-            if (pieces.Length < param_included_length)
-            {
-                return null;
-            }
-
-            return pieces[1].TrimEnd(TagStream.TrimChars);
-        }
 
         /// <summary>
         /// Handles the case where a tag that requires a key is missing it

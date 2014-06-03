@@ -33,14 +33,15 @@ namespace Raindrop.Backend
 {
     class ArrayTag : BlockTag<ArrayEndTag>
     {
-        public static string ID = "<:array";
+        public static string ID = "array";
 
         /// <summary>
         /// The ArrayTag constructor.
         /// </summary>
-        /// <param name="ts">A TagStream to construct the ArrayTag from.</param>
-        public ArrayTag(TagStream ts)
-            : base(ts)
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public ArrayTag(string param, TagStream ts)
+            : base(param, ts)
         {
             RequireParameter(ts);
         }

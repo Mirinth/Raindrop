@@ -33,7 +33,7 @@ namespace Raindrop.Backend
 {
     class TextTag : ITag
     {
-        public static string ID = TagStream.LeftCap;
+        public static string ID = string.Empty;
 
         public string Param
         {
@@ -44,10 +44,11 @@ namespace Raindrop.Backend
         /// <summary>
         /// The TextTag constructor.
         /// </summary>
-        /// <param name="data">The template to construct this Tag from.</param>
-        public TextTag(TagStream template)
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public TextTag(string param, TagStream ts)
         {
-            Param = template.ReadText();
+            Param = param;
         }
 
         /// <summary>

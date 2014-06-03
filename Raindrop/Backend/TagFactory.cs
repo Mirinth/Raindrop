@@ -29,47 +29,45 @@ namespace Raindrop.Backend
                 return new EOFTag();
             }
 
-            string testId = ts.GetId();
+            TagData td = ts.GetTag();
 
-            // Note: TextTag is an annoying special case
-            // that has to be handled by a special function.
-            if (TextHandles(testId, TextTag.ID))
+            if (Handles(td.ID, TextTag.ID))
             {
-                return new TextTag(ts);
+                return new TextTag(td.Param, ts);
             }
-            else if (Handles(testId, ArrayTag.ID))
+            else if (Handles(td.ID, ArrayTag.ID))
             {
-                return new ArrayTag(ts);
+                return new ArrayTag(td.Param, ts);
             }
-            else if (Handles(testId, ArrayEndTag.ID))
+            else if (Handles(td.ID, ArrayEndTag.ID))
             {
-                return new ArrayEndTag(ts);
+                return new ArrayEndTag(td.Param, ts);
             }
-            else if (Handles(testId, CondTag.ID))
+            else if (Handles(td.ID, CondTag.ID))
             {
-                return new CondTag(ts);
+                return new CondTag(td.Param, ts);
             }
-            else if (Handles(testId, CondEndTag.ID))
+            else if (Handles(td.ID, CondEndTag.ID))
             {
-                return new CondEndTag(ts);
+                return new CondEndTag(td.Param, ts);
             }
-            else if (Handles(testId, DataTag.ID))
+            else if (Handles(td.ID, DataTag.ID))
             {
-                return new DataTag(ts);
+                return new DataTag(td.Param, ts);
             }
-            else if (Handles(testId, NCondTag.ID))
+            else if (Handles(td.ID, NCondTag.ID))
             {
-                return new NCondTag(ts);
+                return new NCondTag(td.Param, ts);
             }
-            else if (Handles(testId, NCondEndTag.ID))
+            else if (Handles(td.ID, NCondEndTag.ID))
             {
-                return new NCondEndTag(ts);
+                return new NCondEndTag(td.Param, ts);
             }
             else
             {
                 string msg = string.Format(
                     "The tag '{0}' is not supported.",
-                    testId);
+                    td.ID);
                 throw new RaindropException(
                     msg,
                     ts.Name,
@@ -91,21 +89,6 @@ namespace Raindrop.Backend
         private static bool Handles(string testId, string tagId)
         {
             return (testId == tagId);
-        }
-
-        /// <summary>
-        /// A special case Handles for the TextTag because it won't
-        /// work with the regular Handles function.
-        /// </summary>
-        /// <param name="testId">The ID to be tested.</param>
-        /// <param name="tagId">The ID of the tag that may handle the testIDd.</param>
-        /// <returns>
-        /// Whether the given testId is handled by the tag that has
-        /// the given tagId.
-        /// </returns>
-        private static bool TextHandles(string testId, string tagId)
-        {
-            return !testId.StartsWith(tagId);
         }
     }
 }

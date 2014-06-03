@@ -34,14 +34,15 @@ namespace Raindrop.Backend
 {
     class CondTag : BlockTag<CondEndTag>
     {
-        public static string ID = "<:cond";
+        public static string ID = "cond";
 
         /// <summary>
         /// The CondTag constructor.
         /// </summary>
-        /// <param name="ts">A TagStream to construct the CondTag from.</param>
-        public CondTag(TagStream ts)
-            : base(ts)
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public CondTag(string param, TagStream ts)
+            : base(param, ts)
         {
             RequireParameter(ts);
         }

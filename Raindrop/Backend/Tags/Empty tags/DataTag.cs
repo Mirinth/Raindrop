@@ -33,14 +33,15 @@ namespace Raindrop.Backend
 {
     class DataTag : Tag
     {
-        public static string ID = "<:data";
+        public static string ID = "data";
 
         /// <summary>
         /// The DataTag constructor.
         /// </summary>
-        /// <param name="ts">A TagStream to construct the DataTag from.</param>
-        public DataTag(TagStream ts)
-            : base(ts)
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public DataTag(string param, TagStream ts)
+            : base(param, ts)
         {
             if (Param == null)
             {

@@ -28,6 +28,6 @@ namespace Raindrop.Backend
             Ignore
         }
 
-        public static MissingKeyFailMode FailMode = MissingKeyFailMode.Ignore;
+        public static MissingKeyFailMode FailMode = MissingKeyFailMode.Crash;
     }
 }

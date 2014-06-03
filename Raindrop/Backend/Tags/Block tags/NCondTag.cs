@@ -34,14 +34,15 @@ namespace Raindrop.Backend
 {
     class NCondTag : BlockTag<NCondEndTag>
     {
-        public static string ID = "<:ncond";
+        public static string ID = "ncond";
 
         /// <summary>
         /// The NCondTag constructor.
         /// </summary>
-        /// <param name="ts">A TagStream to construct the CondTag from.</param>
-        public NCondTag(TagStream ts)
-            : base(ts)
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public NCondTag(string param, TagStream ts)
+            : base(param, ts)
         {
             RequireParameter(ts);
         }

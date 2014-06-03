@@ -33,9 +33,9 @@ namespace Raindrop.Backend
         /// <summary>
         /// The RootTag constructor.
         /// </summary>
-        /// <param name="param">The parameter to use for the RootTag.</param>
-        /// <param name="children">A List of child Tags for the RootTag to contain.</param>
-        public RootTag(TagStream ts)
-            : base(ts, false) { }
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public RootTag(string param, TagStream ts)
+            : base(param, ts) { }
     }
 }
