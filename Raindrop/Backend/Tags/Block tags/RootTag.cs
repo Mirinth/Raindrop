@@ -26,9 +26,6 @@
  * Tag containing other Tags. RootTag is just a generic container.
  */
 
-using System.Collections.Generic;
-using System.IO;
-
 namespace Raindrop.Backend
 {
     class RootTag : BlockTag<EOFTag>

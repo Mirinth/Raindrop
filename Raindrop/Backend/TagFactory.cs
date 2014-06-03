@@ -18,8 +18,6 @@
  * <http://www.gnu.org/licenses/>. 
  */
 
-using System;
-
 namespace Raindrop.Backend
 {
     class TagFactory
