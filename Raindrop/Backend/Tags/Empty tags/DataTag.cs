@@ -47,7 +47,7 @@ namespace Raindrop.Backend
             {
                 throw new RaindropException(
                     "DataTag has no parameter.",
-                    ts.FilePath,
+                    ts.Name,
                     ts.Index,
                     ErrorCode.ParameterMissing);
             }

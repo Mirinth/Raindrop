@@ -66,7 +66,7 @@ namespace Raindrop.Backend
             {
                 throw new RaindropException(
                     "CondTag has no parameter.",
-                    ts.FilePath,
+                    ts.Name,
                     ts.Index,
                     ErrorCode.ParameterMissing);
             }
@@ -97,8 +97,8 @@ namespace Raindrop.Backend
         private string StripCaps(string tagString)
         {
             string result = tagString.Substring(
-                Settings.LeftCap.Length,
-                tagString.Length - Settings.LeftCap.Length - Settings.RightCap.Length);
+                TagStream.LeftCap.Length,
+                tagString.Length - TagStream.LeftCap.Length - TagStream.RightCap.Length);
             return result;
         }
 
@@ -112,7 +112,7 @@ namespace Raindrop.Backend
             const int max_pieces = 2;
             tagString = StripCaps(tagString);
             string[] pieces = tagString.Split(
-                new char[] { Settings.TagSplitter },
+                new char[] { TagStream.TagSplitter },
                 max_pieces);
 
             if (pieces.Length < param_included_length)
@@ -120,7 +120,7 @@ namespace Raindrop.Backend
                 return null;
             }
 
-            return pieces[1].TrimEnd(Settings.TrimChars);
+            return pieces[1].TrimEnd(TagStream.TrimChars);
         }
 
         /// <summary>

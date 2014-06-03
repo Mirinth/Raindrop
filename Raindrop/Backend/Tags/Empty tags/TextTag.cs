@@ -33,7 +33,7 @@ namespace Raindrop.Backend
 {
     class TextTag : ITag
     {
-        public static string ID = Settings.LeftCap;
+        public static string ID = TagStream.LeftCap;
 
         public string Param
         {

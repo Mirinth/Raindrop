@@ -76,7 +76,7 @@ namespace Raindrop.Backend
 
                 throw new RaindropException(
                     msg,
-                    ts.FilePath,
+                    ts.Name,
                     ts.Index,
                     ErrorCode.EndTagMismatch);
             }

@@ -25,23 +25,24 @@ namespace Raindrop.Backend
 {
     class TagStream
     {
-        private string leftCap;
-        private string rightCap;
+        public static string LeftCap = "<:";
+        public static string RightCap = ":>";
+        public static char TagSplitter = ' ';
+        public static char[] TrimChars = { ' ', '/' };
+
         private string contents;
-        private string filePath;
+        private string templateName;
         private int index;
 
         /// <summary>
         /// Initializes the TagStream with template as its data source.
         /// </summary>
-        /// <param name="template">The stream to initialize the TagStream with.</param>
-        /// <param name="path">The name of the template. Used for error reporting.</param>
-        public TagStream(TextReader template, string path)
+        /// <param name="template">The TextReader to initialize the TagStream with.</param>
+        /// <param name="name">The name of the template. Used for error reporting.</param>
+        public TagStream(TextReader template, string name)
         {
-            leftCap = Settings.LeftCap;
-            rightCap = Settings.RightCap;
             contents = template.ReadToEnd();
-            filePath = path;
+            templateName = name;
             index = 0;
         }
 
@@ -64,11 +65,11 @@ namespace Raindrop.Backend
         }
 
         /// <summary>
-        /// The file path the TagStream is reading from.
+        /// The name of the source the TagStream is reading from.
         /// </summary>
-        public string FilePath
+        public string Name
         {
-            get { return filePath; }
+            get { return templateName; }
         }
 
         /// <summary>
@@ -77,8 +78,8 @@ namespace Raindrop.Backend
         /// <returns>A string representing the ID of the current tag.</returns>
         public string GetId()
         {
-            int spaceIndex = contents.IndexOf(Settings.TagSplitter, index);
-            int capIndex = contents.IndexOf(Settings.RightCap, index);
+            int spaceIndex = contents.IndexOf(TagSplitter, index);
+            int capIndex = contents.IndexOf(RightCap, index);
 
             int endIndex = -1;
 
@@ -115,18 +116,18 @@ namespace Raindrop.Backend
             {
                 throw new RaindropException(
                     "No more data available in the TagStream.",
-                    filePath,
+                    templateName,
                     index,
                     ErrorCode.TagStreamEmpty);
             }
 
-            int endIndex = contents.IndexOf(leftCap, index);
+            int endIndex = contents.IndexOf(LeftCap, index);
 
             if (endIndex == index)
             {
                 throw new RaindropException(
                     "Tried to read text when the TagStream is at a Tag.",
-                    filePath,
+                    templateName,
                     index,
                     ErrorCode.TagStreamAtTag);
             }
@@ -145,7 +146,7 @@ namespace Raindrop.Backend
 
         /// <summary>
         /// Reads from the stream until a right cap is found.
-        /// The caps are not included in the result.
+        /// The caps are included in the result.
         /// </summary>
         /// <returns>
         /// The string of text from the current index to
@@ -157,31 +158,31 @@ namespace Raindrop.Backend
             {
                 throw new RaindropException(
                     "No more data available in the TagStream.",
-                    filePath,
+                    templateName,
                     index,
                     ErrorCode.TagStreamEmpty);
             }
 
-            if (contents.IndexOf(leftCap, index) != index)
+            if (contents.IndexOf(LeftCap, index) != index)
             {
                 throw new RaindropException(
                     "Tried to read a Tag when the TagStream is at text.",
-                    filePath,
+                    templateName,
                     index,
                     ErrorCode.TagStreamAtText);
             }
 
-            int endIndex = contents.IndexOf(rightCap, index);
+            int endIndex = contents.IndexOf(RightCap, index);
 
             if (endIndex == -1)
             {
                 string msg = string.Format(
                     "'{0}' not found before end of file.",
-                    rightCap);
+                    RightCap);
 
                 throw new RaindropException(
                     msg,
-                    filePath,
+                    templateName,
                     index,
                     ErrorCode.TemplateFormat);
             }
@@ -191,7 +192,7 @@ namespace Raindrop.Backend
              * to include it. Already know the string is long enough
              * to do this because rightCap was found.
              */
-            endIndex += rightCap.Length;
+            endIndex += RightCap.Length;
 
             string result = contents.Substring(index, endIndex - index);
 

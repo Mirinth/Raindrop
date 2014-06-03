@@ -33,10 +33,6 @@ namespace Raindrop.Backend
             Ignore
         }
 
-        public static string LeftCap = "<:";
-        public static string RightCap = ":>";
-        public static char TagSplitter = ' ';
-        public static char[] TrimChars = { ' ', '/' };
         public static MissingKeyFailMode FailMode = MissingKeyFailMode.Ignore;
     }
 }
