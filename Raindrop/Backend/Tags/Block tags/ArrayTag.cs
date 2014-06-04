@@ -55,22 +55,18 @@ namespace Raindrop.Backend
             IDictionary<string, object> data,
             TextWriter output)
         {
-            // If there's no data for the array, then skip it.
             if (!data.ContainsKey(Param))
             {
                 KeyMissing();
                 return;
             }
 
-            // Convert data[Param] to an IEnumerable
-            // TODO: Should probably be IEnumerable<ViewDataDictionary>
-            IEnumerable<object> items = (IEnumerable<object>)data[Param];
+            IEnumerable<IDictionary<string, object>> items =
+                (IEnumerable<IDictionary<string, object>>)data[Param];
 
-            // Repeat the child nodes for each item in the IEnumerable
-            foreach (object item in items)
+            foreach (IDictionary<string, object> item in items)
             {
-                IDictionary<string, object> newData = (IDictionary<string, object>)item;
-                base.Apply(newData, output);
+                base.Apply(item, output);
             }
         }
     }
