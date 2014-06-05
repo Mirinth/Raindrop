@@ -15,12 +15,12 @@
  * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with the Raindrop Templating Library. If not, see
- * <http://www.gnu.org/licenses/>. 
+ * <http://www.gnu.org/licenses/>.
  */
 
 using System.IO;
 
-namespace Raindrop.Backend
+namespace Raindrop.Backend.Parser
 {
     struct TagData
     {

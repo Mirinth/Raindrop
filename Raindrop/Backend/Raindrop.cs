@@ -32,6 +32,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend;
+using Raindrop.Backend.Parser;
 
 namespace Raindrop
 {

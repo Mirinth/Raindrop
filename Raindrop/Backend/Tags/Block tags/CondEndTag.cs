@@ -26,6 +26,8 @@
  * the end of a CondTag block.
  */
 
+using Raindrop.Backend.Parser;
+
 namespace Raindrop.Backend
 {
     class CondEndTag : EndTag

@@ -18,6 +18,8 @@
  * <http://www.gnu.org/licenses/>. 
  */
 
+using Raindrop.Backend.Parser;
+
 namespace Raindrop.Backend
 {
     class TagFactory

@@ -26,6 +26,8 @@
  * the end of an ArrayTag block.
  */
 
+using Raindrop.Backend.Parser;
+
 namespace Raindrop.Backend
 {
     class ArrayEndTag : EndTag

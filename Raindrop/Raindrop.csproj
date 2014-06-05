@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backend\Parser\FarPeekTextReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RaindropView.cs" />
     <Compile Include="RaindropViewEngine.cs" />
@@ -50,7 +51,7 @@
     <Compile Include="Backend\RaindropException.cs" />
     <Compile Include="Backend\Settings.cs" />
     <Compile Include="Backend\TagFactory.cs" />
-    <Compile Include="Backend\TagStream.cs" />
+    <Compile Include="Backend\Parser\TagStream.cs" />
     <Compile Include="Backend\Tags\Base tags\BlockTag.cs" />
     <Compile Include="Backend\Tags\Base tags\EndTag.cs" />
     <Compile Include="Backend\Tags\Base tags\ITag.cs" />
