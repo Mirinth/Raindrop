@@ -19,6 +19,7 @@
  */
 
 using System.IO;
+using System;
 
 namespace Raindrop.Backend.Parser
 {
@@ -32,12 +33,14 @@ namespace Raindrop.Backend.Parser
     {
         private static string leftCap = "<:";
         private static string rightCap = ":>";
-        private static char tagSplitter = ' ';
+        private static char[] tagSplitter = { ' ' };
         private static char[] trimChars = { ' ', '/' };
 
-        private string contents;
+        const bool include_delimiter = true;
+        const bool exclude_delimiter = false;
+
+        private TagReader reader;
         private string templateName;
-        private int index;
 
         /// <summary>
         /// Initializes the TagStream with template as its data source.
@@ -46,9 +49,8 @@ namespace Raindrop.Backend.Parser
         /// <param name="name">The name of the template. Used for error reporting.</param>
         public TagStream(TextReader template, string name)
         {
-            contents = template.ReadToEnd();
+            reader = new TagReader(new FarPeekTextReader(template));
             templateName = name;
-            index = 0;
         }
 
         /// <summary>
@@ -58,7 +60,7 @@ namespace Raindrop.Backend.Parser
         {
             // The last index is contents.Length - 1,
             // so contents.Length means the end of the file.
-            get { return (index >= contents.Length); }
+            get { return reader.EOF; }
         }
 
         /// <summary>
@@ -66,7 +68,7 @@ namespace Raindrop.Backend.Parser
         /// </summary>
         public int Index
         {
-            get { return index; }
+            get { return reader.Index; }
         }
 
         /// <summary>
@@ -75,15 +77,6 @@ namespace Raindrop.Backend.Parser
         public string Name
         {
             get { return templateName; }
-        }
-
-        /// <summary>
-        /// Checks if the TagStream is at a tag.
-        /// </summary>
-        /// <returns>Whether the TagStream is currently at a tag.</returns>
-        public bool AtTag()
-        {
-            return (contents.IndexOf(leftCap, index) == index);
         }
 
         /// <summary>
@@ -96,14 +89,9 @@ namespace Raindrop.Backend.Parser
             {
                 return new TagData() { ID = "EOF", Param = "EOF" };
             }
-            if (AtTag())
-            {
-                return ReadTag();
-            }
-            else
-            {
-                return ReadText();
-            }
+
+            if (reader.IsAt(leftCap)) { return ReadTag(); }
+            else { return ReadText(); }
         }
 
         /// <summary>
@@ -132,31 +120,24 @@ namespace Raindrop.Backend.Parser
                 throw new RaindropException(
                     "No more data available in the TagStream.",
                     templateName,
-                    index,
+                    reader.Index,
                     ErrorCode.TagStreamEmpty);
             }
 
-            int endIndex = contents.IndexOf(leftCap, index);
-
-            if (endIndex == index)
+            if (reader.IsAt(leftCap))
             {
                 throw new RaindropException(
-                    "Tried to read text when the TagStream is at a Tag.",
+                    "Attempted to read text when the reader was at a tag.",
                     templateName,
-                    index,
+                    reader.Index,
                     ErrorCode.TagStreamAtTag);
             }
 
-            if (endIndex == -1)
+            return new TagData()
             {
-                // If no leftCap found, read to end.
-                endIndex = contents.Length;
-            }
-
-            string result = contents.Substring(index, endIndex - index);
-            index = endIndex;
-
-            return new TagData() { ID = "", Param = result };
+                ID = "",
+                Param = reader.ReadTo(leftCap, exclude_delimiter)
+            };
         }
 
         /// <summary>
@@ -172,22 +153,22 @@ namespace Raindrop.Backend.Parser
                 throw new RaindropException(
                     "No more data available in the TagStream.",
                     templateName,
-                    index,
+                    reader.Index,
                     ErrorCode.TagStreamEmpty);
             }
 
-            if (contents.IndexOf(leftCap, index) != index)
+            if (!reader.IsAt(leftCap))
             {
                 throw new RaindropException(
                     "Tried to read a Tag when the TagStream is at text.",
                     templateName,
-                    index,
+                    reader.Index,
                     ErrorCode.TagStreamAtText);
             }
 
-            int endIndex = contents.IndexOf(rightCap, index);
+            string tagString = reader.ReadTo(rightCap, include_delimiter);
 
-            if (endIndex == -1)
+            if (!tagString.EndsWith(rightCap))
             {
                 string msg = string.Format(
                     "'{0}' not found before end of file.",
@@ -196,25 +177,14 @@ namespace Raindrop.Backend.Parser
                 throw new RaindropException(
                     msg,
                     templateName,
-                    index,
+                    reader.Index,
                     ErrorCode.TemplateFormat);
             }
-
-            /*
-             * Want to include rightCap in result, so increase endIndex
-             * to include it. Already know the string is long enough
-             * to do this because rightCap was found.
-             */
-            endIndex += rightCap.Length;
-
-            string tagString = contents.Substring(index, endIndex - index);
-
-            index = endIndex;
 
             tagString = StripCaps(tagString);
             tagString = tagString.TrimEnd(trimChars);
 
-            string[] pieces = tagString.Split(new char[] { tagSplitter }, 2);
+            string[] pieces = tagString.Split(tagSplitter, 2);
 
             TagData tag = new TagData();
             tag.ID = pieces[0];
