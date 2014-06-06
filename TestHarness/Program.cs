@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using TestHarness.Parser_tests;
 
 namespace TestHarness
@@ -23,6 +21,7 @@ namespace TestHarness
 
             FarPeekTextReaderTests.RunTests();
 
+            Console.Write("Done!");
             Console.ReadLine();
         }
     }
