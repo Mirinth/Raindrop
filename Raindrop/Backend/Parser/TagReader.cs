@@ -23,7 +23,7 @@ using System.IO;
 
 namespace Raindrop.Backend.Parser
 {
-    class TokenReader
+    class TagReader
     {
         const int end_of_file = -1;
         const int delimiter_length = 2;
@@ -32,39 +32,39 @@ namespace Raindrop.Backend.Parser
         private FarPeekTextReader reader;
 
         /// <summary>
-        /// The TokenReader constructor
+        /// The TagReader constructor
         /// </summary>
         /// <param name="tr">
-        /// A TextReader to use as the TokenReader's backing data source.
-        /// The TokenReader will take responsibility for disposing of the
+        /// A TextReader to use as the TagReader's backing data source.
+        /// The TagReader will take responsibility for disposing of the
         /// TextReader.
         /// </param>
-        public TokenReader(FarPeekTextReader fptr)
+        public TagReader(FarPeekTextReader fptr)
         {
             reader = fptr;
         }
 
         /// <summary>
-        /// Gets whether the TokenReader is at the end of its stream.
+        /// Gets whether the TagReader is at the end of its stream.
         /// </summary>
         public bool EOF
         {
             get
             {
-                if (disposed) { throw new ObjectDisposedException("TokenReader"); }
+                if (disposed) { throw new ObjectDisposedException("TagReader"); }
                 return reader.EOF;
             }
         }
 
         /// <summary>
-        /// Gets the current index that the TokenReader is into its
+        /// Gets the current index that the TagReader is into its
         /// stream.
         /// </summary>
         public int Index
         {
             get
             {
-                if (disposed) { throw new ObjectDisposedException("TokenReader"); }
+                if (disposed) { throw new ObjectDisposedException("TagReader"); }
                 return reader.Index;
             }
         }
@@ -102,7 +102,7 @@ namespace Raindrop.Backend.Parser
         /// </returns>
         public bool IsAt(string delimiter)
         {
-            if (disposed) { throw new ObjectDisposedException("TokenReader"); }
+            if (disposed) { throw new ObjectDisposedException("TagReader"); }
 
             EnforceLength(delimiter, delimiter_length);
 
@@ -134,7 +134,7 @@ namespace Raindrop.Backend.Parser
         /// <returns></returns>
         public string ReadTo(string delimiter, bool includeDelimiter)
         {
-            if (disposed) { throw new ObjectDisposedException("TokenReader"); }
+            if (disposed) { throw new ObjectDisposedException("TagReader"); }
 
             EnforceLength(delimiter, delimiter_length);
 
