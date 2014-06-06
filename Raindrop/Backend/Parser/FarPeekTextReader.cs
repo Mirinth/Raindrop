@@ -30,8 +30,10 @@ namespace Raindrop.Backend.Parser
     /// </summary>
     public class FarPeekTextReader : IDisposable
     {
+        const int end_of_file = -1;
         private TextReader reader;
         private int peek;
+        private int offset;
         private bool peekSet = false;
         private bool disposed = false;
 
@@ -43,11 +45,39 @@ namespace Raindrop.Backend.Parser
         /// responsibility for disposing the TextReader.</param>
         public FarPeekTextReader(TextReader tr)
         {
-            if (tr == null)
-            {
-                throw new ArgumentNullException("tr");
-            }
+            if (tr == null) { throw new ArgumentNullException("tr"); }
+
             reader = tr;
+            offset = 0;
+        }
+
+        /// <summary>
+        /// Gets whether the FarPeekTextReader is at the end of its
+        /// stream.
+        /// </summary>
+        public bool EOF
+        {
+            get
+            {
+                // Note: A FarPeek with no characters left will result in
+                // peekSet=true, which will trip up the else-if block unless
+                // it also ensures that peek!=end_of_file.
+                if (disposed) { throw new ObjectDisposedException("FarPeekTextReader"); }
+                else if (peekSet && peek != end_of_file) { return false; }
+                else { return (reader.Peek() < 0); }
+            }
+        }
+
+        /// <summary>
+        /// The index into the stream the FarPeekTextReader is currently at.
+        /// </summary>
+        public int Index
+        {
+            get
+            {
+                if (disposed) { throw new ObjectDisposedException("FarPeekTextReader"); }
+                else { return offset; }
+            }
         }
 
         /// <summary>
@@ -61,18 +91,9 @@ namespace Raindrop.Backend.Parser
         /// </returns>
         public int Peek()
         {
-            if (disposed)
-            {
-                throw new ObjectDisposedException("FarPeekTextReader");
-            }
-            if (peekSet)
-            {
-                return peek;
-            }
-            else
-            {
-                return reader.Peek();
-            }
+            if (disposed) { throw new ObjectDisposedException("FarPeekTextReader"); }
+            if (peekSet) { return peek; }
+            else { return reader.Peek(); }
         }
 
         /// <summary>
@@ -86,20 +107,15 @@ namespace Raindrop.Backend.Parser
         /// </returns>
         public int FarPeek()
         {
-            if (disposed)
-            {
-                throw new ObjectDisposedException("FarPeekTextReader");
-            }
-            if (peekSet)
-            {
-                return reader.Peek();
-            }
-            else
+            if (disposed) { throw new ObjectDisposedException("FarPeekTextReader"); }
+            
+            if (!peekSet)
             {
                 peek = reader.Read();
                 peekSet = true;
-                return reader.Peek();
             }
+            
+            return reader.Peek();
         }
 
         /// <summary>
@@ -112,10 +128,10 @@ namespace Raindrop.Backend.Parser
         /// </returns>
         public int Read()
         {
-            if (disposed)
-            {
-                throw new ObjectDisposedException("FarPeekTextReader");
-            }
+            if (disposed) { throw new ObjectDisposedException("FarPeekTextReader"); }
+
+            offset++;
+
             if (peekSet)
             {
                 peekSet = false;
@@ -139,11 +155,7 @@ namespace Raindrop.Backend.Parser
         {
             if (!disposed)
             {
-                if (disposing)
-                {
-                    reader.Dispose();
-                }
-
+                if (disposing) { reader.Dispose(); }
                 disposed = true;
             }
         }
