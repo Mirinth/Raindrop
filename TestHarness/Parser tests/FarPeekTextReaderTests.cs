@@ -22,6 +22,83 @@ namespace TestHarness.Parser_tests
             TestFirstFarPeekIsExpectedChar();
             TestPeekMakesNoChanges();
             TestFarPeekMakesNoChanges();
+            TestLinearReadBehavior();
+            TestReadAfterFarPeek();
+            EnsureFarPeekDoesntUnsetEOF();
+        }
+
+        public static void EnsureFarPeekDoesntUnsetEOF()
+        {
+            using (var reader = GetReader())
+            {
+                for (int i = 0; i < testString.Length; i++)
+                {
+                    reader.Read();
+                }
+
+                if (!reader.EOF)
+                {
+                    throw new TestException("The test appears to be buggy.");
+                }
+
+                reader.FarPeek();
+
+                if (!reader.EOF)
+                {
+                    throw new TestException("FarPeekTextReader.FarPeek() unset EOF.");
+                }
+            }
+        }
+
+        public static void TestReadAfterFarPeek()
+        {
+            using (var reader = GetReader())
+            {
+                int farPeek = reader.FarPeek();
+                int read = reader.Read();
+
+                if (farPeek != testString[1] || read != testString[0])
+                {
+                    throw new TestException(
+                        "FarPeekTextReader returned unexpected value in FarPeek test.");
+                }
+            }
+
+            Console.WriteLine("Pass");
+        }
+
+        public static void TestLinearReadBehavior()
+        {
+            using (var reader = GetReader())
+            {
+                for (int i = 0; i < testString.Length; i++)
+                {
+                    int read = reader.Read();
+
+                    if (read < 0)
+                    {
+                        throw new TestException(
+                            "Unexpected EOF at iteration {0}",
+                            i);
+                    }
+                    if ((char)read != testString[i])
+                    {
+                        throw new TestException(
+                            "FarPeekTextReader.Read() returned unexpected value. " +
+                            "Expected {0}, got {1} at iteration {2}",
+                            testString[i],
+                            read,
+                            i);
+                    }
+                }
+
+                if (reader.Read() >= 0)
+                {
+                    throw new TestException("Reader failed to return EOF when stream was empty");
+                }
+            }
+
+            Console.WriteLine("Pass");
         }
 
         public static void TestFarPeekMakesNoChanges()
