@@ -41,49 +41,39 @@ namespace Raindrop.Backend
             private set;
         }
         public ParserException(string message, string name, int index)
-            : base(message, name)
+            : base(message + " See Location for the index into the stream " +
+                    "where the error was first noticed.",
+            name)
         {
             Location = index;
         }
     }
 
-    public class TemplatingException : RaindropException
+    public class KeyException : RaindropException
     {
-        public string DataPath
+        private string path;
+
+        public string KeyPath
         {
-            get;
-            private set;
+            get
+            {
+                return "Dictionary" + path;
+            }
         }
 
-        public TemplatingException(string message, string name, string key)
-            : base(message, name)
+        public KeyException(string key)
+            : base("A key was missing from the data dictionary. " +
+                    "See KeyPath for a path to the missing key and " +
+                    "Name for the name of the data source.",
+                    "<unknown template source>")
         {
-            DataPath = key;
+            path = string.Empty;
+            AddKeyLevel(key);
         }
 
-        public TemplatingException(string message, string key)
-            : base(message, "<unknown template source>")
+        public void AddKeyLevel(string key)
         {
-            DataPath = key;
-        }
-
-        public TemplatingException(
-            string message,
-            string name,
-            string key,
-            TemplatingException innerException)
-            : base (message, name)
-        {
-            DataPath = '[' + key + ']' + innerException.DataPath;
-        }
-
-        public TemplatingException(
-            string message,
-            string key,
-            TemplatingException innerException)
-            : base(message, "<unknown template source>")
-        {
-            DataPath = '[' + key + ']' + innerException.DataPath;
+            path = "[" + key + "]" + path;
         }
     }
 }

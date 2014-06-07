@@ -88,9 +88,17 @@ namespace Raindrop.Backend.Tags
             IDictionary<string, object> data,
             TextWriter output)
         {
-            foreach (ITag child in children)
+            try
             {
-                child.Apply(data, output);
+                foreach (ITag child in children)
+                {
+                    child.Apply(data, output);
+                }
+            }
+            catch (KeyException exc)
+            {
+                exc.Name = Param;
+                throw;
             }
         }
     }

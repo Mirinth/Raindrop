@@ -61,10 +61,21 @@ namespace Raindrop.Backend.Tags
 
             IEnumerable<IDictionary<string, object>> items =
                 (IEnumerable<IDictionary<string, object>>)data[Param];
+            int index = 0;
 
-            foreach (IDictionary<string, object> item in items)
+            try
             {
-                base.Apply(item, output);
+                foreach (IDictionary<string, object> item in items)
+                {
+                    base.Apply(item, output);
+                    index++;
+                }
+            }
+            catch (KeyException exc)
+            {
+                exc.AddKeyLevel(index.ToString());
+                exc.AddKeyLevel(Param);
+                throw;
             }
         }
     }

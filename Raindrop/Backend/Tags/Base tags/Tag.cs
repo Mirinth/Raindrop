@@ -76,9 +76,7 @@ namespace Raindrop.Backend.Tags
         {
             if (!dict.ContainsKey(key))
             {
-                throw new TemplatingException(
-                    "Key missing from dictionary.",
-                    key);
+                throw new KeyException(key);
             }
         }
 
