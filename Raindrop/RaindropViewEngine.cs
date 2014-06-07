@@ -28,7 +28,7 @@ namespace Raindrop
         {
             // This is where we tell MVC where to look for our files. This says
             // to look for a file at "Views/Controller/Action.html"
-            base.ViewLocationFormats = new string[] { "~/Views/{1}/{0}.rdl" };
+            base.ViewLocationFormats = new string[] { "~/Views/{1}/{0}.rdt" };
 
             base.PartialViewLocationFormats = base.ViewLocationFormats;
         }
