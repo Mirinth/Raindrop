@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend;
 using Raindrop.Backend.Parser;
+using Raindrop.Backend.Tags;
 
 namespace Raindrop
 {

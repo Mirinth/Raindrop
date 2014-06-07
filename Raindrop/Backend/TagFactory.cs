@@ -19,6 +19,7 @@
  */
 
 using Raindrop.Backend.Parser;
+using Raindrop.Backend.Tags;
 
 namespace Raindrop.Backend
 {

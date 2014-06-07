@@ -29,7 +29,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Raindrop.Backend
+namespace Raindrop.Backend.Tags
 {
     class EOFTag : EndTag
     {

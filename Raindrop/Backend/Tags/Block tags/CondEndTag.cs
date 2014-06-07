@@ -28,7 +28,7 @@
 
 using Raindrop.Backend.Parser;
 
-namespace Raindrop.Backend
+namespace Raindrop.Backend.Tags
 {
     class CondEndTag : EndTag
     {
