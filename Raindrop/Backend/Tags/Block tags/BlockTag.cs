@@ -19,12 +19,13 @@
  */
 
 /*
-* BlockTag.cs
-* By Mirinth (mirinth@gmail.com)
-* 
-* The BlockTag file contains the BlockTag class, which represents a
-* generic tag that contains children.
-*/
+ * BlockTag.cs
+ * By Mirinth (mirinth@gmail.com)
+ * 
+ * The BlockTag represents a generic tag that contains children.
+ * 
+ * The EOFTag represents the end of the template file.
+ */
 
 using System.Collections.Generic;
 using System.IO;
@@ -32,7 +33,7 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    abstract class BlockTag<T> : Tag where T : ITag
+    class BlockTag<T> : Tag where T : ITag
     {
         private List<ITag> children;
 
@@ -91,6 +92,30 @@ namespace Raindrop.Backend.Tags
             {
                 child.Apply(data, output);
             }
+        }
+    }
+
+    class EOFTag : EndTag
+    {
+        public EOFTag()
+        {
+            Param = "EOF";
+        }
+
+        /// <summary>
+        /// Applies the Tag to the given data and outputs the result.
+        /// </summary>
+        /// <param name="data">The data to be applied to.</param>
+        /// <param name="output">The place to put the output.</param>
+        public override void Apply(
+            IDictionary<string, object> data,
+            TextWriter output)
+        {
+            throw new RaindropException(
+                "Cannot apply EOFTag.",
+                null,
+                0,
+                ErrorCode.AppliedEOF);
         }
     }
 }

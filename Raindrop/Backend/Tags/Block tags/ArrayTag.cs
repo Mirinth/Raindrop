@@ -22,8 +22,9 @@
  * ArrayTag.cs
  * By Mirinth (mirinth@gmail.com)
  * 
- * The ArrayTag file contains the ArrayTag class, which represents a
- * repeated block of text in the template.
+ * The ArrayTag class represents a repeated block of tags in the template.
+ * 
+ * The ArrayEndTag class represents the end of an ArrayTag block.
  */
 
 using System.Collections.Generic;
@@ -70,5 +71,18 @@ namespace Raindrop.Backend.Tags
                 base.Apply(item, output);
             }
         }
+    }
+
+    class ArrayEndTag : EndTag
+    {
+        public static string ID = "/array";
+
+        /// <summary>
+        /// The ArrayEndTag constructor.
+        /// </summary>
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public ArrayEndTag(string param, TagStream ts)
+            : base(param, ts) { }
     }
 }

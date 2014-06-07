@@ -62,7 +62,7 @@ namespace Raindrop
                     "templateName");
             }
             TagStream ts = new TagStream(templateSource, templateName);
-            template = new RootTag(templateName, ts);
+            template = new BlockTag<EOFTag>(templateName, ts);
         }
 
         /// <summary>

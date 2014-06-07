@@ -45,7 +45,7 @@ namespace Raindrop.Backend
             }
         }
 
-        public static bool Pass(
+        public static bool Truth(
             IDictionary<string, object> data,
             string param)
         {

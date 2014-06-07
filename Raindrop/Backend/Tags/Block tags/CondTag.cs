@@ -22,9 +22,12 @@
  * CondTag.cs
  * By Mirinth (mirinth@gmail.com)
  * 
- * The CondTag file contains the CondTag class, which represents an
- * optional tag. A CondTag tag is only processed if its parameter
- * represents a "true" value in the data dictionary.
+ * The CondTag class represents an optional block of the template.
+ * A CondTag's children are only processed if its parameter
+ * represents a "true" value in the data dictionary. See
+ * Helpers.Truth() for the rules of truth.
+ * 
+ * The CondEndTag represents the end of a CondTag block.
  */
 
 using System.Collections.Generic;
@@ -63,10 +66,23 @@ namespace Raindrop.Backend.Tags
             IDictionary<string, object> data,
             TextWriter output)
         {
-            if (Helpers.Pass(data, Param))
+            if (Helpers.Truth(data, Param))
             {
                 base.Apply(data, output);
             }
         }
+    }
+
+    class CondEndTag : EndTag
+    {
+        public static string ID = "/cond";
+
+        /// <summary>
+        /// The ArrayEndTag constructor.
+        /// </summary>
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public CondEndTag(string param, TagStream ts)
+            : base(param, ts) { }
     }
 }

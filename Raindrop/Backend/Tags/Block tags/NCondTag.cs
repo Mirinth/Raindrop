@@ -22,9 +22,12 @@
  * NCondTag.cs
  * By Mirinth (mirinth@gmail.com)
  * 
- * The NCondTag file contains the NCondTag class, which represents an
- * optional tag. An NCond tag is only processed if its parameter
- * represents a "false" value in the data dictionary.
+ * The CondTag class represents an optional block of the template.
+ * An NCondTag's children are only processed if its parameter
+ * represents a "false" value in the data dictionary. See
+ * Helpers.Truth() for the rules of truth.
+ * 
+ * The NCondEndTag represents the end of an NCondTag block.
  */
 
 using System.Collections.Generic;
@@ -63,10 +66,23 @@ namespace Raindrop.Backend.Tags
             IDictionary<string, object> data,
             TextWriter output)
         {
-            if (!Helpers.Pass(data, Param))
+            if (!Helpers.Truth(data, Param))
             {
                 base.Apply(data, output);
             }
         }
+    }
+
+    class NCondEndTag : EndTag
+    {
+        public static string ID = "/ncond";
+
+        /// <summary>
+        /// The ArrayEndTag constructor.
+        /// </summary>
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public NCondEndTag(string param, TagStream ts)
+            : base(param, ts) { }
     }
 }
