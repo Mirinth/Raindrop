@@ -63,10 +63,8 @@ namespace Raindrop.Backend.Tags
             IDictionary<string, object> data,
             TextWriter output)
         {
-            if (data.ContainsKey(Param))
-            {
-                output.Write(data[Param]);
-            }
+            RequireKey(Param, data);
+            output.Write(data[Param]);
         }
     }
 }

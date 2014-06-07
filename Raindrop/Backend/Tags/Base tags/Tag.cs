@@ -73,6 +73,18 @@ namespace Raindrop.Backend.Tags
             }
         }
 
+        public void RequireKey(string key, IDictionary<string, object> dict)
+        {
+            if (!dict.ContainsKey(key))
+            {
+                throw new RaindropException(
+                "Key missing: " + key,
+                null,
+                0,
+                ErrorCode.MissingKey);
+            }
+        }
+
         /// <summary>
         /// The Tag constructor. Initializes the parameter to null.
         /// </summary>
@@ -89,15 +101,5 @@ namespace Raindrop.Backend.Tags
         public abstract void Apply(
             IDictionary<string, object> data,
             TextWriter output);
-
-        /// <summary>
-        /// Handles the case where a tag that requires a key is missing it
-        /// by either doing nothing or crashing (depending on value of
-        /// Settings.MissingKeyFailMode).
-        /// </summary>
-        public void KeyMissing()
-        {
-            Helpers.KeyMissing(Param);
-        }
     }
 }

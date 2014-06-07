@@ -66,6 +66,7 @@ namespace Raindrop.Backend.Tags
             IDictionary<string, object> data,
             TextWriter output)
         {
+            RequireKey(Param, data);
             if (!Helpers.Truth(data, Param))
             {
                 base.Apply(data, output);

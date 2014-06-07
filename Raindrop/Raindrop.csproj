@@ -50,7 +50,6 @@
     <Compile Include="Backend\Helpers.cs" />
     <Compile Include="Backend\Raindrop.cs" />
     <Compile Include="Backend\RaindropException.cs" />
-    <Compile Include="Backend\Settings.cs" />
     <Compile Include="Backend\TagFactory.cs" />
     <Compile Include="Backend\Parser\TagStream.cs" />
     <Compile Include="Backend\Tags\Block tags\BlockTag.cs" />
@@ -60,7 +59,6 @@
     <Compile Include="Backend\Tags\Block tags\ArrayTag.cs" />
     <Compile Include="Backend\Tags\Block tags\CondTag.cs" />
     <Compile Include="Backend\Tags\Block tags\NCondTag.cs" />
-    <Compile Include="Backend\Tags\Block tags\RootTag.cs" />
     <Compile Include="Backend\Tags\Empty tags\DataTag.cs" />
     <Compile Include="Backend\Tags\Empty tags\TextTag.cs" />
   </ItemGroup>

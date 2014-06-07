@@ -57,11 +57,7 @@ namespace Raindrop.Backend.Tags
             IDictionary<string, object> data,
             TextWriter output)
         {
-            if (!data.ContainsKey(Param))
-            {
-                KeyMissing();
-                return;
-            }
+            RequireKey(Param, data);
 
             IEnumerable<IDictionary<string, object>> items =
                 (IEnumerable<IDictionary<string, object>>)data[Param];
