@@ -22,35 +22,68 @@ using System;
 
 namespace Raindrop.Backend
 {
-    enum ErrorCode
+    public class RaindropException : Exception
     {
-        TagStreamEmpty,
-        TagStreamAtTag,
-        TagStreamAtText,
-        TemplateFormat,
-        TagNotSupported,
-        ParameterMissing,
-        AppliedEOF,
-        EndTagMismatch,
-        MissingKey,
-    }
+        public string Name { get; set; }
 
-    class RaindropException : Exception
-    {
-        public ErrorCode Code { get; set; }
-        public int Index { get; set; }
-        public string FilePath { get; set; }
-
-        public RaindropException(
-            string message,
-            string filePath,
-            int templateIndex,
-            ErrorCode code)
+        public RaindropException(string message, string name)
             : base(message)
         {
-            Code = code;
-            Index = templateIndex;
-            FilePath = filePath;
+            Name = name;
+        }
+    }
+
+    public class ParserException : RaindropException
+    {
+        public int Location
+        {
+            get;
+            private set;
+        }
+        public ParserException(string message, string name, int index)
+            : base(message, name)
+        {
+            Location = index;
+        }
+    }
+
+    public class TemplatingException : RaindropException
+    {
+        public string DataPath
+        {
+            get;
+            private set;
+        }
+
+        public TemplatingException(string message, string name, string key)
+            : base(message, name)
+        {
+            DataPath = key;
+        }
+
+        public TemplatingException(string message, string key)
+            : base(message, "<unknown template source>")
+        {
+            DataPath = key;
+        }
+
+        public TemplatingException(
+            string message,
+            string name,
+            string key,
+            TemplatingException innerException)
+            : base (message, name)
+        {
+            DataPath = '[' + key + ']' + innerException.DataPath;
+        }
+
+        public TemplatingException(
+            string message,
+            string key,
+            TemplatingException innerException)
+            : base(message, "<unknown template source>")
+        {
+            DataPath = '[' + key + ']' + innerException.DataPath;
         }
     }
 }

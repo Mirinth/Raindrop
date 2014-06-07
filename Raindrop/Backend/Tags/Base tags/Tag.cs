@@ -63,13 +63,12 @@ namespace Raindrop.Backend.Tags
         /// </param>
         public void RequireParameter(TagStream ts)
         {
-            if (Param == null)
+            if (string.IsNullOrEmpty(Param))
             {
-                throw new RaindropException(
-                    "CondTag has no parameter.",
+                throw new ParserException(
+                    "Tag must have a parameter.",
                     ts.Name,
-                    ts.Index,
-                    ErrorCode.ParameterMissing);
+                    ts.Index);
             }
         }
 
@@ -77,11 +76,9 @@ namespace Raindrop.Backend.Tags
         {
             if (!dict.ContainsKey(key))
             {
-                throw new RaindropException(
-                "Key missing: " + key,
-                null,
-                0,
-                ErrorCode.MissingKey);
+                throw new TemplatingException(
+                    "Key missing from dictionary.",
+                    key);
             }
         }
 

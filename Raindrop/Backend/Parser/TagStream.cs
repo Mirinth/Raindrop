@@ -19,7 +19,6 @@
  */
 
 using System.IO;
-using System;
 
 namespace Raindrop.Backend.Parser
 {
@@ -117,20 +116,18 @@ namespace Raindrop.Backend.Parser
         {
             if (EOF)
             {
-                throw new RaindropException(
-                    "No more data available in the TagStream.",
+                throw new ParserException(
+                    "End of file found when TagStream expected text.",
                     templateName,
-                    reader.Index,
-                    ErrorCode.TagStreamEmpty);
+                    reader.Index);
             }
 
             if (reader.IsAt(leftCap))
             {
-                throw new RaindropException(
-                    "Attempted to read text when the reader was at a tag.",
+                throw new ParserException(
+                    "Tag found when TagStream expected text.",
                     templateName,
-                    reader.Index,
-                    ErrorCode.TagStreamAtTag);
+                    reader.Index);
             }
 
             return new TagData()
@@ -150,20 +147,18 @@ namespace Raindrop.Backend.Parser
         {
             if (EOF)
             {
-                throw new RaindropException(
-                    "No more data available in the TagStream.",
+                throw new ParserException(
+                    "End of file found when TagStream expected tag.",
                     templateName,
-                    reader.Index,
-                    ErrorCode.TagStreamEmpty);
+                    reader.Index);
             }
 
             if (!reader.IsAt(leftCap))
             {
-                throw new RaindropException(
-                    "Tried to read a Tag when the TagStream is at text.",
+                throw new ParserException(
+                    "Text found when TagStream expected tag.",
                     templateName,
-                    reader.Index,
-                    ErrorCode.TagStreamAtText);
+                    reader.Index);
             }
 
             string tagString = reader.ReadTo(rightCap, include_delimiter);
@@ -171,14 +166,13 @@ namespace Raindrop.Backend.Parser
             if (!tagString.EndsWith(rightCap))
             {
                 string msg = string.Format(
-                    "'{0}' not found before end of file.",
+                    "Ending tag delimiter '{0}' not found before end of file.",
                     rightCap);
 
-                throw new RaindropException(
+                throw new ParserException(
                     msg,
                     templateName,
-                    reader.Index,
-                    ErrorCode.TemplateFormat);
+                    reader.Index);
             }
 
             tagString = StripCaps(tagString);

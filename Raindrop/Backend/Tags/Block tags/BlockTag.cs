@@ -27,6 +27,7 @@
  * The EOFTag represents the end of the template file.
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend.Parser;
@@ -71,11 +72,10 @@ namespace Raindrop.Backend.Tags
                     typeof(T),
                     child.GetType());
 
-                throw new RaindropException(
+                throw new ParserException(
                     msg,
                     ts.Name,
-                    ts.Index,
-                    ErrorCode.EndTagMismatch);
+                    ts.Index);
             }
         }
 
@@ -111,11 +111,9 @@ namespace Raindrop.Backend.Tags
             IDictionary<string, object> data,
             TextWriter output)
         {
-            throw new RaindropException(
-                "Cannot apply EOFTag.",
-                null,
-                0,
-                ErrorCode.AppliedEOF);
+            throw new NotImplementedException(
+                "EOFTag should not be applied. " +
+                "An error in the templating logic has likely occurred.");
         }
     }
 }

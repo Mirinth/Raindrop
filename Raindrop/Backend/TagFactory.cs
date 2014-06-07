@@ -71,11 +71,10 @@ namespace Raindrop.Backend
                 string msg = string.Format(
                     "The tag '{0}' is not supported.",
                     td.ID);
-                throw new RaindropException(
+                throw new ParserException(
                     msg,
                     ts.Name,
-                    ts.Index,
-                    ErrorCode.TagNotSupported);
+                    ts.Index);
             }
         }
 

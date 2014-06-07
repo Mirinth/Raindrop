@@ -44,14 +44,7 @@ namespace Raindrop.Backend.Tags
         public DataTag(string param, TagStream ts)
             : base(param, ts)
         {
-            if (Param == null)
-            {
-                throw new RaindropException(
-                    "DataTag has no parameter.",
-                    ts.Name,
-                    ts.Index,
-                    ErrorCode.ParameterMissing);
-            }
+            RequireParameter(ts);
         }
 
         /// <summary>
