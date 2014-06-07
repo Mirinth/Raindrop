@@ -30,33 +30,14 @@ namespace Raindrop.Backend
         /// Settings.MissingKeyFailMode).
         /// </summary>
         /// <param name="key">The key that was missing.</param>
-        public static void KeyMissing(string key)
-        {
-            if (Settings.FailMode == Settings.MissingKeyFailMode.Crash)
-            {
-                string msg = string.Format(
-                    "Missing key: '{0}'",
-                    key);
-                throw new RaindropException(
-                    msg,
-                    null,
-                    0,
-                    ErrorCode.MissingKey);
-            }
-        }
+        
 
-        public static bool Pass(
+        public static bool Truth(
             IDictionary<string, object> data,
             string param)
         {
-            // If the element doesn't exist, it's false.
-            if (!data.ContainsKey(param))
-            {
-                KeyMissing(param);
-            }
-
             // If the element is a bool, it's equal to itself.
-            else if (data[param] is bool)
+            if (data[param] is bool)
             {
                 return (bool)data[param];
             }

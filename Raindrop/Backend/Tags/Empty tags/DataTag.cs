@@ -26,31 +26,25 @@
  * generic tag.
  */
 
-using System.IO;
-using System.Web.Mvc;
 using System.Collections.Generic;
+using System.IO;
+using Raindrop.Backend.Parser;
 
-namespace Raindrop.Backend
+namespace Raindrop.Backend.Tags
 {
     class DataTag : Tag
     {
-        public static string ID = "<:data";
+        public static string ID = "data";
 
         /// <summary>
         /// The DataTag constructor.
         /// </summary>
-        /// <param name="ts">A TagStream to construct the DataTag from.</param>
-        public DataTag(TagStream ts)
-            : base(ts)
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public DataTag(string param, TagStream ts)
+            : base(param, ts)
         {
-            if (Param == null)
-            {
-                throw new RaindropException(
-                    "DataTag has no parameter.",
-                    ts.Name,
-                    ts.Index,
-                    ErrorCode.ParameterMissing);
-            }
+            RequireParameter(ts);
         }
 
         /// <summary>
@@ -62,10 +56,8 @@ namespace Raindrop.Backend
             IDictionary<string, object> data,
             TextWriter output)
         {
-            if (data.ContainsKey(Param))
-            {
-                output.Write(data[Param]);
-            }
+            RequireKey(Param, data);
+            output.Write(data[Param]);
         }
     }
 }

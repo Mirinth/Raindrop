@@ -42,29 +42,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backend\Parser\FarPeekTextReader.cs" />
+    <Compile Include="Backend\Parser\TagReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RaindropView.cs" />
     <Compile Include="RaindropViewEngine.cs" />
     <Compile Include="Backend\Helpers.cs" />
     <Compile Include="Backend\Raindrop.cs" />
     <Compile Include="Backend\RaindropException.cs" />
-    <Compile Include="Backend\Settings.cs" />
     <Compile Include="Backend\TagFactory.cs" />
-    <Compile Include="Backend\TagStream.cs" />
-    <Compile Include="Backend\Tags\Base tags\BlockTag.cs" />
+    <Compile Include="Backend\Parser\TagStream.cs" />
+    <Compile Include="Backend\Tags\Block tags\BlockTag.cs" />
     <Compile Include="Backend\Tags\Base tags\EndTag.cs" />
     <Compile Include="Backend\Tags\Base tags\ITag.cs" />
     <Compile Include="Backend\Tags\Base tags\Tag.cs" />
-    <Compile Include="Backend\Tags\Block tags\ArrayEndTag.cs" />
     <Compile Include="Backend\Tags\Block tags\ArrayTag.cs" />
-    <Compile Include="Backend\Tags\Block tags\CondEndTag.cs" />
     <Compile Include="Backend\Tags\Block tags\CondTag.cs" />
-    <Compile Include="Backend\Tags\Block tags\NCondEndTag.cs" />
     <Compile Include="Backend\Tags\Block tags\NCondTag.cs" />
-    <Compile Include="Backend\Tags\Block tags\RootTag.cs" />
     <Compile Include="Backend\Tags\Empty tags\DataTag.cs" />
     <Compile Include="Backend\Tags\Empty tags\TextTag.cs" />
-    <Compile Include="Backend\Tags\EOFTag.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

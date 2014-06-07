@@ -22,25 +22,28 @@
  * ArrayTag.cs
  * By Mirinth (mirinth@gmail.com)
  * 
- * The ArrayTag file contains the ArrayTag class, which represents a
- * repeated block of text in the template.
+ * The ArrayTag class represents a repeated block of tags in the template.
+ * 
+ * The ArrayEndTag class represents the end of an ArrayTag block.
  */
 
 using System.Collections.Generic;
 using System.IO;
+using Raindrop.Backend.Parser;
 
-namespace Raindrop.Backend
+namespace Raindrop.Backend.Tags
 {
     class ArrayTag : BlockTag<ArrayEndTag>
     {
-        public static string ID = "<:array";
+        public static string ID = "array";
 
         /// <summary>
         /// The ArrayTag constructor.
         /// </summary>
-        /// <param name="ts">A TagStream to construct the ArrayTag from.</param>
-        public ArrayTag(TagStream ts)
-            : base(ts)
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public ArrayTag(string param, TagStream ts)
+            : base(param, ts)
         {
             RequireParameter(ts);
         }
@@ -54,23 +57,39 @@ namespace Raindrop.Backend
             IDictionary<string, object> data,
             TextWriter output)
         {
-            // If there's no data for the array, then skip it.
-            if (!data.ContainsKey(Param))
+            RequireKey(Param, data);
+
+            IEnumerable<IDictionary<string, object>> items =
+                (IEnumerable<IDictionary<string, object>>)data[Param];
+            int index = 0;
+
+            try
             {
-                KeyMissing();
-                return;
+                foreach (IDictionary<string, object> item in items)
+                {
+                    base.Apply(item, output);
+                    index++;
+                }
             }
-
-            // Convert data[Param] to an IEnumerable
-            // TODO: Should probably be IEnumerable<ViewDataDictionary>
-            IEnumerable<object> items = (IEnumerable<object>)data[Param];
-
-            // Repeat the child nodes for each item in the IEnumerable
-            foreach (object item in items)
+            catch (KeyException exc)
             {
-                IDictionary<string, object> newData = (IDictionary<string, object>)item;
-                base.Apply(newData, output);
+                exc.AddKeyLevel(index.ToString());
+                exc.AddKeyLevel(Param);
+                throw;
             }
         }
+    }
+
+    class ArrayEndTag : EndTag
+    {
+        public static string ID = "/array";
+
+        /// <summary>
+        /// The ArrayEndTag constructor.
+        /// </summary>
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public ArrayEndTag(string param, TagStream ts)
+            : base(param, ts) { }
     }
 }

@@ -31,7 +31,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Raindrop.Backend;
+using Raindrop.Backend.Parser;
+using Raindrop.Backend.Tags;
 
 namespace Raindrop
 {
@@ -60,7 +61,7 @@ namespace Raindrop
                     "templateName");
             }
             TagStream ts = new TagStream(templateSource, templateName);
-            template = new RootTag(ts);
+            template = new BlockTag<EOFTag>(templateName, ts);
         }
 
         /// <summary>

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using TestHarness.Parser_tests;
 
 namespace TestHarness
 {
@@ -20,6 +19,9 @@ namespace TestHarness
                 TestMethods.TestRaindropConstructorWithEmptyName,
                 "Raindrop constructor failed to detect empty name parameter.");
 
+            FarPeekTextReaderTests.RunTests();
+
+            Console.Write("Done!");
             Console.ReadLine();
         }
     }

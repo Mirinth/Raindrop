@@ -19,39 +19,61 @@
  */
 
 using System;
-using System.Text;
 
 namespace Raindrop.Backend
 {
-    enum ErrorCode
+    public class RaindropException : Exception
     {
-        TagStreamEmpty,
-        TagStreamAtTag,
-        TagStreamAtText,
-        TemplateFormat,
-        TagNotSupported,
-        ParameterMissing,
-        AppliedEOF,
-        EndTagMismatch,
-        MissingKey,
-    }
+        public string Name { get; set; }
 
-    class RaindropException : Exception
-    {
-        public ErrorCode Code { get; set; }
-        public int Index { get; set; }
-        public string FilePath { get; set; }
-
-        public RaindropException(
-            string message,
-            string filePath,
-            int templateIndex,
-            ErrorCode code)
+        public RaindropException(string message, string name)
             : base(message)
         {
-            Code = code;
-            Index = templateIndex;
-            FilePath = filePath;
+            Name = name;
+        }
+    }
+
+    public class ParserException : RaindropException
+    {
+        public int Location
+        {
+            get;
+            private set;
+        }
+        public ParserException(string message, string name, int index)
+            : base(message + " See Location for the index into the stream " +
+                    "where the error was first noticed.",
+            name)
+        {
+            Location = index;
+        }
+    }
+
+    public class KeyException : RaindropException
+    {
+        private string path;
+
+        public string KeyPath
+        {
+            get
+            {
+                return "Dictionary" + path;
+            }
+        }
+
+        public KeyException(string key)
+            : base("A key was missing from the data dictionary. " +
+                    "See KeyPath for a path to the missing key and " +
+                    "Name for the name of the data source.",
+                    "<unknown template source>")
+        {
+            path = string.Empty;
+            AddKeyLevel(key);
+        }
+
+        public void AddKeyLevel(string key)
+        {
+            path = "[" + key + "]" + path;
         }
     }
 }

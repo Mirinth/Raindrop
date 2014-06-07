@@ -19,40 +19,38 @@
  */
 
 /*
-* BlockTag.cs
-* By Mirinth (mirinth@gmail.com)
-* 
-* The BlockTag file contains the BlockTag class, which represents a
-* generic tag that contains children.
-*/
+ * BlockTag.cs
+ * By Mirinth (mirinth@gmail.com)
+ * 
+ * The BlockTag represents a generic tag that contains children.
+ * 
+ * The EOFTag represents the end of the template file.
+ */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Web.Mvc;
+using Raindrop.Backend.Parser;
 
-namespace Raindrop.Backend
+namespace Raindrop.Backend.Tags
 {
-    abstract class BlockTag<T> : Tag where T : ITag
+    class BlockTag<T> : Tag where T : ITag
     {
         private List<ITag> children;
 
         /// <summary>
         /// The BlockTag constructor.
         /// </summary>
-        /// <param name="ts">A TagStream to construct the BlockTag from.</param>
-        public BlockTag(TagStream ts)
-            : base(ts)
-        {
-            GetChildren(ts);
-        }
-
-        public BlockTag(TagStream ts, bool dummy)
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public BlockTag(string param, TagStream ts)
+            : base(param, ts)
         {
             GetChildren(ts);
         }
 
         /// <summary>
-        /// Populates the given List with child tags.
+        /// Populates the children List with child tags.
         /// </summary>
         /// <param name="ts">A TagStream to extract children from.</param>
         /// <param name="children">The List to put children into.</param>
@@ -74,11 +72,10 @@ namespace Raindrop.Backend
                     typeof(T),
                     child.GetType());
 
-                throw new RaindropException(
+                throw new ParserException(
                     msg,
                     ts.Name,
-                    ts.Index,
-                    ErrorCode.EndTagMismatch);
+                    ts.Index);
             }
         }
 
@@ -91,10 +88,40 @@ namespace Raindrop.Backend
             IDictionary<string, object> data,
             TextWriter output)
         {
-            foreach (ITag child in children)
+            try
             {
-                child.Apply(data, output);
+                foreach (ITag child in children)
+                {
+                    child.Apply(data, output);
+                }
             }
+            catch (KeyException exc)
+            {
+                exc.Name = Param;
+                throw;
+            }
+        }
+    }
+
+    class EOFTag : EndTag
+    {
+        public EOFTag()
+        {
+            Param = "EOF";
+        }
+
+        /// <summary>
+        /// Applies the Tag to the given data and outputs the result.
+        /// </summary>
+        /// <param name="data">The data to be applied to.</param>
+        /// <param name="output">The place to put the output.</param>
+        public override void Apply(
+            IDictionary<string, object> data,
+            TextWriter output)
+        {
+            throw new NotImplementedException(
+                "EOFTag should not be applied. " +
+                "An error in the templating logic has likely occurred.");
         }
     }
 }

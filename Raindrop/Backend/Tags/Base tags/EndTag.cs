@@ -27,19 +27,21 @@
  * derive from EndTag.
  */
 
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using Raindrop.Backend.Parser;
 
-namespace Raindrop.Backend
+namespace Raindrop.Backend.Tags
 {
     class EndTag : Tag
     {
         /// <summary>
         /// The EndTag constructor.
         /// </summary>
-        /// <param name="ts">A TagStream to construct the EndTag from.</param>
-        public EndTag(TagStream ts)
-            : base(ts) { }
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public EndTag(string param, TagStream ts)
+            : base(param, ts) { }
 
         public EndTag()
         { }

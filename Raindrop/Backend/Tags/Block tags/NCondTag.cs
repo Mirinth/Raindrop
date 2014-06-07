@@ -22,26 +22,31 @@
  * NCondTag.cs
  * By Mirinth (mirinth@gmail.com)
  * 
- * The NCondTag file contains the NCondTag class, which represents an
- * optional tag. An NCond tag is only processed if its parameter
- * represents a "false" value in the data dictionary.
+ * The CondTag class represents an optional block of the template.
+ * An NCondTag's children are only processed if its parameter
+ * represents a "false" value in the data dictionary. See
+ * Helpers.Truth() for the rules of truth.
+ * 
+ * The NCondEndTag represents the end of an NCondTag block.
  */
 
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using Raindrop.Backend.Parser;
 
-namespace Raindrop.Backend
+namespace Raindrop.Backend.Tags
 {
     class NCondTag : BlockTag<NCondEndTag>
     {
-        public static string ID = "<:ncond";
+        public static string ID = "ncond";
 
         /// <summary>
         /// The NCondTag constructor.
         /// </summary>
-        /// <param name="ts">A TagStream to construct the CondTag from.</param>
-        public NCondTag(TagStream ts)
-            : base(ts)
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public NCondTag(string param, TagStream ts)
+            : base(param, ts)
         {
             RequireParameter(ts);
         }
@@ -61,10 +66,24 @@ namespace Raindrop.Backend
             IDictionary<string, object> data,
             TextWriter output)
         {
-            if (!Helpers.Pass(data, Param))
+            RequireKey(Param, data);
+            if (!Helpers.Truth(data, Param))
             {
                 base.Apply(data, output);
             }
         }
+    }
+
+    class NCondEndTag : EndTag
+    {
+        public static string ID = "/ncond";
+
+        /// <summary>
+        /// The ArrayEndTag constructor.
+        /// </summary>
+        /// <param name="param">The tag's parameter.</param>
+        /// <param name="ts">A TagStream to construct child tags from.</param>
+        public NCondEndTag(string param, TagStream ts)
+            : base(param, ts) { }
     }
 }
