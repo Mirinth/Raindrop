@@ -19,6 +19,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace Raindrop.Backend
 {
@@ -27,7 +28,8 @@ namespace Raindrop.Backend
         public string Name { get; set; }
 
         public RaindropException(string message, string name)
-            : base(message)
+            : base(message + " See Name for the name of the " +
+                    "template source the error occurred with.")
         {
             Name = name;
         }
@@ -53,6 +55,11 @@ namespace Raindrop.Backend
     {
         private string path;
 
+        public IDictionary<string, object> Data
+        {
+            get;
+            private set;
+        }
         public string KeyPath
         {
             get
@@ -63,8 +70,8 @@ namespace Raindrop.Backend
 
         public KeyException(string key)
             : base("A key was missing from the data dictionary. " +
-                    "See KeyPath for a path to the missing key and " +
-                    "Name for the name of the data source.",
+                    "See KeyPath for a path to the missing key " +
+                    "and Data for the dictionary the missing key was missing from.",
                     "<unknown template source>")
         {
             path = string.Empty;
