@@ -55,7 +55,7 @@ namespace Raindrop.Backend
     {
         private string path;
 
-        public IDictionary<string, object> Data
+        public IDictionary<string, object> Dictionary
         {
             get;
             private set;
@@ -71,7 +71,7 @@ namespace Raindrop.Backend
         public KeyException(string key)
             : base("A key was missing from the data dictionary. " +
                     "See KeyPath for a path to the missing key " +
-                    "and Data for the dictionary the missing key was missing from.",
+                    "and DataDictionary for the dictionary the missing key was missing from.",
                     "<unknown template source>")
         {
             path = string.Empty;
