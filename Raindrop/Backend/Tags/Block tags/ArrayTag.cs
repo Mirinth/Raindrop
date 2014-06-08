@@ -33,7 +33,7 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    class ArrayTag : BlockTag<ArrayEndTag>
+    public class ArrayTag : BlockTag<ArrayEndTag>
     {
         public static string ID = "array";
 
@@ -80,7 +80,7 @@ namespace Raindrop.Backend.Tags
         }
     }
 
-    class ArrayEndTag : EndTag
+    public class ArrayEndTag : EndTag
     {
         public static string ID = "/array";
 

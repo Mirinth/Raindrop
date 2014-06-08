@@ -22,7 +22,7 @@ using System;
 
 namespace Raindrop.Backend.Parser
 {
-    class TagReader
+    public class TagReader
     {
         const int end_of_file = -1;
         const int delimiter_length = 2;

@@ -36,7 +36,7 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    class CondTag : BlockTag<CondEndTag>
+    public class CondTag : BlockTag<CondEndTag>
     {
         public static string ID = "cond";
 
@@ -74,7 +74,7 @@ namespace Raindrop.Backend.Tags
         }
     }
 
-    class CondEndTag : EndTag
+    public class CondEndTag : EndTag
     {
         public static string ID = "/cond";
 

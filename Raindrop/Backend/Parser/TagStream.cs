@@ -22,13 +22,13 @@ using System.IO;
 
 namespace Raindrop.Backend.Parser
 {
-    struct TagData
+    public struct TagData
     {
         public string ID;
         public string Param;
     }
 
-    class TagStream
+    public class TagStream
     {
         private static string leftCap = "<:";
         private static string rightCap = ":>";

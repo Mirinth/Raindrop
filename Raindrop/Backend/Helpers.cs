@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 namespace Raindrop.Backend
 {
-    class Helpers
+    public class Helpers
     {
         /// <summary>
         /// Handles the case where a tag that requires a key is missing it

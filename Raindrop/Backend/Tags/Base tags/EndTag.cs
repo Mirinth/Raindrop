@@ -33,7 +33,7 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    class EndTag : Tag
+    public class EndTag : Tag
     {
         /// <summary>
         /// The EndTag constructor.

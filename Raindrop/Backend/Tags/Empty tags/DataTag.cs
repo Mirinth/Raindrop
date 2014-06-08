@@ -32,7 +32,7 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    class DataTag : Tag
+    public class DataTag : Tag
     {
         public static string ID = "data";
 

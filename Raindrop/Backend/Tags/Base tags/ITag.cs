@@ -30,7 +30,7 @@ using System.IO;
 
 namespace Raindrop.Backend.Tags
 {
-    interface ITag
+    public interface ITag
     {
         /// <summary>
         /// Applies the Tag to the given data and outputs the result.

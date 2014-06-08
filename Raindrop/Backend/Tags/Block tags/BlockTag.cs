@@ -34,7 +34,7 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    class BlockTag<T> : Tag where T : ITag
+    public class BlockTag<T> : Tag where T : ITag
     {
         private List<ITag> children;
 
@@ -103,7 +103,7 @@ namespace Raindrop.Backend.Tags
         }
     }
 
-    class EOFTag : EndTag
+    public class EOFTag : EndTag
     {
         public EOFTag()
         {
