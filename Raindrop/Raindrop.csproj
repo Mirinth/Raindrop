@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Backend\Parser\FarPeekTextReader.cs" />
     <Compile Include="Backend\Parser\TagReader.cs" />
+    <Compile Include="Backend\Tags\Empty tags\EscapeTag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RaindropView.cs" />
     <Compile Include="RaindropViewEngine.cs" />

@@ -30,10 +30,10 @@ namespace Raindrop.Backend.Parser
 
     public class TagStream
     {
-        private static string leftCap = "<:";
-        private static string rightCap = ":>";
-        private static char[] tagSplitter = { ' ' };
-        private static char[] trimChars = { ' ', '/' };
+        private static readonly string leftCap = "<:";
+        private static readonly string rightCap = ":>";
+        private static readonly char[] tagSplitter = { ' ' };
+        private static readonly char[] trimChars = { ' ', '/' };
 
         const bool include_delimiter = true;
         const bool exclude_delimiter = false;
@@ -98,11 +98,41 @@ namespace Raindrop.Backend.Parser
         /// </summary>
         /// <param name="tag">The tag to strip endcaps from.</param>
         /// <returns>The input with the endcaps stripped.</returns>
-        private string StripCaps(string tagString)
+        public string StripCaps(string tagString)
         {
             string result = tagString.Substring(
                 TagStream.leftCap.Length,
                 tagString.Length - TagStream.leftCap.Length - TagStream.rightCap.Length);
+            return result;
+        }
+
+        public string Escape(string sequence)
+        {
+
+            string result = string.Empty;
+            string[] pieces = sequence.Split(tagSplitter);
+
+            foreach (string piece in pieces)
+            {
+                switch (piece)
+                {
+                    case "lc":
+                        result += leftCap;
+                        break;
+                    case "rc":
+                        result += rightCap;
+                        break;
+                    default:
+                        string msg = string.Format(
+                            "Unrecognized escape: {0}", piece);
+                        throw new ParserException(
+                            msg,
+                            Name,
+                            Index);
+
+                }
+            }
+
             return result;
         }
 
