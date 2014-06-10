@@ -72,20 +72,19 @@ namespace Raindrop.Backend.Tags
             }
         }
 
+        /// <summary>
+        /// Ensures that the givien dictionary contains the given key.
+        /// If not, an exception is thrown with known information about
+        /// the expected key.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="dict"></param>
         public void RequireKey(string key, IDictionary<string, object> dict)
         {
             if (!dict.ContainsKey(key))
             {
                 throw new KeyException(key);
             }
-        }
-
-        /// <summary>
-        /// The Tag constructor. Initializes the parameter to null.
-        /// </summary>
-        public Tag()
-        {
-            Param = null;
         }
 
         /// <summary>

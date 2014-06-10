@@ -43,9 +43,6 @@ namespace Raindrop.Backend.Tags
         public EndTag(string param, TagStream ts)
             : base(param, ts) { }
 
-        public EndTag()
-        { }
-
         /// <summary>
         /// Applies the EndTag to the given data and outputs the result.
         /// </summary>

@@ -19,11 +19,11 @@
  */
 
 /*
- * Tag.cs
+ * DataTag.cs
  * By Mirinth (mirinth@gmail.com)
  * 
- * The Tag file contains the Tag class, which represents a
- * generic tag.
+ * The DataTag class inserts a piece of server-provided data into the
+ * output stream.
  */
 
 using System.Collections.Generic;

@@ -22,8 +22,7 @@
  * TextTag.cs
  * By Mirinth (mirinth@gmail.com)
  * 
- * The TextTag file contains the TextTag class, which represents a
- * tag that is just plain text (nothing fancy).
+ * The TextTag class represents a block of plain text in the template.
  */
 
 using System.Collections.Generic;

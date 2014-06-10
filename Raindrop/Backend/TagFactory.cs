@@ -48,7 +48,7 @@ namespace Raindrop.Backend
         {
             if (ts.EOF)
             {
-                return new EOFTag();
+                return new EOFTag(ts);
             }
 
             TagData td = ts.GetTag();

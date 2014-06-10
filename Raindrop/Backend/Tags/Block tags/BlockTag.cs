@@ -105,10 +105,8 @@ namespace Raindrop.Backend.Tags
 
     public class EOFTag : EndTag
     {
-        public EOFTag()
-        {
-            Param = "EOF";
-        }
+        public EOFTag(TagStream ts)
+            : base("EOF", ts) { }
 
         /// <summary>
         /// Applies the Tag to the given data and outputs the result.
