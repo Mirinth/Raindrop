@@ -106,7 +106,12 @@ namespace Raindrop.Backend.Parser
             return result;
         }
 
-        public string Escape(string sequence)
+        /// <summary>
+        /// Converts an escape sequence into plain text.
+        /// </summary>
+        /// <param name="sequence">The sequence to convert.</param>
+        /// <returns>The unescaped sequence.</returns>
+        public string Unescape(string sequence)
         {
 
             string result = string.Empty;

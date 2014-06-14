@@ -45,7 +45,7 @@ namespace Raindrop.Backend.Tags
             : base(param, ts)
         {
             RequireParameter(ts);
-            Param = ts.Escape(Param);
+            Param = ts.Unescape(Param);
         }
 
         /// <summary>
