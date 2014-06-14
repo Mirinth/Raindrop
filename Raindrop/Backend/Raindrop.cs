@@ -38,7 +38,7 @@ namespace Raindrop
 {
     public class Raindrop
     {
-        ITag template;
+        Tag template;
 
         /// <summary>
         /// The Raindrop constructor. Constructs a template using the

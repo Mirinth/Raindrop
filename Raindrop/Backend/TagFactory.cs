@@ -43,8 +43,8 @@ namespace Raindrop.Backend
         /// Parses an ITag out of the given TagStream.
         /// </summary>
         /// <param name="ts">The TagStream to parse an ITag from.</param>
-        /// <returns>The ITag parsed from the TagStream.</returns>
-        public static ITag Parse(TagStream ts)
+        /// <returns>The Tag parsed from the TagStream.</returns>
+        public static Tag Parse(TagStream ts)
         {
             if (ts.EOF)
             {
@@ -67,7 +67,7 @@ namespace Raindrop.Backend
             ConstructorInfo constructor = itags[td.ID];
 
             // Invoke the constructor with the parameter and TagStream.
-            ITag tag = (ITag)constructor.Invoke(new object[] { td.Param, ts });
+            Tag tag = (Tag)constructor.Invoke(new object[] { td.Param, ts });
 
             return tag;
         }
@@ -82,7 +82,7 @@ namespace Raindrop.Backend
         public static Dictionary<string, ConstructorInfo> GetITags()
         {
             const BindingFlags flags = BindingFlags.Public | BindingFlags.Static;
-            Type tagInterface = typeof(ITag);
+            Type tagInterface = typeof(Tag);
             Dictionary<string, ConstructorInfo> types = new Dictionary<string, ConstructorInfo>();
 
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())

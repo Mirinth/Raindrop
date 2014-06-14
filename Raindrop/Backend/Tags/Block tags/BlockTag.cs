@@ -34,9 +34,9 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    public class BlockTag<T> : Tag where T : ITag
+    public class BlockTag<T> : Tag where T : EndTag
     {
-        private List<ITag> children;
+        private List<Tag> children;
 
         /// <summary>
         /// The BlockTag constructor.
@@ -56,8 +56,8 @@ namespace Raindrop.Backend.Tags
         /// <param name="children">The List to put children into.</param>
         protected void GetChildren(TagStream ts)
         {
-            children = new List<ITag>();
-            ITag child = TagFactory.Parse(ts);
+            children = new List<Tag>();
+            Tag child = TagFactory.Parse(ts);
 
             while (!(child is T) && !(child is EndTag))
             {
@@ -90,7 +90,7 @@ namespace Raindrop.Backend.Tags
         {
             try
             {
-                foreach (ITag child in children)
+                foreach (Tag child in children)
                 {
                     child.Apply(data, output);
                 }

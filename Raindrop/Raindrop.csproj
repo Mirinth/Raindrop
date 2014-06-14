@@ -55,7 +55,6 @@
     <Compile Include="Backend\Parser\TagStream.cs" />
     <Compile Include="Backend\Tags\Block tags\BlockTag.cs" />
     <Compile Include="Backend\Tags\Base tags\EndTag.cs" />
-    <Compile Include="Backend\Tags\Base tags\ITag.cs" />
     <Compile Include="Backend\Tags\Base tags\Tag.cs" />
     <Compile Include="Backend\Tags\Block tags\ArrayTag.cs" />
     <Compile Include="Backend\Tags\Block tags\CondTag.cs" />

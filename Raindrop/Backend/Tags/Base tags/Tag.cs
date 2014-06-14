@@ -32,7 +32,7 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    public abstract class Tag : ITag
+    public abstract class Tag
     {
         protected const int param_included_length = 2;
 

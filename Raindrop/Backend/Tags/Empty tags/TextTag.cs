@@ -31,15 +31,9 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    public class TextTag : ITag
+    public class TextTag : Tag
     {
         public static string ID = string.Empty;
-
-        public string Param
-        {
-            get;
-            protected set;
-        }
 
         /// <summary>
         /// The TextTag constructor.
@@ -47,16 +41,14 @@ namespace Raindrop.Backend.Tags
         /// <param name="param">The tag's parameter.</param>
         /// <param name="ts">A TagStream to construct child tags from.</param>
         public TextTag(string param, TagStream ts)
-        {
-            Param = param;
-        }
+            : base(param, ts) { }
 
         /// <summary>
         /// Applies the TextTag and outputs the result.
         /// </summary>
         /// <param name="data">The data to apply the TextTag to.</param>
         /// <param name="output">The place to put the output.</param>
-        public void Apply(
+        public override void Apply(
             IDictionary<string, object> data,
             TextWriter output)
         {
