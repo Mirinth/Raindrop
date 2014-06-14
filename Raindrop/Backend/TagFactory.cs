@@ -36,13 +36,13 @@ namespace Raindrop.Backend
         /// </summary>
         static TagFactory()
         {
-            itags = GetITags();
+            itags = GetTagTypes();
         }
 
         /// <summary>
-        /// Parses an ITag out of the given TagStream.
+        /// Parses a Tag out of the given TagStream.
         /// </summary>
-        /// <param name="ts">The TagStream to parse an ITag from.</param>
+        /// <param name="ts">The TagStream to parse a Tag from.</param>
         /// <returns>The Tag parsed from the TagStream.</returns>
         public static Tag Parse(TagStream ts)
         {
@@ -73,13 +73,13 @@ namespace Raindrop.Backend
         }
 
         /// <summary>
-        /// Generates a Dictionary of Types that implement the ITag interface,
+        /// Generates a Dictionary of Types that inherit from the Tag class,
         /// are not abstract, and have a public static field named "ID" which
         /// is a string. The  Dictionary is indexed by the value of the type's
         /// "ID" property, and all loaded assemblies are searched for objects.
         /// </summary>
         /// <returns>A Dictionary containing the identified types.</returns>
-        public static Dictionary<string, ConstructorInfo> GetITags()
+        public static Dictionary<string, ConstructorInfo> GetTagTypes()
         {
             const BindingFlags flags = BindingFlags.Public | BindingFlags.Static;
             Type tagInterface = typeof(Tag);
@@ -95,7 +95,7 @@ namespace Raindrop.Backend
 
                     object key = t.GetField("ID").GetValue(null);
 
-                    // ITags with non-string ID fields can't be used, so
+                    // Tags with non-string ID fields can't be used, so
                     // just skip them.
                     if (!(key is string)) { continue; }
 
