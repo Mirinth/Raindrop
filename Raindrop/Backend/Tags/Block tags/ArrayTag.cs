@@ -71,10 +71,11 @@ namespace Raindrop.Backend.Tags
                     index++;
                 }
             }
-            catch (KeyException exc)
+            catch (RaindropException exc)
             {
-                exc.AddKeyLevel(index.ToString());
-                exc.AddKeyLevel(Param);
+                    string key = (string)exc["raindrop.key-path"];
+                    key = "[" + Param + "][" + index.ToString() + "]";
+                    exc["raindrop.key-path"] = key;
                 throw;
             }
         }

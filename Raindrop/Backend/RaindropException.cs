@@ -25,62 +25,45 @@ namespace Raindrop.Backend
 {
     public class RaindropException : Exception
     {
-        public string Name { get; set; }
+        private Dictionary<string, object> extraData =
+            new Dictionary<string,object>();
 
-        public RaindropException(string message, string name)
-            : base(message + " See Name for the name of the " +
-                    "template source the error occurred with.")
-        {
-            Name = name;
-        }
-    }
-
-    public class ParserException : RaindropException
-    {
-        public int Location
-        {
-            get;
-            private set;
-        }
-        public ParserException(string message, string name, int index)
-            : base(message + " See Location for the index into the stream " +
-                    "where the error was first noticed.",
-            name)
-        {
-            Location = index;
-        }
-    }
-
-    public class KeyException : RaindropException
-    {
-        private string path;
-
-        public IDictionary<string, object> Dictionary
-        {
-            get;
-            private set;
-        }
-        public string KeyPath
+        public object this[string key]
         {
             get
             {
-                return "Dictionary" + path;
+                return extraData[key];
+            }
+            set
+            {
+                if (extraData.ContainsKey(key))
+                {
+                    extraData[key] = value;
+                }
+                else
+                {
+                    extraData.Add(key, value);
+                }
             }
         }
 
-        public KeyException(string key)
-            : base("A key was missing from the data dictionary. " +
-                    "See KeyPath for a path to the missing key " +
-                    "and DataDictionary for the dictionary the missing key was missing from.",
-                    "<unknown template source>")
+        public string Details
         {
-            path = string.Empty;
-            AddKeyLevel(key);
+            get
+            {
+                string result = string.Empty;
+                foreach (KeyValuePair<string, object> kvp in extraData)
+                {
+                    result += kvp.Key + "=" + kvp.Value.ToString() + ";\n";
+                }
+                return result;
+            }
         }
 
-        public void AddKeyLevel(string key)
-        {
-            path = "[" + key + "]" + path;
-        }
+        public string Name { get; set; }
+        //new public string Message { get; set; }
+
+        public RaindropException(string msg)
+            : base(msg) { }
     }
 }

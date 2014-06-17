@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2014
  * 
  * This file is part of the Raindrop Templating Library.
@@ -46,7 +46,15 @@ namespace Raindrop.Backend.Tags
         public BlockTag(string param, TagStream ts)
             : base(param, ts)
         {
-            GetChildren(ts);
+            try
+            {
+                GetChildren(ts);
+            }
+            catch (RaindropException exc)
+            {
+                exc["raindrop.template-name"] = Param;
+                throw;
+            }
         }
 
         /// <summary>
@@ -56,6 +64,8 @@ namespace Raindrop.Backend.Tags
         /// <param name="children">The List to put children into.</param>
         protected void GetChildren(TagStream ts)
         {
+            int startIndex = ts.Index;
+
             children = new List<Tag>();
             Tag child = TagFactory.Parse(ts);
 
@@ -67,15 +77,12 @@ namespace Raindrop.Backend.Tags
 
             if (!(child is T))
             {
-                string msg = string.Format(
-                    "Tag mismatch. Expected '{0}', found '{1}'",
-                    typeof(T),
-                    child.GetType());
-
-                throw new ParserException(
-                    msg,
-                    ts.Name,
-                    ts.Index);
+                RaindropException exc = new RaindropException("End tag didn't match start tag.");
+                exc["raindrop.expected-type"] = typeof(T).FullName;
+                exc["raindrop.encountered-type"] = child.GetType().FullName;
+                exc["raindrop.start-index"] = startIndex;
+                exc["raindrop.end-index"] = ts.Index;
+                throw exc;
             }
         }
 
@@ -95,9 +102,9 @@ namespace Raindrop.Backend.Tags
                     child.Apply(data, output);
                 }
             }
-            catch (KeyException exc)
+            catch (RaindropException exc)
             {
-                exc.Name = Param;
+                exc["raindrop.template-name"] = Param;
                 throw;
             }
         }

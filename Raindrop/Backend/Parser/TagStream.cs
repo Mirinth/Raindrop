@@ -39,17 +39,15 @@ namespace Raindrop.Backend.Parser
         const bool exclude_delimiter = false;
 
         private TagReader reader;
-        private string templateName;
 
         /// <summary>
         /// Initializes the TagStream with template as its data source.
         /// </summary>
         /// <param name="template">The TextReader to initialize the TagStream with.</param>
         /// <param name="name">The name of the template. Used for error reporting.</param>
-        public TagStream(TextReader template, string name)
+        public TagStream(TextReader template)
         {
             reader = new TagReader(new FarPeekTextReader(template));
-            templateName = name;
         }
 
         /// <summary>
@@ -68,14 +66,6 @@ namespace Raindrop.Backend.Parser
         public int Index
         {
             get { return reader.Index; }
-        }
-
-        /// <summary>
-        /// The name of the source the TagStream is reading from.
-        /// </summary>
-        public string Name
-        {
-            get { return templateName; }
         }
 
         /// <summary>
@@ -113,7 +103,6 @@ namespace Raindrop.Backend.Parser
         /// <returns>The unescaped sequence.</returns>
         public string Unescape(string sequence)
         {
-
             string result = string.Empty;
             string[] pieces = sequence.Split(tagSplitter);
 
@@ -128,13 +117,11 @@ namespace Raindrop.Backend.Parser
                         result += rightCap;
                         break;
                     default:
-                        string msg = string.Format(
-                            "Unrecognized escape: {0}", piece);
-                        throw new ParserException(
-                            msg,
-                            Name,
-                            Index);
-
+                        RaindropException exc = new RaindropException(
+                            "Invalid escape sequence");
+                        exc["raindrop.escape-sequence"] = sequence;
+                        exc["raindrop.start-index"] = reader.Index;
+                        throw exc;
                 }
             }
 
@@ -151,18 +138,18 @@ namespace Raindrop.Backend.Parser
         {
             if (EOF)
             {
-                throw new ParserException(
-                    "End of file found when TagStream expected text.",
-                    templateName,
-                    reader.Index);
+                RaindropException exc = new RaindropException(
+                    "End-of-file encountered when text was expected");
+                exc["raindrop.start-index"] = reader.Index;
+                throw exc;
             }
 
             if (reader.IsAt(leftCap))
             {
-                throw new ParserException(
-                    "Tag found when TagStream expected text.",
-                    templateName,
-                    reader.Index);
+                RaindropException exc = new RaindropException(
+                    "Tag encountered when text was expected");
+                exc["raindrop.start-index"] = reader.Index;
+                throw exc;
             }
 
             return new TagData()
@@ -182,32 +169,32 @@ namespace Raindrop.Backend.Parser
         {
             if (EOF)
             {
-                throw new ParserException(
-                    "End of file found when TagStream expected tag.",
-                    templateName,
-                    reader.Index);
+                RaindropException exc = new RaindropException(
+                    "End-of-file found when tag was expected");
+                exc["raindrop.start-index"] = reader.Index;
+                throw exc;
             }
 
             if (!reader.IsAt(leftCap))
             {
-                throw new ParserException(
-                    "Text found when TagStream expected tag.",
-                    templateName,
-                    reader.Index);
+                RaindropException exc = new RaindropException(
+                    "Plain-text found when tag was expected");
+                exc["raindrop.start-index"] = reader.Index;
+                throw exc;
             }
+
+            int startIndex = reader.Index;
 
             string tagString = reader.ReadTo(rightCap, include_delimiter);
 
             if (!tagString.EndsWith(rightCap))
             {
-                string msg = string.Format(
-                    "Ending tag delimiter '{0}' not found before end of file.",
-                    rightCap);
-
-                throw new ParserException(
-                    msg,
-                    templateName,
-                    reader.Index);
+                RaindropException exc = new RaindropException(
+                    "Ending tag delimiter not found before end-of-file");
+                exc["raindrop.expected-delimiter"] = rightCap;
+                exc["raindrop.start-index"] = startIndex;
+                exc["raindrop.end-index"] = reader.Index;
+                throw exc;
             }
 
             tagString = StripCaps(tagString);

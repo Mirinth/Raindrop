@@ -55,13 +55,10 @@ namespace Raindrop.Backend
 
             if (!itags.ContainsKey(td.ID))
             {
-                string msg = string.Format(
-                    "The tag '{0}' is not supported.",
-                    td.ID);
-                throw new ParserException(
-                    msg,
-                    ts.Name,
-                    ts.Index);
+                RaindropException exc = new RaindropException("Tag is not supported.");
+                exc["raindrop.encountered-tag-id"] = td.ID;
+                exc["raindrop.start-index"] = ts.Index;
+                throw exc;
             }
 
             ConstructorInfo constructor = itags[td.ID];
@@ -82,14 +79,14 @@ namespace Raindrop.Backend
         public static Dictionary<string, ConstructorInfo> GetTagTypes()
         {
             const BindingFlags flags = BindingFlags.Public | BindingFlags.Static;
-            Type tagInterface = typeof(Tag);
+            Type tagBase = typeof(Tag);
             Dictionary<string, ConstructorInfo> types = new Dictionary<string, ConstructorInfo>();
 
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (Type t in asm.GetTypes())
                 {
-                    if (!t.GetInterfaces().Contains(tagInterface)) { continue; }
+                    if (!t.IsSubclassOf(tagBase)) { continue; }
                     if (t.IsAbstract) { continue; }
                     if (t.GetField("ID", flags) == null) { continue; }
 

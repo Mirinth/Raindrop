@@ -65,10 +65,10 @@ namespace Raindrop.Backend.Tags
         {
             if (string.IsNullOrEmpty(Param))
             {
-                throw new ParserException(
-                    "Tag must have a parameter.",
-                    ts.Name,
-                    ts.Index);
+                RaindropException exc = new RaindropException(
+                    "Tag must have a parameter.");
+                exc["raindrop.start-index"] = ts.Index;
+                throw exc;
             }
         }
 
@@ -83,7 +83,10 @@ namespace Raindrop.Backend.Tags
         {
             if (!dict.ContainsKey(key))
             {
-                throw new KeyException(key);
+                RaindropException exc = new RaindropException(
+                    "A required key was missing from the data dictionary.");
+                exc["raindrop.expected-key"] = key;
+                exc["raindrop.data-dictionary"] = dict;
             }
         }
 
