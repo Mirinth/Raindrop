@@ -55,8 +55,6 @@ namespace Raindrop.Backend.Parser
         /// </summary>
         public bool EOF
         {
-            // The last index is contents.Length - 1,
-            // so contents.Length means the end of the file.
             get { return reader.EOF; }
         }
 
