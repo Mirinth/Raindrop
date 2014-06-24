@@ -39,6 +39,36 @@ namespace Raindrop.Backend
             itags = GetTagTypes();
         }
 
+        public static Tag DevBuildTag(TagData td, TagStream ts)
+        {
+            switch (td.ID)
+            {
+                case "array":
+                    return new ArrayTag(td.Param, ts);
+                case "/array":
+                    return new ArrayEndTag(td.Param, ts);
+                case "cond":
+                    return new CondTag(td.Param, ts);
+                case "/cond":
+                    return new CondEndTag(td.Param, ts);
+                case "ncond":
+                    return new NCondTag(td.Param, ts);
+                case "/ncond":
+                    return new NCondEndTag(td.Param, ts);
+                case "data":
+                    return new DataTag(td.Param, ts);
+                case "escape":
+                    return new EscapeTag(td.Param, ts);
+                case "":
+                    return new TextTag(td.Param, ts);
+                default:
+                    RaindropException exc = new RaindropException("Tag is not supported.");
+                    exc["raindrop.encountered-tag-id"] = td.ID;
+                    exc["raindrop.start-index"] = ts.Index;
+                    throw exc;
+            }
+        }
+
         /// <summary>
         /// Parses a Tag out of the given TagStream.
         /// </summary>
@@ -52,6 +82,8 @@ namespace Raindrop.Backend
             }
 
             TagData td = ts.GetTag();
+
+            return DevBuildTag(td, ts);
 
             if (!itags.ContainsKey(td.ID))
             {
