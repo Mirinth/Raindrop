@@ -25,13 +25,18 @@ namespace Raindrop.Backend
     public class Helpers
     {
         /// <summary>
-        /// Handles the case where a tag that requires a key is missing it
-        /// by either doing nothing or crashing (depending on value of
-        /// Settings.MissingKeyFailMode).
+        /// Determines truth for a conditional tag.
         /// </summary>
-        /// <param name="key">The key that was missing.</param>
-        
-
+        /// <param name="data">
+        /// The data dictionary to use for determining truth.
+        /// </param>
+        /// <param name="param">
+        /// The parameter to use for determining truth.
+        /// </param>
+        /// <returns>
+        /// True if the given parameter and dictionary result in a
+        /// true value; otherwise, false.
+        /// </returns>
         public static bool Truth(
             IDictionary<string, object> data,
             string param)
