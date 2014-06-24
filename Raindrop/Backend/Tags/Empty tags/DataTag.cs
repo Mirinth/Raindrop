@@ -41,7 +41,7 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="param">The tag's parameter.</param>
         /// <param name="ts">A TagStream to construct child tags from.</param>
-        public DataTag(string param, TagStream ts)
+        public DataTag(string param, InfoProvidingTextReader ts)
             : base(param, ts)
         {
             RequireParameter(ts);

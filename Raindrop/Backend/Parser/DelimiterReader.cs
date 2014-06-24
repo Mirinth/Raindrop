@@ -18,55 +18,19 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * The DelimiterReader reads from an InfoProvidingTextReader until a
+ * given delimiter is found and assists with determining whether the
+ * stream is at a given delimiter.
+ */
+
 using System;
 
 namespace Raindrop.Backend.Parser
 {
-    public class TagReader
+    public class DelimiterReader
     {
-        const int end_of_file = -1;
         const int delimiter_length = 2;
-
-        bool disposed = false;
-        private FarPeekTextReader reader;
-
-        /// <summary>
-        /// The TagReader constructor
-        /// </summary>
-        /// <param name="tr">
-        /// A TextReader to use as the TagReader's backing data source.
-        /// The TagReader will take responsibility for disposing of the
-        /// TextReader.
-        /// </param>
-        public TagReader(FarPeekTextReader fptr)
-        {
-            reader = fptr;
-        }
-
-        /// <summary>
-        /// Gets whether the TagReader is at the end of its stream.
-        /// </summary>
-        public bool EOF
-        {
-            get
-            {
-                if (disposed) { throw new ObjectDisposedException("TagReader"); }
-                return reader.EOF;
-            }
-        }
-
-        /// <summary>
-        /// Gets the current index that the TagReader is into its
-        /// stream.
-        /// </summary>
-        public int Index
-        {
-            get
-            {
-                if (disposed) { throw new ObjectDisposedException("TagReader"); }
-                return reader.Index;
-            }
-        }
 
         /// <summary>
         /// Checks whether a string is a given length and throws
@@ -91,6 +55,9 @@ namespace Raindrop.Backend.Parser
         /// <summary>
         /// Determines whether the stream is at delimiter.
         /// </summary>
+        /// <param name="reader">
+        /// The InfoProvidingTextReader to check for a delimiter.
+        /// </param>
         /// <param name="delimiter">
         /// The delimiter to check if the stream is at. Must be 2 characters
         /// in length.
@@ -99,30 +66,31 @@ namespace Raindrop.Backend.Parser
         /// True if delimiter was found at the start of the stream;
         /// false otherwise.
         /// </returns>
-        public bool IsAt(string delimiter)
+        public static bool IsAt(InfoProvidingTextReader reader, string delimiter)
         {
-            if (disposed) { throw new ObjectDisposedException("TagReader"); }
-
             EnforceLength(delimiter, delimiter_length);
 
             int peek = reader.Peek();
             int farPeek = reader.FarPeek();
 
-            if (peek == end_of_file || farPeek == end_of_file ||
-                peek != delimiter[0] || farPeek != delimiter[1])
+            if (delimiter[0] == reader.Peek() &&
+                delimiter[1] == reader.FarPeek())
             {
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
         /// <summary>
-        /// Reads from the stream until delimiter is encountered and optionally
-        /// includes the delimiter in the result.
+        /// Reads from the stream until delimiter is encountered or the stream
+        /// is empty, and optionally includes the delimiter in the result.
         /// </summary>
+        /// <param name="reader">
+        /// The InfoProvidingTextReader to read from.
+        /// </param>
         /// <param name="delimiter">
         /// The string to read until encountered. Must have length of 2.
         /// </param>
@@ -130,11 +98,15 @@ namespace Raindrop.Backend.Parser
         /// True to read the delimiter and include it in the result;
         /// false to leave the delimiter in the stream for the next read.
         /// </param>
-        /// <returns></returns>
-        public string ReadTo(string delimiter, bool includeDelimiter)
+        /// <returns>
+        /// A string containing all the available characters up to (and
+        /// optionally including) the delimiter or the end of the stream.
+        /// </returns>
+        public static string ReadTo(
+            InfoProvidingTextReader reader,
+            string delimiter,
+            bool includeDelimiter)
         {
-            if (disposed) { throw new ObjectDisposedException("TagReader"); }
-
             EnforceLength(delimiter, delimiter_length);
 
             string result = string.Empty;
@@ -142,17 +114,17 @@ namespace Raindrop.Backend.Parser
             int peek = reader.Peek();
             int farPeek = reader.FarPeek();
 
-            while (peek != end_of_file &&
+            while (!reader.Empty &&
                 (peek != delimiter[0] || farPeek != delimiter[1]))
             {
-                // reader.Read() is either a valid char or end_of_file,
-                // and if it was end_of_file then peek would be
-                // end_of_file and the loop would have ended already.
+                // reader.Read() is either a valid char or -1,
+                // and if it was -1 then reader.Empty would be
+                // true and the loop would have ended already.
                 // So reader.Read() is a valid char.
                 result += (char)reader.Read();
 
                 // peek and farPeek are both int, so there's no need to
-                // cast them.
+                // cast them here.
                 peek = reader.Peek();
                 farPeek = reader.FarPeek();
             }
@@ -161,41 +133,15 @@ namespace Raindrop.Backend.Parser
             {
                 for (int i = 0; i < delimiter_length; i++)
                 {
-                    int read = reader.Read();
-                    if (read != end_of_file)
+                    if (!reader.Empty)
                     {
-                        result += (char)read;
+                        // Read() guaranteed to be valid char if !reader.Empty
+                        result += (char)reader.Read();
                     }
                 }
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Releases the unmanaged resources used by the FarPeekTextReader
-        /// and optionally releases the managed resources.
-        /// </summary>
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources; false to
-        /// release only unmanaged resources.
-        /// </param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing) { reader.Dispose(); }
-                disposed = true;
-            }
-        }
-
-        /// <summary>
-        /// Releases all resources used by the FarPeekTextReader object.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

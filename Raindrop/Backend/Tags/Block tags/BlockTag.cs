@@ -43,7 +43,7 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="param">The tag's parameter.</param>
         /// <param name="ts">A TagStream to construct child tags from.</param>
-        public BlockTag(string param, TagStream ts)
+        public BlockTag(string param, InfoProvidingTextReader ts)
             : base(param, ts)
         {
             try
@@ -62,7 +62,7 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="ts">A TagStream to extract children from.</param>
         /// <param name="children">The List to put children into.</param>
-        protected void GetChildren(TagStream ts)
+        protected void GetChildren(InfoProvidingTextReader ts)
         {
             int startIndex = ts.Index;
 
@@ -112,7 +112,7 @@ namespace Raindrop.Backend.Tags
 
     public class EOFTag : EndTag
     {
-        public EOFTag(TagStream ts)
+        public EOFTag(InfoProvidingTextReader ts)
             : base("EOF", ts) { }
 
         /// <summary>

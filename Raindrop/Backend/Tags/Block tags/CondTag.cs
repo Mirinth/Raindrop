@@ -45,7 +45,7 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="param">The tag's parameter.</param>
         /// <param name="ts">A TagStream to construct child tags from.</param>
-        public CondTag(string param, TagStream ts)
+        public CondTag(string param, InfoProvidingTextReader ts)
             : base(param, ts)
         {
             RequireParameter(ts);
@@ -83,7 +83,7 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="param">The tag's parameter.</param>
         /// <param name="ts">A TagStream to construct child tags from.</param>
-        public CondEndTag(string param, TagStream ts)
+        public CondEndTag(string param, InfoProvidingTextReader ts)
             : base(param, ts) { }
     }
 }

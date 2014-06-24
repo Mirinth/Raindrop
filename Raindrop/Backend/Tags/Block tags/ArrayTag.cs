@@ -42,7 +42,7 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="param">The tag's parameter.</param>
         /// <param name="ts">A TagStream to construct child tags from.</param>
-        public ArrayTag(string param, TagStream ts)
+        public ArrayTag(string param, InfoProvidingTextReader ts)
             : base(param, ts)
         {
             RequireParameter(ts);
@@ -90,7 +90,7 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="param">The tag's parameter.</param>
         /// <param name="ts">A TagStream to construct child tags from.</param>
-        public ArrayEndTag(string param, TagStream ts)
+        public ArrayEndTag(string param, InfoProvidingTextReader ts)
             : base(param, ts) { }
     }
 }

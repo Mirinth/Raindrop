@@ -41,11 +41,11 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="param">The tag's parameter.</param>
         /// <param name="ts">A TagStream to construct child tags from.</param>
-        public EscapeTag(string param, TagStream ts)
+        public EscapeTag(string param, InfoProvidingTextReader ts)
             : base(param, ts)
         {
             RequireParameter(ts);
-            Param = ts.Unescape(Param);
+            Param = TagStream.Unescape(ts, param);
         }
 
         /// <summary>

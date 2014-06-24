@@ -40,7 +40,7 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="param">The tag's parameter.</param>
         /// <param name="ts">A TagStream to construct child tags from.</param>
-        public TextTag(string param, TagStream ts)
+        public TextTag(string param, InfoProvidingTextReader ts)
             : base(param, ts) { }
 
         /// <summary>

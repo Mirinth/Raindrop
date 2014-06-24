@@ -39,7 +39,7 @@ namespace Raindrop.Backend
             itags = GetTagTypes();
         }
 
-        public static Tag DevBuildTag(TagData td, TagStream ts)
+        public static Tag DevBuildTag(TagData td, InfoProvidingTextReader ts)
         {
             switch (td.ID)
             {
@@ -74,14 +74,14 @@ namespace Raindrop.Backend
         /// </summary>
         /// <param name="ts">The TagStream to parse a Tag from.</param>
         /// <returns>The Tag parsed from the TagStream.</returns>
-        public static Tag Parse(TagStream ts)
+        public static Tag Parse(InfoProvidingTextReader ts)
         {
-            if (ts.EOF)
+            if (ts.Empty)
             {
                 return new EOFTag(ts);
             }
 
-            TagData td = ts.GetTag();
+            TagData td = TagStream.GetTag(ts);
 
             return DevBuildTag(td, ts);
 

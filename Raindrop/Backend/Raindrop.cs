@@ -60,8 +60,8 @@ namespace Raindrop
                     "A name for this template source is required for error reporting.",
                     "templateName");
             }
-            TagStream ts = new TagStream(templateSource);
-            template = new BlockTag<EOFTag>(templateName, ts);
+            InfoProvidingTextReader reader = new InfoProvidingTextReader(templateSource);
+            template = new BlockTag<EOFTag>(templateName, reader);
         }
 
         /// <summary>

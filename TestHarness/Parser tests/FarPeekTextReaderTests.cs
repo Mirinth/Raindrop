@@ -24,30 +24,6 @@ namespace TestHarness.Parser_tests
             TestFarPeekMakesNoChanges();
             TestLinearReadBehavior();
             TestReadAfterFarPeek();
-            EnsureFarPeekDoesntUnsetEOF();
-        }
-
-        public static void EnsureFarPeekDoesntUnsetEOF()
-        {
-            using (var reader = GetReader())
-            {
-                for (int i = 0; i < testString.Length; i++)
-                {
-                    reader.Read();
-                }
-
-                if (!reader.EOF)
-                {
-                    throw new TestException("The test appears to be buggy.");
-                }
-
-                reader.FarPeek();
-
-                if (!reader.EOF)
-                {
-                    throw new TestException("FarPeekTextReader.FarPeek() unset EOF.");
-                }
-            }
         }
 
         public static void TestReadAfterFarPeek()

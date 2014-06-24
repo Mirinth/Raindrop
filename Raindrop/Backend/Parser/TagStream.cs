@@ -38,47 +38,19 @@ namespace Raindrop.Backend.Parser
         const bool include_delimiter = true;
         const bool exclude_delimiter = false;
 
-        private TagReader reader;
-
-        /// <summary>
-        /// Initializes the TagStream with template as its data source.
-        /// </summary>
-        /// <param name="template">The TextReader to initialize the TagStream with.</param>
-        /// <param name="name">The name of the template. Used for error reporting.</param>
-        public TagStream(TextReader template)
-        {
-            reader = new TagReader(new FarPeekTextReader(template));
-        }
-
-        /// <summary>
-        /// Whether the end of the file has been reached.
-        /// </summary>
-        public bool EOF
-        {
-            get { return reader.EOF; }
-        }
-
-        /// <summary>
-        /// The current index of the TagStream.
-        /// </summary>
-        public int Index
-        {
-            get { return reader.Index; }
-        }
-
         /// <summary>
         /// Gets the next tag (or text) in the TagStream.
         /// </summary>
         /// <returns>The next tag (or text) in the TagStream.</returns>
-        public TagData GetTag()
+        public static TagData GetTag(InfoProvidingTextReader reader)
         {
-            if (EOF)
+            if (reader.Empty)
             {
                 return new TagData() { ID = "EOF", Param = "EOF" };
             }
 
-            if (reader.IsAt(leftCap)) { return ReadTag(); }
-            else { return ReadText(); }
+            if (DelimiterReader.IsAt(reader, leftCap)) { return ReadTag(reader); }
+            else { return ReadText(reader); }
         }
 
         /// <summary>
@@ -86,7 +58,7 @@ namespace Raindrop.Backend.Parser
         /// </summary>
         /// <param name="tag">The tag to strip endcaps from.</param>
         /// <returns>The input with the endcaps stripped.</returns>
-        public string StripCaps(string tagString)
+        public static string StripCaps(string tagString)
         {
             string result = tagString.Substring(
                 TagStream.leftCap.Length,
@@ -97,9 +69,10 @@ namespace Raindrop.Backend.Parser
         /// <summary>
         /// Converts an escape sequence into plain text.
         /// </summary>
+        /// <param name="reader">The reader to use for error reporting.</param>
         /// <param name="sequence">The sequence to convert.</param>
         /// <returns>The unescaped sequence.</returns>
-        public string Unescape(string sequence)
+        public static string Unescape(InfoProvidingTextReader reader, string sequence)
         {
             string result = string.Empty;
             string[] pieces = sequence.Split(tagSplitter);
@@ -129,12 +102,13 @@ namespace Raindrop.Backend.Parser
         /// <summary>
         /// Reads from the stream when it is at text.
         /// </summary>
+        /// <param name="reader">The InfoProvidingTextReader to read from.</param>
         /// <returns>
         /// A TagData representing the read tag.
         /// </returns>
-        public TagData ReadText()
+        public static TagData ReadText(InfoProvidingTextReader reader)
         {
-            if (EOF)
+            if (reader.Empty)
             {
                 RaindropException exc = new RaindropException(
                     "End-of-file encountered when text was expected");
@@ -142,7 +116,7 @@ namespace Raindrop.Backend.Parser
                 throw exc;
             }
 
-            if (reader.IsAt(leftCap))
+            if (DelimiterReader.IsAt(reader, leftCap))
             {
                 RaindropException exc = new RaindropException(
                     "Tag encountered when text was expected");
@@ -153,19 +127,20 @@ namespace Raindrop.Backend.Parser
             return new TagData()
             {
                 ID = "",
-                Param = reader.ReadTo(leftCap, exclude_delimiter)
+                Param = DelimiterReader.ReadTo(reader, leftCap, exclude_delimiter)
             };
         }
 
         /// <summary>
         /// Reads from the stream when it is at a tag.
         /// </summary>
+        /// <param name="reader">The InfoProvidingTextReader to read from.</param>
         /// <returns>
         /// A TagData representing the read tag.
         /// </returns>
-        public TagData ReadTag()
+        public static TagData ReadTag(InfoProvidingTextReader reader)
         {
-            if (EOF)
+            if (reader.Empty)
             {
                 RaindropException exc = new RaindropException(
                     "End-of-file found when tag was expected");
@@ -173,7 +148,7 @@ namespace Raindrop.Backend.Parser
                 throw exc;
             }
 
-            if (!reader.IsAt(leftCap))
+            if (!DelimiterReader.IsAt(reader, leftCap))
             {
                 RaindropException exc = new RaindropException(
                     "Plain-text found when tag was expected");
@@ -183,7 +158,7 @@ namespace Raindrop.Backend.Parser
 
             int startIndex = reader.Index;
 
-            string tagString = reader.ReadTo(rightCap, include_delimiter);
+            string tagString = DelimiterReader.ReadTo(reader, rightCap, include_delimiter);
 
             if (!tagString.EndsWith(rightCap))
             {

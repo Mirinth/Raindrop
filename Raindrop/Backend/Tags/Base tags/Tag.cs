@@ -48,7 +48,7 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="param">The tag's parameter.</param>
         /// <param name="ts">A TagStream to construct child tags from.</param>
-        public Tag(string param, TagStream ts)
+        public Tag(string param, InfoProvidingTextReader ts)
         {
             Param = param;
         }
@@ -61,7 +61,7 @@ namespace Raindrop.Backend.Tags
         /// A TagStream containing data to include in the
         /// error message if an exception is thrown.
         /// </param>
-        public void RequireParameter(TagStream ts)
+        public void RequireParameter(InfoProvidingTextReader ts)
         {
             if (string.IsNullOrEmpty(Param))
             {

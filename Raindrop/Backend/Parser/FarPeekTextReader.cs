@@ -30,10 +30,8 @@ namespace Raindrop.Backend.Parser
     /// </summary>
     public class FarPeekTextReader : IDisposable
     {
-        const int end_of_file = -1;
         private TextReader reader;
         private int peek;
-        private int offset;
         private bool peekSet = false;
         private bool disposed = false;
 
@@ -48,36 +46,6 @@ namespace Raindrop.Backend.Parser
             if (tr == null) { throw new ArgumentNullException("tr"); }
 
             reader = tr;
-            offset = 0;
-        }
-
-        /// <summary>
-        /// Gets whether the FarPeekTextReader is at the end of its
-        /// stream.
-        /// </summary>
-        public bool EOF
-        {
-            get
-            {
-                // Note: A FarPeek with no characters left will result in
-                // peekSet=true, which will trip up the else-if block unless
-                // it also ensures that peek!=end_of_file.
-                if (disposed) { throw new ObjectDisposedException("FarPeekTextReader"); }
-                else if (peekSet && peek != end_of_file) { return false; }
-                else { return (reader.Peek() < 0); }
-            }
-        }
-
-        /// <summary>
-        /// The index into the stream the FarPeekTextReader is currently at.
-        /// </summary>
-        public int Index
-        {
-            get
-            {
-                if (disposed) { throw new ObjectDisposedException("FarPeekTextReader"); }
-                else { return offset; }
-            }
         }
 
         /// <summary>
@@ -126,11 +94,9 @@ namespace Raindrop.Backend.Parser
         /// The next character from the input stream, or -1 if no more characters
         /// are available. The default implementation returns -1.
         /// </returns>
-        public int Read()
+        public virtual int Read()
         {
             if (disposed) { throw new ObjectDisposedException("FarPeekTextReader"); }
-
-            offset++;
 
             if (peekSet)
             {
