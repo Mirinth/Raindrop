@@ -32,32 +32,36 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    public class EscapeTag : Tag
+    [TagBuilder("escape")]
+    public class EscapeTag
     {
-        public static string ID = "escape";
-
         /// <summary>
-        /// The EscapeTag constructor.
+        /// Builds an EscapeTag.
         /// </summary>
-        /// <param name="param">The tag's parameter.</param>
-        /// <param name="ts">A TagStream to construct child tags from.</param>
-        public EscapeTag(string param, InfoProvidingTextReader ts)
-            : base(param, ts)
+        /// <param name="tag">
+        /// The TagStruct to put information in.
+        /// </param>
+        /// <param name="reader">
+        /// The InfoProvidingTextReader to read additional tags from.
+        /// </param>
+        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
         {
-            RequireParameter(ts);
-            Param = TagStream.Unescape(ts, param);
+            Helpers.RequireParameter(tag.Param, reader);
+            tag.Param = TagStream.Unescape(reader, tag.Param);
+            tag.ApplyMethod = ApplyTag;
         }
 
         /// <summary>
-        /// Applies the EscapeTag and outputs the result.
+        /// Applies the EscapeTag to the given data and outputs the result.
         /// </summary>
-        /// <param name="data">The data to apply the EscapeTag to.</param>
+        /// <param name="data">The data to be applied to.</param>
         /// <param name="output">The place to put the output.</param>
-        public override void Apply(
-            IDictionary<string, object> data,
-            TextWriter output)
+        public static void ApplyTag(
+            TagStruct tag,
+            TextWriter output,
+            IDictionary<string, object> data)
         {
-            output.Write(Param);
+            output.Write(tag.Param);
         }
     }
 }

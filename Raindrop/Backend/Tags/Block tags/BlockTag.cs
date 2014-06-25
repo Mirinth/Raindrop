@@ -34,99 +34,95 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    public class BlockTag<T> : Tag where T : EndTag
+    [TagBuilder(null)]
+    public class BlockTag
     {
-        private List<Tag> children;
-
         /// <summary>
-        /// The BlockTag constructor.
+        /// Builds a BlockTag.
         /// </summary>
-        /// <param name="param">The tag's parameter.</param>
-        /// <param name="ts">A TagStream to construct child tags from.</param>
-        public BlockTag(string param, InfoProvidingTextReader ts)
-            : base(param, ts)
+        /// <param name="tag">
+        /// The TagStruct to put information in.
+        /// </param>
+        /// <param name="reader">
+        /// The InfoProvidingTextReader to read additional tags from.
+        /// </param>
+        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
         {
+            Helpers.RequireParameter(tag.Param, reader);
+            tag.ApplyMethod = ApplyTag;
             try
             {
-                GetChildren(ts);
+                tag.Children = Helpers.GetChildren(reader, EndTagPredicate);
             }
             catch (RaindropException exc)
             {
-                exc["raindrop.template-name"] = Param;
+                exc["raindrop.template-name"] = tag.Param;
                 throw;
             }
         }
 
-        /// <summary>
-        /// Populates the children List with child tags.
-        /// </summary>
-        /// <param name="ts">A TagStream to extract children from.</param>
-        /// <param name="children">The List to put children into.</param>
-        protected void GetChildren(InfoProvidingTextReader ts)
+        public static bool EndTagPredicate(TagStruct endTag)
         {
-            int startIndex = ts.Index;
-
-            children = new List<Tag>();
-            Tag child = TagFactory.Parse(ts);
-
-            while (!(child is T) && !(child is EndTag))
-            {
-                children.Add(child);
-                child = TagFactory.Parse(ts);
-            }
-
-            if (!(child is T))
-            {
-                RaindropException exc = new RaindropException("End tag didn't match start tag.");
-                exc["raindrop.expected-type"] = typeof(T).FullName;
-                exc["raindrop.encountered-type"] = child.GetType().FullName;
-                exc["raindrop.start-index"] = startIndex;
-                exc["raindrop.end-index"] = ts.Index;
-                throw exc;
-            }
+            if (endTag.Name == "eof") { return true; }
+            else { return false; }
         }
 
         /// <summary>
-        /// Applies the Tag to the given data and outputs the result.
+        /// Applies the BlockTag to the given data and outputs the result.
         /// </summary>
-        /// <param name="data">The data to be applied to.</param>
+        /// <param name="tag">The TagStruct to apply.</param>
         /// <param name="output">The place to put the output.</param>
-        public override void Apply(
-            IDictionary<string, object> data,
-            TextWriter output)
+        /// <param name="data">The data to be applied to.</param>
+        public static void ApplyTag(
+            TagStruct tag,
+            TextWriter output,
+            IDictionary<string, object> data)
         {
             try
             {
-                foreach (Tag child in children)
+                foreach (TagStruct child in tag.Children)
                 {
-                    child.Apply(data, output);
+                    child.Apply(output, data);
                 }
             }
             catch (RaindropException exc)
             {
-                exc["raindrop.template-name"] = Param;
+                exc["raindrop.template-name"] = tag.Param;
                 throw;
             }
         }
     }
 
-    public class EOFTag : EndTag
+    [TagBuilder("eof")]
+    public class EofTag
     {
-        public EOFTag(InfoProvidingTextReader ts)
-            : base("EOF", ts) { }
+        /// <summary>
+        /// Builds an EofTag.
+        /// </summary>
+        /// <param name="tag">
+        /// The TagStruct to put information in.
+        /// </param>
+        /// <param name="reader">
+        /// The InfoProvidingTextReader to read additional tags from.
+        /// </param>
+        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
+        {
+            tag.ApplyMethod = ApplyTag;
+        }
 
         /// <summary>
-        /// Applies the Tag to the given data and outputs the result.
+        /// Applies the EofTag to the given data and outputs the result.
         /// </summary>
-        /// <param name="data">The data to be applied to.</param>
+        /// <param name="tag">The TagStruct to apply.</param>
         /// <param name="output">The place to put the output.</param>
-        public override void Apply(
-            IDictionary<string, object> data,
-            TextWriter output)
+        /// <param name="data">The data to be applied to.</param>
+        public static void ApplyTag(
+            TagStruct tag,
+            TextWriter output,
+            IDictionary<string, object> data)
         {
             throw new NotImplementedException(
-                "EOFTag should not be applied. " +
-                "An error in the templating logic has likely occurred.");
+                "EofTag does not support being applied.");
         }
     }
 }

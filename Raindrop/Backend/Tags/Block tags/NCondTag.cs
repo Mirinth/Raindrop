@@ -33,57 +33,97 @@
 using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend.Parser;
+using System;
 
 namespace Raindrop.Backend.Tags
 {
-    public class NCondTag : BlockTag<NCondEndTag>
+    [TagBuilder("ncond")]
+    public class NCondTag
     {
-        public static string ID = "ncond";
-
         /// <summary>
-        /// The NCondTag constructor.
+        /// Builds an NCondTag.
         /// </summary>
-        /// <param name="param">The tag's parameter.</param>
-        /// <param name="ts">A TagStream to construct child tags from.</param>
-        public NCondTag(string param, InfoProvidingTextReader ts)
-            : base(param, ts)
+        /// <param name="tag">
+        /// The TagStruct to put information in.
+        /// </param>
+        /// <param name="reader">
+        /// The InfoProvidingTextReader to read additional tags from.
+        /// </param>
+        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
         {
-            RequireParameter(ts);
+            Helpers.RequireParameter(tag.Param, reader);
+            tag.ApplyMethod = ApplyTag;
+            tag.Children = Helpers.GetChildren(reader, EndTagPredicate);
+        }
+
+        public static bool EndTagPredicate(TagStruct endTag)
+        {
+            if (endTag.Name == "/ncond") { return true; }
+            else { return false; }
         }
 
         /// <summary>
-        /// Applies the CondTag to the given data and outputs the result
-        /// if the NCondTag is "true", else does nothing. The NCondTag is
-        /// "true" if the data dictionary contains a value at the key
-        /// matching the NCondTag's Param which is either a Boolean
-        /// representing true, or an IEnumerable with at least one
-        /// value in it. The NCondTag is false in all but these two
-        /// conditions.
+        /// Applies the CondTag to the given data and outputs the result.
         /// </summary>
-        /// <param name="data">The data to be applied to.</param>
+        /// <param name="tag">The TagStruct to apply.</param>
         /// <param name="output">The place to put the output.</param>
-        public override void Apply(
-            IDictionary<string, object> data,
-            TextWriter output)
+        /// <param name="data">The data to be applied to.</param>
+        public static void ApplyTag(
+            TagStruct tag,
+            TextWriter output,
+            IDictionary<string, object> data)
         {
-            RequireKey(Param, data);
-            if (!Helpers.Truth(data, Param))
+            int index = 0;
+            Helpers.RequireKey(tag.Param, data);
+            if (!Helpers.Truth(tag.Param, data))
             {
-                base.Apply(data, output);
+                try
+                {
+                    foreach (TagStruct child in tag.Children)
+                    {
+                        child.Apply(output, data);
+                    }
+                }
+                catch (RaindropException exc)
+                {
+                    exc["raindrop.template-name"] = tag.Param;
+                    throw;
+                }
+                index++;
             }
         }
     }
 
-    public class NCondEndTag : EndTag
+    [TagBuilder("/ncond")]
+    public class NCondEndTag
     {
-        public static string ID = "/ncond";
+        /// <summary>
+        /// Builds an NCondEndTag.
+        /// </summary>
+        /// <param name="tag">
+        /// The TagStruct to put information in.
+        /// </param>
+        /// <param name="reader">
+        /// The InfoProvidingTextReader to read additional tags from.
+        /// </param>
+        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
+        {
+            tag.ApplyMethod = ApplyTag;
+        }
 
         /// <summary>
-        /// The ArrayEndTag constructor.
+        /// Applies the CondEndTag to the given data and outputs the result.
         /// </summary>
-        /// <param name="param">The tag's parameter.</param>
-        /// <param name="ts">A TagStream to construct child tags from.</param>
-        public NCondEndTag(string param, InfoProvidingTextReader ts)
-            : base(param, ts) { }
+        /// <param name="tag">The TagStruct to apply.</param>
+        /// <param name="output">The place to put the output.</param>
+        /// <param name="data">The data to be applied to.</param>
+        public static void ApplyTag(
+            TagStruct tag,
+            TextWriter output,
+            IDictionary<string, object> data)
+        {
+            throw new NotImplementedException(
+                "NCondEndTag does not support being applied.");
+        }
     }
 }

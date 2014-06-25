@@ -32,32 +32,38 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    public class DataTag : Tag
+    [TagBuilder("data")]
+    public class DataTag
     {
-        public static string ID = "data";
-
         /// <summary>
-        /// The DataTag constructor.
+        /// Builds a DataTag.
         /// </summary>
-        /// <param name="param">The tag's parameter.</param>
-        /// <param name="ts">A TagStream to construct child tags from.</param>
-        public DataTag(string param, InfoProvidingTextReader ts)
-            : base(param, ts)
+        /// <param name="tag">
+        /// The TagStruct to put information in.
+        /// </param>
+        /// <param name="reader">
+        /// The InfoProvidingTextReader to read additional tags from.
+        /// </param>
+        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
         {
-            RequireParameter(ts);
+            Helpers.RequireParameter(tag.Param, reader);
+
+            tag.ApplyMethod = ApplyTag;
         }
 
         /// <summary>
         /// Applies the DataTag to the given data and outputs the result.
         /// </summary>
-        /// <param name="data">The data to be applied to.</param>
+        /// <param name="tag">The TagStruct to apply.</param>
         /// <param name="output">The place to put the output.</param>
-        public override void Apply(
-            IDictionary<string, object> data,
-            TextWriter output)
+        /// <param name="data">The data to be applied to.</param>
+        public static void ApplyTag(
+            TagStruct tag,
+            TextWriter output,
+            IDictionary<string, object> data)
         {
-            RequireKey(Param, data);
-            output.Write(data[Param]);
+            Helpers.RequireKey(tag.Param, data);
+            output.Write(data[tag.Param]);
         }
     }
 }

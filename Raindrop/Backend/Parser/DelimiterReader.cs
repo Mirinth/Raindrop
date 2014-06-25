@@ -70,9 +70,6 @@ namespace Raindrop.Backend.Parser
         {
             EnforceLength(delimiter, delimiter_length);
 
-            int peek = reader.Peek();
-            int farPeek = reader.FarPeek();
-
             if (delimiter[0] == reader.Peek() &&
                 delimiter[1] == reader.FarPeek())
             {

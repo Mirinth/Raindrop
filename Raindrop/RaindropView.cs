@@ -38,6 +38,6 @@ public class RaindropView : IView
        StreamReader sr = new StreamReader(fs);
        Raindrop.Raindrop template = new Raindrop.Raindrop(sr, filePath);
 
-       template.Apply(viewContext.ViewData, writer);
+       template.Apply(writer, viewContext.ViewData);
    }
 }

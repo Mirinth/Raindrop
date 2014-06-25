@@ -30,67 +30,112 @@
 using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend.Parser;
+using System;
 
 namespace Raindrop.Backend.Tags
 {
-    public class ArrayTag : BlockTag<ArrayEndTag>
+    [TagBuilder("array")]
+    public class ArrayTag
     {
-        public static string ID = "array";
-
         /// <summary>
-        /// The ArrayTag constructor.
+        /// Builds an ArrayTag.
         /// </summary>
-        /// <param name="param">The tag's parameter.</param>
-        /// <param name="ts">A TagStream to construct child tags from.</param>
-        public ArrayTag(string param, InfoProvidingTextReader ts)
-            : base(param, ts)
+        /// <param name="tag">
+        /// The TagStruct to put information in.
+        /// </param>
+        /// <param name="reader">
+        /// The InfoProvidingTextReader to read additional tags from.
+        /// </param>
+        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
         {
-            RequireParameter(ts);
+            Helpers.RequireParameter(tag.Param, reader);
+            tag.ApplyMethod = ApplyTag;
+            tag.Children = Helpers.GetChildren(reader, EndTagPredicate);
+        }
+
+        public static bool EndTagPredicate(TagStruct endTag)
+        {
+            if (endTag.Name == "/array") { return true; }
+            else { return false; }
         }
 
         /// <summary>
         /// Applies the ArrayTag to the given data and outputs the result.
         /// </summary>
-        /// <param name="data">The data to be applied to.</param>
+        /// <param name="tag">The TagStruct to apply.</param>
         /// <param name="output">The place to put the output.</param>
-        public override void Apply(
-            IDictionary<string, object> data,
-            TextWriter output)
+        /// <param name="data">The data to be applied to.</param>
+        public static void ApplyTag(
+            TagStruct tag,
+            TextWriter output,
+            IDictionary<string, object> data)
         {
-            RequireKey(Param, data);
+            Helpers.RequireKey(tag.Param, data);
 
             IEnumerable<IDictionary<string, object>> items =
-                (IEnumerable<IDictionary<string, object>>)data[Param];
+                (IEnumerable<IDictionary<string, object>>)data[tag.Param];
             int index = 0;
 
+            // TODO: Clean up nested try blocks
             try
             {
                 foreach (IDictionary<string, object> item in items)
                 {
-                    base.Apply(item, output);
+                    try
+                    {
+                        foreach (TagStruct child in tag.Children)
+                        {
+                            child.Apply(output, item);
+                        }
+                    }
+                    catch (RaindropException exc)
+                    {
+                        exc["raindrop.template-name"] = tag.Param;
+                        throw;
+                    }
                     index++;
                 }
             }
             catch (RaindropException exc)
             {
-                    string key = (string)exc["raindrop.key-path"];
-                    key = "[" + Param + "][" + index.ToString() + "]";
-                    exc["raindrop.key-path"] = key;
+                string key = (string)exc["raindrop.key-path"];
+                key = "[" + tag.Param + "][" + index.ToString() + "]";
+                exc["raindrop.key-path"] = key;
                 throw;
             }
         }
     }
 
-    public class ArrayEndTag : EndTag
+    [TagBuilder("/array")]
+    public class ArrayEndTag
     {
-        public static string ID = "/array";
+        /// <summary>
+        /// Builds an ArrayEndTag.
+        /// </summary>
+        /// <param name="tag">
+        /// The TagStruct to put information in.
+        /// </param>
+        /// <param name="reader">
+        /// The InfoProvidingTextReader to read additional tags from.
+        /// </param>
+        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
+        {
+            tag.ApplyMethod = ApplyTag;
+        }
 
         /// <summary>
-        /// The ArrayEndTag constructor.
+        /// Applies the ArrayEndTag to the given data and outputs the result.
         /// </summary>
-        /// <param name="param">The tag's parameter.</param>
-        /// <param name="ts">A TagStream to construct child tags from.</param>
-        public ArrayEndTag(string param, InfoProvidingTextReader ts)
-            : base(param, ts) { }
+        /// <param name="tag">The TagStruct to apply.</param>
+        /// <param name="output">The place to put the output.</param>
+        /// <param name="data">The data to be applied to.</param>
+        public static void ApplyTag(
+            TagStruct tag,
+            TextWriter output,
+            IDictionary<string, object> data)
+        {
+            throw new NotImplementedException(
+                "ArrayEndTag does not support being applied.");
+        }
     }
 }

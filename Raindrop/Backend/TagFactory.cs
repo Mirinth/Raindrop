@@ -36,37 +36,55 @@ namespace Raindrop.Backend
         /// </summary>
         static TagFactory()
         {
-            itags = GetTagTypes();
+            //itags = GetTagTypes();
         }
 
-        public static Tag DevBuildTag(TagData td, InfoProvidingTextReader ts)
+        public static TagStruct DevBuildTag(TagData td, InfoProvidingTextReader ts)
         {
+            TagStruct tag = new TagStruct();
+            tag.Name = td.ID;
+            tag.Param = td.Param;
+            tag.Children = null;
+
             switch (td.ID)
             {
                 case "array":
-                    return new ArrayTag(td.Param, ts);
+                    ArrayTag.BuildTag(ref tag, ts);
+                    break;
                 case "/array":
-                    return new ArrayEndTag(td.Param, ts);
+                    ArrayEndTag.BuildTag(ref tag, ts);
+                    break;
                 case "cond":
-                    return new CondTag(td.Param, ts);
+                    CondTag.BuildTag(ref tag, ts);
+                    break;
                 case "/cond":
-                    return new CondEndTag(td.Param, ts);
+                    CondEndTag.BuildTag(ref tag, ts);
+                    break;
                 case "ncond":
-                    return new NCondTag(td.Param, ts);
+                    NCondTag.BuildTag(ref tag, ts);
+                    break;
                 case "/ncond":
-                    return new NCondEndTag(td.Param, ts);
+                    NCondEndTag.BuildTag(ref tag, ts);
+                    break;
                 case "data":
-                    return new DataTag(td.Param, ts);
+                    DataTag.BuildTag(ref tag, ts);
+                    break;
                 case "escape":
-                    return new EscapeTag(td.Param, ts);
+                    EscapeTag.BuildTag(ref tag, ts);
+                    break;
+                case "eof":
+                    EofTag.BuildTag(ref tag, ts);
+                    break;
                 case "":
-                    return new TextTag(td.Param, ts);
+                    TextTag.BuildTag(ref tag, ts);
+                    break;
                 default:
                     RaindropException exc = new RaindropException("Tag is not supported.");
                     exc["raindrop.encountered-tag-id"] = td.ID;
                     exc["raindrop.start-index"] = ts.Index;
                     throw exc;
             }
+            return tag;
         }
 
         /// <summary>
@@ -74,31 +92,36 @@ namespace Raindrop.Backend
         /// </summary>
         /// <param name="ts">The TagStream to parse a Tag from.</param>
         /// <returns>The Tag parsed from the TagStream.</returns>
-        public static Tag Parse(InfoProvidingTextReader ts)
+        public static TagStruct Parse(InfoProvidingTextReader ts)
         {
             if (ts.Empty)
             {
-                return new EOFTag(ts);
+                TagStruct tag = new TagStruct();
+                tag.Children = null;
+                tag.Name = "eof";
+                tag.Param = "eof";
+                EofTag.BuildTag(ref tag, ts);
+                return tag;
             }
 
             TagData td = TagStream.GetTag(ts);
 
             return DevBuildTag(td, ts);
 
-            if (!itags.ContainsKey(td.ID))
-            {
-                RaindropException exc = new RaindropException("Tag is not supported.");
-                exc["raindrop.encountered-tag-id"] = td.ID;
-                exc["raindrop.start-index"] = ts.Index;
-                throw exc;
-            }
+            //if (!itags.ContainsKey(td.ID))
+            //{
+            //    RaindropException exc = new RaindropException("Tag is not supported.");
+            //    exc["raindrop.encountered-tag-id"] = td.ID;
+            //    exc["raindrop.start-index"] = ts.Index;
+            //    throw exc;
+            //}
 
-            ConstructorInfo constructor = itags[td.ID];
+            //ConstructorInfo constructor = itags[td.ID];
 
-            // Invoke the constructor with the parameter and TagStream.
-            Tag tag = (Tag)constructor.Invoke(new object[] { td.Param, ts });
+            //// Invoke the constructor with the parameter and TagStream.
+            //Tag tag = (Tag)constructor.Invoke(new object[] { td.Param, ts });
 
-            return tag;
+            //return tag;
         }
 
         /// <summary>
@@ -108,41 +131,41 @@ namespace Raindrop.Backend
         /// "ID" property, and all loaded assemblies are searched for objects.
         /// </summary>
         /// <returns>A Dictionary containing the identified types.</returns>
-        public static Dictionary<string, ConstructorInfo> GetTagTypes()
-        {
-            const BindingFlags flags = BindingFlags.Public | BindingFlags.Static;
-            Type tagBase = typeof(Tag);
-            Dictionary<string, ConstructorInfo> types = new Dictionary<string, ConstructorInfo>();
+        //public static Dictionary<string, ConstructorInfo> GetTagTypes()
+        //{
+        //    const BindingFlags flags = BindingFlags.Public | BindingFlags.Static;
+        //    Type tagBase = typeof(Tag);
+        //    Dictionary<string, ConstructorInfo> types = new Dictionary<string, ConstructorInfo>();
 
-            foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (Type t in asm.GetTypes())
-                {
-                    if (!t.IsSubclassOf(tagBase)) { continue; }
-                    if (t.IsAbstract) { continue; }
-                    if (t.GetField("ID", flags) == null) { continue; }
+        //    foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
+        //    {
+        //        foreach (Type t in asm.GetTypes())
+        //        {
+        //            if (!t.IsSubclassOf(tagBase)) { continue; }
+        //            if (t.IsAbstract) { continue; }
+        //            if (t.GetField("ID", flags) == null) { continue; }
 
-                    object key = t.GetField("ID").GetValue(null);
+        //            object key = t.GetField("ID").GetValue(null);
 
-                    // Tags with non-string ID fields can't be used, so
-                    // just skip them.
-                    if (!(key is string)) { continue; }
+        //            // Tags with non-string ID fields can't be used, so
+        //            // just skip them.
+        //            if (!(key is string)) { continue; }
 
-                    ConstructorInfo constructor = t.GetConstructor(
-                        new Type[] { typeof(string), typeof(TagStream) });
+        //            ConstructorInfo constructor = t.GetConstructor(
+        //                new Type[] { typeof(string), typeof(TagStream) });
 
-                    // If it doesn't implement the (string,TagStream) constructor,
-                    // then it can't be used, so skip it.
-                    if (constructor == null) { continue; }
+        //            // If it doesn't implement the (string,TagStream) constructor,
+        //            // then it can't be used, so skip it.
+        //            if (constructor == null) { continue; }
 
-                    // Finally out of things to filter!
-                    // Key is a string; else it would have been filtered by the
-                    // check for (key is string) above. Casting is safe.
-                    types.Add((string)key, constructor);
-                }
-            }
+        //            // Finally out of things to filter!
+        //            // Key is a string; else it would have been filtered by the
+        //            // check for (key is string) above. Casting is safe.
+        //            types.Add((string)key, constructor);
+        //        }
+        //    }
 
-            return types;
-        }
+        //    return types;
+        //}
     }
 }

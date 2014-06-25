@@ -31,28 +31,35 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    public class TextTag : Tag
+    [TagBuilder("")]
+    public class TextTag
     {
-        public static string ID = string.Empty;
-
         /// <summary>
-        /// The TextTag constructor.
+        /// Builds a TextTag.
         /// </summary>
-        /// <param name="param">The tag's parameter.</param>
-        /// <param name="ts">A TagStream to construct child tags from.</param>
-        public TextTag(string param, InfoProvidingTextReader ts)
-            : base(param, ts) { }
-
-        /// <summary>
-        /// Applies the TextTag and outputs the result.
-        /// </summary>
-        /// <param name="data">The data to apply the TextTag to.</param>
-        /// <param name="output">The place to put the output.</param>
-        public override void Apply(
-            IDictionary<string, object> data,
-            TextWriter output)
+        /// <param name="tag">
+        /// The TagStruct to put information in.
+        /// </param>
+        /// <param name="reader">
+        /// The InfoProvidingTextReader to read additional tags from.
+        /// </param>
+        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
         {
-            output.Write(Param);
+            tag.ApplyMethod = ApplyTag;
+        }
+
+        /// <summary>
+        /// Applies the TextTag to the given data and outputs the result.
+        /// </summary>
+        /// <param name="tag">The TagStruct to apply.</param>
+        /// <param name="output">The place to put the output.</param>
+        /// <param name="data">The data to be applied to.</param>
+        public static void ApplyTag(
+            TagStruct tag,
+            TextWriter output,
+            IDictionary<string, object> data)
+        {
+            output.Write(tag.Param);
         }
     }
 }

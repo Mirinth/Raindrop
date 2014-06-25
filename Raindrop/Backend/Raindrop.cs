@@ -38,7 +38,7 @@ namespace Raindrop
 {
     public class Raindrop
     {
-        Tag template;
+        TagStruct template;
 
         /// <summary>
         /// The Raindrop constructor. Constructs a template using the
@@ -61,7 +61,9 @@ namespace Raindrop
                     "templateName");
             }
             InfoProvidingTextReader reader = new InfoProvidingTextReader(templateSource);
-            template = new BlockTag<EOFTag>(templateName, reader);
+            template = new TagStruct();
+            template.Param = templateName;
+            BlockTag.BuildTag(ref template, reader);
         }
 
         /// <summary>
@@ -71,10 +73,10 @@ namespace Raindrop
         /// <param name="data">The data source to use.</param>
         /// <param name="output">The location to write the output.</param>
         public void Apply(
-            IDictionary<string, object> data,
-            TextWriter output)
+            TextWriter output,
+            IDictionary<string, object> data)
         {
-            template.Apply(data, output);
+            template.Apply(output, data);
         }
     }
 }
