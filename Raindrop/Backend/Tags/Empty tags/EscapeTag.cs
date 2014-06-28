@@ -19,11 +19,8 @@
  */
 
 /*
- * EscapeTag.cs
- * By Mirinth (mirinth@gmail.com)
- * 
- * The EscapeTag class allows the template author to embed reserved
- * tokens directly in the output.
+ * An escape tag allows the template author to embed reserved
+ * tokens directly in the template.
  */
 
 using System.Collections.Generic;
@@ -36,7 +33,7 @@ namespace Raindrop.Backend.Tags
     public class EscapeTag
     {
         /// <summary>
-        /// Builds an EscapeTag.
+        /// Builds an escape tag.
         /// </summary>
         /// <param name="tag">
         /// The TagStruct to put information in.
@@ -52,10 +49,11 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
-        /// Applies the EscapeTag to the given data and outputs the result.
+        /// Applies the escape tag to the given data and outputs the result.
         /// </summary>
-        /// <param name="data">The data to be applied to.</param>
+        /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
+        /// <param name="data">The data to be applied to.</param>
         public static void ApplyTag(
             TagStruct tag,
             TextWriter output,

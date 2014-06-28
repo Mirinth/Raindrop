@@ -19,10 +19,7 @@
  */
 
 /*
- * TextTag.cs
- * By Mirinth (mirinth@gmail.com)
- * 
- * The TextTag class represents a block of plain text in the template.
+ * A text tag represents a block of plain text in the template.
  */
 
 using System.Collections.Generic;
@@ -35,7 +32,7 @@ namespace Raindrop.Backend.Tags
     public class TextTag
     {
         /// <summary>
-        /// Builds a TextTag.
+        /// Builds a text tag.
         /// </summary>
         /// <param name="tag">
         /// The TagStruct to put information in.
@@ -49,9 +46,9 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
-        /// Applies the TextTag to the given data and outputs the result.
+        /// Applies a text tag to the given data and outputs the result.
         /// </summary>
-        /// <param name="tag">The TagStruct to apply.</param>
+        /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public static void ApplyTag(

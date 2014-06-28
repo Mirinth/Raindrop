@@ -18,6 +18,10 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * TagStream reads structures representing a tag (ID and parameter)
+ * out of an InfoProvidingTextStream.
+ */
 using System.IO;
 
 namespace Raindrop.Backend.Parser
@@ -41,6 +45,7 @@ namespace Raindrop.Backend.Parser
         /// <summary>
         /// Gets the next tag (or text) in the TagStream.
         /// </summary>
+        /// <param name="reader">The InfoProvidingTextReader to read a tag from.</param>
         /// <returns>The next tag (or text) in the TagStream.</returns>
         public static TagData GetTag(InfoProvidingTextReader reader)
         {
@@ -56,7 +61,7 @@ namespace Raindrop.Backend.Parser
         /// <summary>
         /// Strips the endcaps off of a tag string.
         /// </summary>
-        /// <param name="tag">The tag to strip endcaps from.</param>
+        /// <param name="tagString">The tag string to strip endcaps from.</param>
         /// <returns>The input with the endcaps stripped.</returns>
         public static string StripCaps(string tagString)
         {

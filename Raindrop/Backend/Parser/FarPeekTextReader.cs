@@ -18,6 +18,12 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * The FarPeekTextReader wraps a regular TextReader to provide
+ * the FarPeek function, which allows peeking at the second
+ * character in the stream in addition to Peek's first.
+ */
+
 using System;
 using System.IO;
 

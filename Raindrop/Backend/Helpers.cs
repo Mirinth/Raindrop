@@ -18,6 +18,10 @@
  * <http://www.gnu.org/licenses/>. 
  */
 
+/*
+ * Various helper functions for the tags.
+ */
+
 using System.Collections.Generic;
 using Raindrop.Backend.Parser;
 using Raindrop.Backend.Tags;
@@ -27,23 +31,30 @@ namespace Raindrop.Backend
     public class Helpers
     {
         /// <summary>
-        /// Populates the children List with child tags.
+        /// Gets a list of child tags.
         /// </summary>
-        /// <param name="ts">A TagStream to extract children from.</param>
-        /// <param name="children">The List to put children into.</param>
+        /// <param name="reader">An InfoProvidingTextReader to extract children from.</param>
+        /// <param name="predicate">
+        /// The predicate to use when testing whether a given child tag should end
+        /// the current template block.
+        /// </param>
+        /// <returns>
+        /// A list of child tags up to (but not including) the first tag that
+        /// matches the predicate.
+        /// </returns>
         public static List<TagStruct> GetChildren(
-            InfoProvidingTextReader ts,
+            InfoProvidingTextReader reader,
             EndTagPredicate predicate)
         {
-            int startIndex = ts.Index;
+            int startIndex = reader.Index;
 
             List<TagStruct> children = new List<TagStruct>();
-            TagStruct child = TagFactory.Parse(ts);
+            TagStruct child = TagFactory.Parse(reader);
 
             while (!predicate(child) && !BlockTag.EndTagPredicate(child))
             {
                 children.Add(child);
-                child = TagFactory.Parse(ts);
+                child = TagFactory.Parse(reader);
             }
 
             if (!predicate(child))
@@ -52,7 +63,7 @@ namespace Raindrop.Backend
                 exc["raindrop.expected-type"] = child.Name;
                 exc["raindrop.encountered-type"] = child.GetType().FullName;
                 exc["raindrop.start-index"] = startIndex;
-                exc["raindrop.end-index"] = ts.Index;
+                exc["raindrop.end-index"] = reader.Index;
                 throw exc;
             }
 
@@ -64,8 +75,8 @@ namespace Raindrop.Backend
         /// If not, an exception is thrown with known information about
         /// the expected key.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="dict"></param>
+        /// <param name="key">The key to verify the presence of.</param>
+        /// <param name="dict">The dictionary to check for the key.</param>
         public static void RequireKey(string key, IDictionary<string, object> dict)
         {
             if (!dict.ContainsKey(key))
@@ -79,21 +90,21 @@ namespace Raindrop.Backend
         }
 
         /// <summary>
-        /// Ensures that this Tag has a parameter. If it doesn't,
+        /// Ensures that this tag has a parameter. If it doesn't,
         /// an excception is thrown.
         /// </summary>
         /// <param name="param">The parameter to test.</param>
-        /// <param name="ts">
-        /// A TagStream containing data to include in the
-        /// error message if an exception is thrown.
+        /// <param name="reader">
+        /// An InfoProvidingTextReader to extract data from for
+        /// error reporting if an exception is thrown.
         /// </param>
-        public static void RequireParameter(string param, InfoProvidingTextReader ts)
+        public static void RequireParameter(string param, InfoProvidingTextReader reader)
         {
             if (string.IsNullOrEmpty(param))
             {
                 RaindropException exc = new RaindropException(
                     "Tag must have a parameter.");
-                exc["raindrop.start-index"] = ts.Index;
+                exc["raindrop.start-index"] = reader.Index;
                 throw exc;
             }
         }
@@ -104,31 +115,31 @@ namespace Raindrop.Backend
         /// <param name="data">
         /// The data dictionary to use for determining truth.
         /// </param>
-        /// <param name="param">
-        /// The parameter to use for determining truth.
+        /// <param name="key">
+        /// The key to use for determining truth.
         /// </param>
         /// <returns>
         /// True if the given parameter and dictionary result in a
         /// true value; otherwise, false.
         /// </returns>
         public static bool Truth(
-            string param,
+            string key,
             IDictionary<string, object> data)
         {
             // If the element is a bool, it's equal to itself.
-            if (data[param] is bool)
+            if (data[key] is bool)
             {
-                return (bool)data[param];
+                return (bool)data[key];
             }
 
             // If the element is an IEnumerable with contents, it's true.
-            else if (data[param] is IEnumerable<IDictionary<string, object>>)
+            else if (data[key] is IEnumerable<IDictionary<string, object>>)
             {
                 // IEnumerable doesn't expose a Count variable, so test if it's
                 // populated by trying to enumerate it and return true on
                 // the first element.
                 IEnumerable<IDictionary<string, object>> dummy =
-                    (IEnumerable<IDictionary<string, object>>)data[param];
+                    (IEnumerable<IDictionary<string, object>>)data[key];
 
                 // Loop will be skipped if dummy is empty.
                 foreach (IDictionary<string, object> vdd in dummy)

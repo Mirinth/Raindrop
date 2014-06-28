@@ -19,10 +19,7 @@
  */
 
 /*
- * DataTag.cs
- * By Mirinth (mirinth@gmail.com)
- * 
- * The DataTag class inserts a piece of server-provided data into the
+ * A data tag inserts a piece of server-provided data into the
  * output stream.
  */
 
@@ -36,7 +33,7 @@ namespace Raindrop.Backend.Tags
     public class DataTag
     {
         /// <summary>
-        /// Builds a DataTag.
+        /// Builds a data tag.
         /// </summary>
         /// <param name="tag">
         /// The TagStruct to put information in.
@@ -52,9 +49,9 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
-        /// Applies the DataTag to the given data and outputs the result.
+        /// Applies the data tag to the given data and outputs the result.
         /// </summary>
-        /// <param name="tag">The TagStruct to apply.</param>
+        /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public static void ApplyTag(

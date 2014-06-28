@@ -18,9 +18,11 @@
  * <http://www.gnu.org/licenses/>. 
  */
 
-using System;
+/*
+ * The TagFactory is responsible for constructing tags.
+ */
+
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Raindrop.Backend.Parser;
 using Raindrop.Backend.Tags;
@@ -32,14 +34,20 @@ namespace Raindrop.Backend
         private static Dictionary<string, ConstructorInfo> itags;
 
         /// <summary>
-        /// The TagFactory constructor.
+        /// The TagFactory constructor. Currently unused.
         /// </summary>
         static TagFactory()
         {
             //itags = GetTagTypes();
         }
 
-        public static TagStruct DevBuildTag(TagData td, InfoProvidingTextReader ts)
+        /// <summary>
+        /// A temporary tag builder until the reflection version can be fixed.
+        /// </summary>
+        /// <param name="td">A TagData representing the tag to be built.</param>
+        /// <param name="reader">An InfoProvidingTextReader to read child tags from.</param>
+        /// <returns>A TagStruct representing the next tag in the reader.</returns>
+        public static TagStruct DevBuildTag(TagData td, InfoProvidingTextReader reader)
         {
             TagStruct tag = new TagStruct();
             tag.Name = td.ID;
@@ -49,64 +57,64 @@ namespace Raindrop.Backend
             switch (td.ID)
             {
                 case "array":
-                    ArrayTag.BuildTag(ref tag, ts);
+                    ArrayTag.BuildTag(ref tag, reader);
                     break;
                 case "/array":
-                    ArrayEndTag.BuildTag(ref tag, ts);
+                    ArrayEndTag.BuildTag(ref tag, reader);
                     break;
                 case "cond":
-                    CondTag.BuildTag(ref tag, ts);
+                    CondTag.BuildTag(ref tag, reader);
                     break;
                 case "/cond":
-                    CondEndTag.BuildTag(ref tag, ts);
+                    CondEndTag.BuildTag(ref tag, reader);
                     break;
                 case "ncond":
-                    NCondTag.BuildTag(ref tag, ts);
+                    NCondTag.BuildTag(ref tag, reader);
                     break;
                 case "/ncond":
-                    NCondEndTag.BuildTag(ref tag, ts);
+                    NCondEndTag.BuildTag(ref tag, reader);
                     break;
                 case "data":
-                    DataTag.BuildTag(ref tag, ts);
+                    DataTag.BuildTag(ref tag, reader);
                     break;
                 case "escape":
-                    EscapeTag.BuildTag(ref tag, ts);
+                    EscapeTag.BuildTag(ref tag, reader);
                     break;
                 case "eof":
-                    EofTag.BuildTag(ref tag, ts);
+                    EofTag.BuildTag(ref tag, reader);
                     break;
                 case "":
-                    TextTag.BuildTag(ref tag, ts);
+                    TextTag.BuildTag(ref tag, reader);
                     break;
                 default:
                     RaindropException exc = new RaindropException("Tag is not supported.");
                     exc["raindrop.encountered-tag-id"] = td.ID;
-                    exc["raindrop.start-index"] = ts.Index;
+                    exc["raindrop.start-index"] = reader.Index;
                     throw exc;
             }
             return tag;
         }
 
         /// <summary>
-        /// Parses a Tag out of the given TagStream.
+        /// Parses a tag out of the given reader.
         /// </summary>
-        /// <param name="ts">The TagStream to parse a Tag from.</param>
-        /// <returns>The Tag parsed from the TagStream.</returns>
-        public static TagStruct Parse(InfoProvidingTextReader ts)
+        /// <param name="reader">The InfoProvidingTextReader to parse a tag from.</param>
+        /// <returns>The tag parsed from the reader.</returns>
+        public static TagStruct Parse(InfoProvidingTextReader reader)
         {
-            if (ts.Empty)
+            if (reader.Empty)
             {
                 TagStruct tag = new TagStruct();
                 tag.Children = null;
                 tag.Name = "eof";
                 tag.Param = "eof";
-                EofTag.BuildTag(ref tag, ts);
+                EofTag.BuildTag(ref tag, reader);
                 return tag;
             }
 
-            TagData td = TagStream.GetTag(ts);
+            TagData td = TagStream.GetTag(reader);
 
-            return DevBuildTag(td, ts);
+            return DevBuildTag(td, reader);
 
             //if (!itags.ContainsKey(td.ID))
             //{

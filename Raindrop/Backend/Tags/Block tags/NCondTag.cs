@@ -19,21 +19,18 @@
  */
 
 /*
- * NCondTag.cs
- * By Mirinth (mirinth@gmail.com)
- * 
- * The CondTag class represents an optional block of the template.
- * An NCondTag's children are only processed if its parameter
+ * An ncond tag represents an optional block of the template.
+ * An ncond tag's children are only processed if its parameter
  * represents a "false" value in the data dictionary. See
  * Helpers.Truth() for the rules of truth.
  * 
- * The NCondEndTag represents the end of an NCondTag block.
+ * The /ncond tag represents the end of an ncond tag block.
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend.Parser;
-using System;
 
 namespace Raindrop.Backend.Tags
 {
@@ -41,7 +38,7 @@ namespace Raindrop.Backend.Tags
     public class NCondTag
     {
         /// <summary>
-        /// Builds an NCondTag.
+        /// Builds an ncond tag.
         /// </summary>
         /// <param name="tag">
         /// The TagStruct to put information in.
@@ -56,16 +53,22 @@ namespace Raindrop.Backend.Tags
             tag.Children = Helpers.GetChildren(reader, EndTagPredicate);
         }
 
-        public static bool EndTagPredicate(TagStruct endTag)
+        /// <summary>
+        /// Determines whether a given TagStruct should be considered
+        /// the end of the current block.
+        /// </summary>
+        /// <param name="tag">The TagStruct to test.</param>
+        /// <returns>True if tag should end the block; else false.</returns>
+        public static bool EndTagPredicate(TagStruct tag)
         {
-            if (endTag.Name == "/ncond") { return true; }
+            if (tag.Name == "/ncond") { return true; }
             else { return false; }
         }
 
         /// <summary>
-        /// Applies the CondTag to the given data and outputs the result.
+        /// Applies the cond tag to the given data and outputs the result.
         /// </summary>
-        /// <param name="tag">The TagStruct to apply.</param>
+        /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public static void ApplyTag(
@@ -98,7 +101,7 @@ namespace Raindrop.Backend.Tags
     public class NCondEndTag
     {
         /// <summary>
-        /// Builds an NCondEndTag.
+        /// Builds a /cond tag.
         /// </summary>
         /// <param name="tag">
         /// The TagStruct to put information in.
@@ -112,9 +115,9 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
-        /// Applies the CondEndTag to the given data and outputs the result.
+        /// Applies the /cond to the given data and outputs the result.
         /// </summary>
-        /// <param name="tag">The TagStruct to apply.</param>
+        /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public static void ApplyTag(
@@ -123,7 +126,7 @@ namespace Raindrop.Backend.Tags
             IDictionary<string, object> data)
         {
             throw new NotImplementedException(
-                "NCondEndTag does not support being applied.");
+                "/ncond tag does not support being applied.");
         }
     }
 }

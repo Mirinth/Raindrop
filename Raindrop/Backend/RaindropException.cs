@@ -18,6 +18,10 @@
  * <http://www.gnu.org/licenses/>. 
  */
 
+/*
+ * The exception thrown by Raindrop in various situations when
+ * no system exceptions are appropriate.
+ */
 using System;
 using System.Collections.Generic;
 
@@ -28,6 +32,11 @@ namespace Raindrop.Backend
         private Dictionary<string, object> extraData =
             new Dictionary<string,object>();
 
+        /// <summary>
+        /// Accesses extra data related to the exception.
+        /// </summary>
+        /// <param name="key">The key of the data to access.</param>
+        /// <returns>The value associated with key.</returns>
         public object this[string key]
         {
             get
@@ -47,6 +56,9 @@ namespace Raindrop.Backend
             }
         }
 
+        /// <summary>
+        /// Gets a summary of the exception's extra data.
+        /// </summary>
         public string Details
         {
             get
@@ -60,9 +72,10 @@ namespace Raindrop.Backend
             }
         }
 
-        public string Name { get; set; }
-        //new public string Message { get; set; }
-
+        /// <summary>
+        /// The RaindropException constructor.
+        /// </summary>
+        /// <param name="msg">A message describing the error.</param>
         public RaindropException(string msg)
             : base(msg) { }
     }

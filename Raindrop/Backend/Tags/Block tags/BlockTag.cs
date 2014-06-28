@@ -19,12 +19,9 @@
  */
 
 /*
- * BlockTag.cs
- * By Mirinth (mirinth@gmail.com)
+ * The block tag represents a generic tag that contains children.
  * 
- * The BlockTag represents a generic tag that contains children.
- * 
- * The EOFTag represents the end of the template file.
+ * The eof tag represents the end of the template file.
  */
 
 using System;
@@ -38,7 +35,7 @@ namespace Raindrop.Backend.Tags
     public class BlockTag
     {
         /// <summary>
-        /// Builds a BlockTag.
+        /// Builds a block tag.
         /// </summary>
         /// <param name="tag">
         /// The TagStruct to put information in.
@@ -61,6 +58,12 @@ namespace Raindrop.Backend.Tags
             }
         }
 
+        /// <summary>
+        /// Determines whether a given TagStruct should be considered
+        /// the end of the current block.
+        /// </summary>
+        /// <param name="tag">The TagStruct to test.</param>
+        /// <returns>True if tag should end the block; else false.</returns>
         public static bool EndTagPredicate(TagStruct endTag)
         {
             if (endTag.Name == "eof") { return true; }
@@ -68,9 +71,9 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
-        /// Applies the BlockTag to the given data and outputs the result.
+        /// Applies the block tag to the given data and outputs the result.
         /// </summary>
-        /// <param name="tag">The TagStruct to apply.</param>
+        /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public static void ApplyTag(
@@ -97,7 +100,7 @@ namespace Raindrop.Backend.Tags
     public class EofTag
     {
         /// <summary>
-        /// Builds an EofTag.
+        /// Builds an eof tag.
         /// </summary>
         /// <param name="tag">
         /// The TagStruct to put information in.
@@ -111,9 +114,9 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
-        /// Applies the EofTag to the given data and outputs the result.
+        /// Applies the eof tag to the given data and outputs the result.
         /// </summary>
-        /// <param name="tag">The TagStruct to apply.</param>
+        /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public static void ApplyTag(

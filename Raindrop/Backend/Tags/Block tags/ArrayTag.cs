@@ -19,12 +19,9 @@
  */
 
 /*
- * ArrayTag.cs
- * By Mirinth (mirinth@gmail.com)
+ * The array tag represents a repeated block of tags in the template.
  * 
- * The ArrayTag class represents a repeated block of tags in the template.
- * 
- * The ArrayEndTag class represents the end of an ArrayTag block.
+ * The /array tag represents the end of an array block.
  */
 
 using System.Collections.Generic;
@@ -38,7 +35,7 @@ namespace Raindrop.Backend.Tags
     public class ArrayTag
     {
         /// <summary>
-        /// Builds an ArrayTag.
+        /// Builds an array tag.
         /// </summary>
         /// <param name="tag">
         /// The TagStruct to put information in.
@@ -53,6 +50,12 @@ namespace Raindrop.Backend.Tags
             tag.Children = Helpers.GetChildren(reader, EndTagPredicate);
         }
 
+        /// <summary>
+        /// Determines whether a given TagStruct should be considered
+        /// the end of the current block.
+        /// </summary>
+        /// <param name="tag">The TagStruct to test.</param>
+        /// <returns>True if tag should end the block; else false.</returns>
         public static bool EndTagPredicate(TagStruct endTag)
         {
             if (endTag.Name == "/array") { return true; }
@@ -60,9 +63,9 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
-        /// Applies the ArrayTag to the given data and outputs the result.
+        /// Applies the array tag to the given data and outputs the result.
         /// </summary>
-        /// <param name="tag">The TagStruct to apply.</param>
+        /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public static void ApplyTag(
@@ -110,7 +113,7 @@ namespace Raindrop.Backend.Tags
     public class ArrayEndTag
     {
         /// <summary>
-        /// Builds an ArrayEndTag.
+        /// Builds a /array tag.
         /// </summary>
         /// <param name="tag">
         /// The TagStruct to put information in.
@@ -124,9 +127,9 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
-        /// Applies the ArrayEndTag to the given data and outputs the result.
+        /// Applies the /array tag to the given data and outputs the result.
         /// </summary>
-        /// <param name="tag">The TagStruct to apply.</param>
+        /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public static void ApplyTag(
