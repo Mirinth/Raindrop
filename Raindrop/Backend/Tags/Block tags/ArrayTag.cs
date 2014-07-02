@@ -28,11 +28,11 @@ using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend.Parser;
 using System;
+using Raindrop.Backend.Templater;
 
 namespace Raindrop.Backend.Tags
 {
-    [TagBuilder("array")]
-    public class ArrayTag
+    public class ArrayTag : ITag
     {
         /// <summary>
         /// Builds an array tag.
@@ -43,10 +43,9 @@ namespace Raindrop.Backend.Tags
         /// <param name="reader">
         /// The InfoProvidingTextReader to read additional tags from.
         /// </param>
-        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
+        public void Build(ref TagStruct tag, InfoProvidingTextReader reader)
         {
             Helpers.RequireParameter(tag.Param, reader);
-            tag.ApplyMethod = ApplyTag;
             tag.Children = Helpers.GetChildren(reader, EndTagPredicate);
         }
 
@@ -68,7 +67,7 @@ namespace Raindrop.Backend.Tags
         /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
-        public static void ApplyTag(
+        public void Apply(
             TagStruct tag,
             TextWriter output,
             IDictionary<string, object> data)
@@ -88,7 +87,7 @@ namespace Raindrop.Backend.Tags
                     {
                         foreach (TagStruct child in tag.Children)
                         {
-                            child.Apply(output, item);
+                            TagApplyer.Apply(child, output, item);
                         }
                     }
                     catch (RaindropException exc)
@@ -107,10 +106,11 @@ namespace Raindrop.Backend.Tags
                 throw;
             }
         }
+
+        public string GetName() { return "array"; }
     }
 
-    [TagBuilder("/array")]
-    public class ArrayEndTag
+    public class ArrayEndTag : ITag
     {
         /// <summary>
         /// Builds a /array tag.
@@ -121,9 +121,9 @@ namespace Raindrop.Backend.Tags
         /// <param name="reader">
         /// The InfoProvidingTextReader to read additional tags from.
         /// </param>
-        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
+        public void Build(ref TagStruct tag, InfoProvidingTextReader reader)
         {
-            tag.ApplyMethod = ApplyTag;
+            // TagFactory already does all the work.
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Raindrop.Backend.Tags
         /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
-        public static void ApplyTag(
+        public void Apply(
             TagStruct tag,
             TextWriter output,
             IDictionary<string, object> data)
@@ -140,5 +140,7 @@ namespace Raindrop.Backend.Tags
             throw new NotImplementedException(
                 "ArrayEndTag does not support being applied.");
         }
+
+        public string GetName() { return "/array"; }
     }
 }

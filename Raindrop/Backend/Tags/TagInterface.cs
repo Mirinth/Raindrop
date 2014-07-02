@@ -19,10 +19,9 @@
  */
 
 /*
- * Provides several objects used for implementing a tag.
- * - ApplyTagDelegate
- * - EndTagPredicate
- * - TagBuilderAttribute
+ * ITag describes the interface to be used by tag objects.
+ * 
+ * EndTagPredicate determines whether a tag ends the current block.
  */
 
 using System;
@@ -32,28 +31,6 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    /// <summary>
-    /// A method that can be used to apply a tag.
-    /// </summary>
-    /// <param name="tag">The tag to be applied to.</param>
-    /// <param name="output">The place to put the output.</param>
-    /// <param name="data">The data source to use.</param>
-    public delegate void ApplyTagDelegate(
-        TagStruct tag,
-        TextWriter output,
-        IDictionary<string, object> data);
-
-    /// <summary>
-    /// A method that can be used to build a tag.
-    /// </summary>
-    /// <param name="tag">The tag to build.</param>
-    /// <param name="reader">
-    /// An InfoProvidingTextReader to retrieve child tags from.
-    /// </param>
-    public delegate void BuildTagDelegate(
-        out TagStruct tag,
-        InfoProvidingTextReader reader);
-
     /// <summary>
     /// Determines whether the given TagStruct represents the
     /// end of the current block tag.
@@ -65,16 +42,34 @@ namespace Raindrop.Backend.Tags
     /// </returns>
     public delegate bool EndTagPredicate(TagStruct endTag);
 
-    /// <summary>
-    /// Denotes a class with a public static BuildTag method
-    /// matching TagBuilderDelegate that can build a tag.
-    /// </summary>
-    class TagBuilderAttribute : Attribute
+    public interface ITag
     {
-        public string Name;
-        public TagBuilderAttribute(string tagName)
-        {
-            Name = tagName;
-        }
+        /// <summary>
+        /// Completes a TagStruct with necessary information.
+        /// </summary>
+        /// <param name="tag">The TagStruct to complete.</param>
+        /// <param name="reader">
+        /// An InfoProvidingTextReader to retrieve child tags from.
+        /// </param>
+        void Build(
+            ref TagStruct tag,
+            InfoProvidingTextReader reader);
+
+        /// <summary>
+        /// Applies a tag.
+        /// </summary>
+        /// <param name="tag">The tag to be applied.</param>
+        /// <param name="output">The place to put the output.</param>
+        /// <param name="data">Data to use for applying the tag.</param>
+        void Apply(
+            TagStruct tag,
+            TextWriter output,
+            IDictionary<string, object> data);
+
+        /// <summary>
+        /// Gets the name of the tag.
+        /// </summary>
+        /// <returns>The name of the tag.</returns>
+        string GetName();
     }
 }

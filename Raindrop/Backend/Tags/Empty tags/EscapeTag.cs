@@ -29,8 +29,7 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    [TagBuilder("escape")]
-    public class EscapeTag
+    public class EscapeTag : ITag
     {
         /// <summary>
         /// Builds an escape tag.
@@ -41,11 +40,10 @@ namespace Raindrop.Backend.Tags
         /// <param name="reader">
         /// The InfoProvidingTextReader to read additional tags from.
         /// </param>
-        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
+        public void Build(ref TagStruct tag, InfoProvidingTextReader reader)
         {
             Helpers.RequireParameter(tag.Param, reader);
             tag.Param = TagStream.Unescape(reader, tag.Param);
-            tag.ApplyMethod = ApplyTag;
         }
 
         /// <summary>
@@ -54,12 +52,14 @@ namespace Raindrop.Backend.Tags
         /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
-        public static void ApplyTag(
+        public void Apply(
             TagStruct tag,
             TextWriter output,
             IDictionary<string, object> data)
         {
             output.Write(tag.Param);
         }
+
+        public string GetName() { return "escape"; }
     }
 }

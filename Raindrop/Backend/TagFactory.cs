@@ -26,19 +26,68 @@ using System.Collections.Generic;
 using System.Reflection;
 using Raindrop.Backend.Parser;
 using Raindrop.Backend.Tags;
+using System.IO;
 
 namespace Raindrop.Backend
 {
     public class TagFactory
     {
-        private static Dictionary<string, ConstructorInfo> itags;
+        private static Dictionary<string, ITag> itags;
 
         /// <summary>
         /// The TagFactory constructor. Currently unused.
         /// </summary>
         static TagFactory()
         {
-            //itags = GetTagTypes();
+            itags = GetITags();
+        }
+
+        public static void ApplyITag(
+            TagStruct tag,
+            TextWriter output,
+            IDictionary<string, object> data)
+        {
+            itags[tag.Name].Apply(tag, output, data);
+        }
+
+        public static Dictionary<string, ITag> GetITags()
+        {
+            Dictionary<string, ITag> itags = new Dictionary<string, ITag>();
+
+            ITag itag = new DataTag();
+            itags.Add(itag.GetName(), itag);
+
+            itag = new EscapeTag();
+            itags.Add(itag.GetName(), itag);
+
+            itag = new TextTag();
+            itags.Add(itag.GetName(), itag);
+
+            itag = new ArrayTag();
+            itags.Add(itag.GetName(), itag);
+
+            itag = new ArrayEndTag();
+            itags.Add(itag.GetName(), itag);
+
+            itag = new EofTag();
+            itags.Add(itag.GetName(), itag);
+
+            itag = new CondTag();
+            itags.Add(itag.GetName(), itag);
+
+            itag = new CondEndTag();
+            itags.Add(itag.GetName(), itag);
+
+            itag = new NCondTag();
+            itags.Add(itag.GetName(), itag);
+
+            itag = new NCondEndTag();
+            itags.Add(itag.GetName(), itag);
+
+            itag = new BlockTag();
+            itags.Add(itag.GetName(), itag);
+
+            return itags;
         }
 
         /// <summary>
@@ -54,44 +103,15 @@ namespace Raindrop.Backend
             tag.Param = td.Param;
             tag.Children = null;
 
-            switch (td.ID)
+            if (!itags.ContainsKey(tag.Name))
             {
-                case "array":
-                    ArrayTag.BuildTag(ref tag, reader);
-                    break;
-                case "/array":
-                    ArrayEndTag.BuildTag(ref tag, reader);
-                    break;
-                case "cond":
-                    CondTag.BuildTag(ref tag, reader);
-                    break;
-                case "/cond":
-                    CondEndTag.BuildTag(ref tag, reader);
-                    break;
-                case "ncond":
-                    NCondTag.BuildTag(ref tag, reader);
-                    break;
-                case "/ncond":
-                    NCondEndTag.BuildTag(ref tag, reader);
-                    break;
-                case "data":
-                    DataTag.BuildTag(ref tag, reader);
-                    break;
-                case "escape":
-                    EscapeTag.BuildTag(ref tag, reader);
-                    break;
-                case "eof":
-                    EofTag.BuildTag(ref tag, reader);
-                    break;
-                case "":
-                    TextTag.BuildTag(ref tag, reader);
-                    break;
-                default:
-                    RaindropException exc = new RaindropException("Tag is not supported.");
-                    exc["raindrop.encountered-tag-id"] = td.ID;
-                    exc["raindrop.start-index"] = reader.Index;
-                    throw exc;
+                RaindropException exc = new RaindropException("Tag is not supported.");
+                exc["raindrop.encountered-tag-id"] = td.ID;
+                exc["raindrop.start-index"] = reader.Index;
+                throw exc;
             }
+
+            itags[tag.Name].Build(ref tag, reader);
             return tag;
         }
 
@@ -108,7 +128,8 @@ namespace Raindrop.Backend
                 tag.Children = null;
                 tag.Name = "eof";
                 tag.Param = "eof";
-                EofTag.BuildTag(ref tag, reader);
+
+                itags["eof"].Build(ref tag, reader);
                 return tag;
             }
 

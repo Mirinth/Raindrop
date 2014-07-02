@@ -28,8 +28,7 @@ using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
-    [TagBuilder("")]
-    public class TextTag
+    public class TextTag : ITag
     {
         /// <summary>
         /// Builds a text tag.
@@ -40,9 +39,10 @@ namespace Raindrop.Backend.Tags
         /// <param name="reader">
         /// The InfoProvidingTextReader to read additional tags from.
         /// </param>
-        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
+        public void Build(ref TagStruct tag, InfoProvidingTextReader reader)
         {
-            tag.ApplyMethod = ApplyTag;
+            // Text tag doesn't need to do anything the TagFactory doesn't
+            // do for it already.
         }
 
         /// <summary>
@@ -51,12 +51,14 @@ namespace Raindrop.Backend.Tags
         /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
-        public static void ApplyTag(
+        public void Apply(
             TagStruct tag,
             TextWriter output,
             IDictionary<string, object> data)
         {
             output.Write(tag.Param);
         }
+
+        public string GetName() { return string.Empty; }
     }
 }

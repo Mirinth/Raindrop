@@ -19,19 +19,23 @@
  */
 
 /*
- * The TagStruct represents a tag. It contains data such as
- * the tag's parameter, children, name and apply method.
+ * TagApplyer applies tags given a TagStruct.
  */
 
 using System.Collections.Generic;
 using System.IO;
+using Raindrop.Backend.Tags;
 
-namespace Raindrop.Backend.Tags
+namespace Raindrop.Backend.Templater
 {
-    public struct TagStruct
+    class TagApplyer
     {
-        public string Name;
-        public string Param;
-        public List<TagStruct> Children;
+        public static void Apply(
+            TagStruct tag,
+            TextWriter output,
+            IDictionary<string, object> data)
+        {
+            TagFactory.ApplyITag(tag, output, data);
+        }
     }
 }

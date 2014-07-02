@@ -31,11 +31,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend.Parser;
+using Raindrop.Backend.Templater;
 
 namespace Raindrop.Backend.Tags
 {
-    [TagBuilder("ncond")]
-    public class NCondTag
+    public class NCondTag : ITag
     {
         /// <summary>
         /// Builds an ncond tag.
@@ -46,10 +46,9 @@ namespace Raindrop.Backend.Tags
         /// <param name="reader">
         /// The InfoProvidingTextReader to read additional tags from.
         /// </param>
-        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
+        public void Build(ref TagStruct tag, InfoProvidingTextReader reader)
         {
             Helpers.RequireParameter(tag.Param, reader);
-            tag.ApplyMethod = ApplyTag;
             tag.Children = Helpers.GetChildren(reader, EndTagPredicate);
         }
 
@@ -71,7 +70,7 @@ namespace Raindrop.Backend.Tags
         /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
-        public static void ApplyTag(
+        public void Apply(
             TagStruct tag,
             TextWriter output,
             IDictionary<string, object> data)
@@ -84,7 +83,7 @@ namespace Raindrop.Backend.Tags
                 {
                     foreach (TagStruct child in tag.Children)
                     {
-                        child.Apply(output, data);
+                        TagApplyer.Apply(child, output, data);
                     }
                 }
                 catch (RaindropException exc)
@@ -95,10 +94,11 @@ namespace Raindrop.Backend.Tags
                 index++;
             }
         }
+
+        public string GetName() { return "ncond"; }
     }
 
-    [TagBuilder("/ncond")]
-    public class NCondEndTag
+    public class NCondEndTag : ITag
     {
         /// <summary>
         /// Builds a /cond tag.
@@ -109,9 +109,9 @@ namespace Raindrop.Backend.Tags
         /// <param name="reader">
         /// The InfoProvidingTextReader to read additional tags from.
         /// </param>
-        public static void BuildTag(ref TagStruct tag, InfoProvidingTextReader reader)
+        public void Build(ref TagStruct tag, InfoProvidingTextReader reader)
         {
-            tag.ApplyMethod = ApplyTag;
+            // TagFactory already does everything.
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Raindrop.Backend.Tags
         /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
-        public static void ApplyTag(
+        public void Apply(
             TagStruct tag,
             TextWriter output,
             IDictionary<string, object> data)
@@ -128,5 +128,7 @@ namespace Raindrop.Backend.Tags
             throw new NotImplementedException(
                 "/ncond tag does not support being applied.");
         }
+
+        public string GetName() { return "/ncond"; }
     }
 }

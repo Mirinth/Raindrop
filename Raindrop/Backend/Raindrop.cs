@@ -33,6 +33,8 @@ using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend.Parser;
 using Raindrop.Backend.Tags;
+using Raindrop.Backend.Templater;
+using Raindrop.Backend;
 
 namespace Raindrop
 {
@@ -61,9 +63,14 @@ namespace Raindrop
                     "templateName");
             }
             InfoProvidingTextReader reader = new InfoProvidingTextReader(templateSource);
-            template = new TagStruct();
-            template.Param = templateName;
-            BlockTag.BuildTag(ref template, reader);
+
+            TagData td = new TagData
+            {
+                ID = "block",
+                Param = templateName
+            };
+
+            template = TagFactory.DevBuildTag(td, reader);
         }
 
         /// <summary>
@@ -76,7 +83,7 @@ namespace Raindrop
             TextWriter output,
             IDictionary<string, object> data)
         {
-            template.Apply(output, data);
+            TagApplyer.Apply(template, output, data);
         }
     }
 }
