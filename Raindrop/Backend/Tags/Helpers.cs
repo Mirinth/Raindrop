@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using Raindrop.Backend.Parser;
 using Raindrop.Backend.Tags;
 
-namespace Raindrop.Backend
+namespace Raindrop.Backend.Tags
 {
     public class Helpers
     {
