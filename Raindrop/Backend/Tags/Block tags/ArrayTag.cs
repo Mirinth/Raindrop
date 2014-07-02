@@ -24,10 +24,10 @@
  * The /array tag represents the end of an array block.
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend.Parser;
-using System;
 using Raindrop.Backend.Templater;
 
 namespace Raindrop.Backend.Tags
@@ -83,17 +83,9 @@ namespace Raindrop.Backend.Tags
             {
                 foreach (IDictionary<string, object> item in items)
                 {
-                    try
+                    foreach (TagStruct child in tag.Children)
                     {
-                        foreach (TagStruct child in tag.Children)
-                        {
-                            TagApplyer.Apply(child, output, item);
-                        }
-                    }
-                    catch (RaindropException exc)
-                    {
-                        exc["raindrop.template-name"] = tag.Param;
-                        throw;
+                        TagApplyer.Apply(child, output, item);
                     }
                     index++;
                 }

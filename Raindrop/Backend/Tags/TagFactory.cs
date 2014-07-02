@@ -23,10 +23,8 @@
  */
 
 using System.Collections.Generic;
-using System.Reflection;
-using Raindrop.Backend.Parser;
-using Raindrop.Backend.Tags;
 using System.IO;
+using Raindrop.Backend.Parser;
 
 namespace Raindrop.Backend.Tags
 {
@@ -108,6 +106,7 @@ namespace Raindrop.Backend.Tags
                 RaindropException exc = new RaindropException("Tag is not supported.");
                 exc["raindrop.encountered-tag-id"] = td.ID;
                 exc["raindrop.start-index"] = reader.Index;
+                exc["raindrop.start-line"] = reader.Line;
                 throw exc;
             }
 

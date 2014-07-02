@@ -24,7 +24,6 @@
  * EndTagPredicate determines whether a tag ends the current block.
  */
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend.Parser;

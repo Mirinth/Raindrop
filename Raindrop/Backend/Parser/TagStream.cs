@@ -22,7 +22,6 @@
  * TagStream reads structures representing a tag (ID and parameter)
  * out of an InfoProvidingTextStream.
  */
-using System.IO;
 
 namespace Raindrop.Backend.Parser
 {
@@ -97,6 +96,7 @@ namespace Raindrop.Backend.Parser
                             "Invalid escape sequence");
                         exc["raindrop.escape-sequence"] = sequence;
                         exc["raindrop.start-index"] = reader.Index;
+                        exc["raindrop.start-line"] = reader.Line;
                         throw exc;
                 }
             }
@@ -118,6 +118,7 @@ namespace Raindrop.Backend.Parser
                 RaindropException exc = new RaindropException(
                     "End-of-file encountered when text was expected");
                 exc["raindrop.start-index"] = reader.Index;
+                exc["raindrop.start-line"] = reader.Line;
                 throw exc;
             }
 
@@ -126,6 +127,7 @@ namespace Raindrop.Backend.Parser
                 RaindropException exc = new RaindropException(
                     "Tag encountered when text was expected");
                 exc["raindrop.start-index"] = reader.Index;
+                exc["raindrop.start-line"] = reader.Line;
                 throw exc;
             }
 
@@ -150,6 +152,7 @@ namespace Raindrop.Backend.Parser
                 RaindropException exc = new RaindropException(
                     "End-of-file found when tag was expected");
                 exc["raindrop.start-index"] = reader.Index;
+                exc["raindrop.start-line"] = reader.Line;
                 throw exc;
             }
 
@@ -158,10 +161,12 @@ namespace Raindrop.Backend.Parser
                 RaindropException exc = new RaindropException(
                     "Plain-text found when tag was expected");
                 exc["raindrop.start-index"] = reader.Index;
+                exc["raindrop.start-line"] = reader.Line;
                 throw exc;
             }
 
             int startIndex = reader.Index;
+            int startLine = reader.Line;
 
             string tagString = DelimiterReader.ReadTo(reader, rightCap, include_delimiter);
 
@@ -171,7 +176,9 @@ namespace Raindrop.Backend.Parser
                     "Ending tag delimiter not found before end-of-file");
                 exc["raindrop.expected-delimiter"] = rightCap;
                 exc["raindrop.start-index"] = startIndex;
+                exc["raindrop.start-line"] = startLine;
                 exc["raindrop.end-index"] = reader.Index;
+                exc["raindrop.end-line"] = reader.Line;
                 throw exc;
             }
 

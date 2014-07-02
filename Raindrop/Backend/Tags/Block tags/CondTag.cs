@@ -79,17 +79,9 @@ namespace Raindrop.Backend.Tags
             Helpers.RequireKey(tag.Param, data);
             if (Helpers.Truth(tag.Param, data))
             {
-                try
+                foreach (TagStruct child in tag.Children)
                 {
-                    foreach (TagStruct child in tag.Children)
-                    {
-                        TagApplyer.Apply(child, output, data);
-                    }
-                }
-                catch (RaindropException exc)
-                {
-                    exc["raindrop.template-name"] = tag.Param;
-                    throw;
+                    TagApplyer.Apply(child, output, data);
                 }
                 index++;
             }

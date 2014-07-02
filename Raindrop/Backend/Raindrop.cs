@@ -34,7 +34,6 @@ using System.IO;
 using Raindrop.Backend.Parser;
 using Raindrop.Backend.Tags;
 using Raindrop.Backend.Templater;
-using Raindrop.Backend;
 
 namespace Raindrop
 {
