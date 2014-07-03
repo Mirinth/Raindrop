@@ -19,7 +19,7 @@
  */
 
 /*
- * 
+ * Wraps a TextReader to allow reading of TagData structs from it.
  */
 
 using System;
@@ -29,6 +29,8 @@ namespace Raindrop.Backend.Lexer
 {
     public struct TagData
     {
+        public int Line;
+        public int Offset;
         public string ID;
         public string Param;
     }
@@ -103,7 +105,13 @@ namespace Raindrop.Backend.Lexer
 
             if (reader.Empty)
             {
-                return new TagData() { ID = "eof", Param = "eof" };
+                return new TagData()
+                {
+                    ID = "eof",
+                    Line = -1, 
+                    Param = "eof",
+                    Offset = -1
+                };
             }
 
             if (DelimiterReader.IsAt(reader, leftCap)) { return ReadTag(); }
@@ -167,6 +175,8 @@ namespace Raindrop.Backend.Lexer
             return new TagData()
             {
                 ID = "",
+                Line = reader.Line,
+                Offset = reader.Offset,
                 Param = DelimiterReader.ReadTo(reader, leftCap, exclude_delimiter)
             };
         }
@@ -197,8 +207,11 @@ namespace Raindrop.Backend.Lexer
                 throw exc;
             }
 
-            int startIndex = reader.Offset;
-            int startLine = reader.Line;
+            TagData tag = new TagData()
+            {
+                Line = reader.Line,
+                Offset = reader.Offset
+            };
 
             string tagString = DelimiterReader.ReadTo(reader, rightCap, include_delimiter);
 
@@ -207,8 +220,8 @@ namespace Raindrop.Backend.Lexer
                 RaindropException exc = new RaindropException(
                     "Ending tag delimiter not found before end-of-file");
                 exc["raindrop.expected-delimiter"] = rightCap;
-                exc["raindrop.start-offset"] = startIndex;
-                exc["raindrop.start-line"] = startLine;
+                exc["raindrop.start-offset"] = tag.Offset;
+                exc["raindrop.start-line"] = tag.Line;
                 exc["raindrop.end-offset"] = reader.Offset;
                 exc["raindrop.end-line"] = reader.Line;
                 throw exc;
@@ -219,7 +232,6 @@ namespace Raindrop.Backend.Lexer
 
             string[] pieces = tagString.Split(tagSplitter, 2);
 
-            TagData tag = new TagData();
             tag.ID = pieces[0];
 
             if (pieces.Length > 1)
