@@ -42,9 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Backend\Parser\FarPeekTextReader.cs" />
-    <Compile Include="Backend\Parser\InfoProvidingTextReader.cs" />
-    <Compile Include="Backend\Parser\DelimiterReader.cs" />
+    <Compile Include="Backend\Lexer\FarPeekTextReader.cs" />
+    <Compile Include="Backend\Lexer\InfoProvidingTextReader.cs" />
+    <Compile Include="Backend\Lexer\DelimiterReader.cs" />
     <Compile Include="Backend\Tags\Empty tags\EscapeTag.cs" />
     <Compile Include="Backend\Tags\TagInterface.cs" />
     <Compile Include="Backend\Tags\TagStruct.cs" />
