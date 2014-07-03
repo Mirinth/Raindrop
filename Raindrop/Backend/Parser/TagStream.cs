@@ -23,6 +23,8 @@
  * out of an InfoProvidingTextStream.
  */
 
+using Raindrop.Backend.Lexer;
+
 namespace Raindrop.Backend.Parser
 {
     public struct TagData

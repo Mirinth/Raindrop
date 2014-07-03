@@ -28,7 +28,7 @@
 using System;
 using System.IO;
 
-namespace Raindrop.Backend.Parser
+namespace Raindrop.Backend.Lexer
 {
     public class InfoProvidingTextReader : FarPeekTextReader
     {

@@ -31,6 +31,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Raindrop.Backend.Lexer;
 using Raindrop.Backend.Parser;
 using Raindrop.Backend.Tags;
 

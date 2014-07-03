@@ -27,7 +27,7 @@
 using System;
 using System.IO;
 
-namespace Raindrop.Backend.Parser
+namespace Raindrop.Backend.Lexer
 {
     /// <summary>
     /// Wraps a regular TextReader with a small buffer to
