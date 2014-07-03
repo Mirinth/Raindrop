@@ -55,17 +55,6 @@ namespace Raindrop.Backend.Tags
             InfoProvidingTextReader reader);
 
         /// <summary>
-        /// Applies a tag.
-        /// </summary>
-        /// <param name="tag">The tag to be applied.</param>
-        /// <param name="output">The place to put the output.</param>
-        /// <param name="data">Data to use for applying the tag.</param>
-        void Apply(
-            TagStruct tag,
-            TextWriter output,
-            IDictionary<string, object> data);
-
-        /// <summary>
         /// Gets the name of the tag.
         /// </summary>
         /// <returns>The name of the tag.</returns>

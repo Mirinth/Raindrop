@@ -41,8 +41,7 @@ namespace Raindrop.Backend.Tags
         /// </param>
         public void Build(ref TagStruct tag, InfoProvidingTextReader reader)
         {
-            // Text tag doesn't need to do anything the TagFactory doesn't
-            // do for it already.
+            tag.ApplyMethod = Apply;
         }
 
         /// <summary>

@@ -33,7 +33,6 @@ using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend.Parser;
 using Raindrop.Backend.Tags;
-using Raindrop.Backend.Templater;
 
 namespace Raindrop
 {
@@ -82,7 +81,7 @@ namespace Raindrop
             TextWriter output,
             IDictionary<string, object> data)
         {
-            TagApplyer.Apply(template, output, data);
+            template.Apply(output, data);
         }
     }
 }

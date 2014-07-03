@@ -24,13 +24,27 @@
  */
 
 using System.Collections.Generic;
+using System.IO;
 
 namespace Raindrop.Backend.Tags
 {
+    public delegate void TagApplyDelegate(
+        TagStruct tag,
+        TextWriter output,
+        IDictionary<string, object> data);
+
     public struct TagStruct
     {
         public string Name;
         public string Param;
         public List<TagStruct> Children;
+        public TagApplyDelegate ApplyMethod;
+
+        public void Apply(
+            TextWriter output,
+            IDictionary<string, object> data)
+        {
+            ApplyMethod(this, output, data);
+        }
     }
 }

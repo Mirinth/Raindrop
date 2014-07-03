@@ -28,7 +28,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend.Parser;
-using Raindrop.Backend.Templater;
 
 namespace Raindrop.Backend.Tags
 {
@@ -46,6 +45,8 @@ namespace Raindrop.Backend.Tags
         public void Build(ref TagStruct tag, InfoProvidingTextReader reader)
         {
             Helpers.RequireParameter(tag.Param, reader);
+            tag.ApplyMethod = Apply;
+
             try
             {
                 tag.Children = Helpers.GetChildren(reader, EndTagPredicate);
@@ -84,7 +85,7 @@ namespace Raindrop.Backend.Tags
             {
                 foreach (TagStruct child in tag.Children)
                 {
-                    TagApplyer.Apply(child, output, data);
+                    child.Apply(output, data);
                 }
             }
             catch (RaindropException exc)
@@ -110,7 +111,7 @@ namespace Raindrop.Backend.Tags
         /// </param>
         public void Build(ref TagStruct tag, InfoProvidingTextReader reader)
         {
-            // EofTag doesn't need anything the TagFactory doesn't already do for it.
+            tag.ApplyMethod = Apply;
         }
 
         /// <summary>

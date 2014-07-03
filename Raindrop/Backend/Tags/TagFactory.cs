@@ -40,14 +40,6 @@ namespace Raindrop.Backend.Tags
             itags = GetITags();
         }
 
-        public static void ApplyITag(
-            TagStruct tag,
-            TextWriter output,
-            IDictionary<string, object> data)
-        {
-            itags[tag.Name].Apply(tag, output, data);
-        }
-
         public static Dictionary<string, ITag> GetITags()
         {
             Dictionary<string, ITag> itags = new Dictionary<string, ITag>();

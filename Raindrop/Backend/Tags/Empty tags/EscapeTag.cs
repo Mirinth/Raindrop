@@ -43,6 +43,7 @@ namespace Raindrop.Backend.Tags
         public void Build(ref TagStruct tag, InfoProvidingTextReader reader)
         {
             Helpers.RequireParameter(tag.Param, reader);
+            tag.ApplyMethod = Apply;
             tag.Param = TagStream.Unescape(reader, tag.Param);
         }
 
