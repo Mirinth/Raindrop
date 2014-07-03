@@ -84,9 +84,9 @@ namespace Raindrop.Backend.Tags
         /// A temporary tag builder until the reflection version can be fixed.
         /// </summary>
         /// <param name="td">A TagData representing the tag to be built.</param>
-        /// <param name="reader">An InfoProvidingTextReader to read child tags from.</param>
+        /// <param name="reader">A TagReader to read child tags from.</param>
         /// <returns>A TagStruct representing the next tag in the reader.</returns>
-        public static TagStruct DevBuildTag(TagData td, InfoProvidingTextReader reader)
+        public static TagStruct DevBuildTag(TagData td, TagReader reader)
         {
             TagStruct tag = new TagStruct();
             tag.Name = td.ID;
@@ -109,9 +109,9 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Parses a tag out of the given reader.
         /// </summary>
-        /// <param name="reader">The InfoProvidingTextReader to parse a tag from.</param>
+        /// <param name="reader">The TagReader to parse a tag from.</param>
         /// <returns>The tag parsed from the reader.</returns>
-        public static TagStruct Parse(InfoProvidingTextReader reader)
+        public static TagStruct Parse(TagReader reader)
         {
             if (reader.Empty)
             {
@@ -124,7 +124,7 @@ namespace Raindrop.Backend.Tags
                 return tag;
             }
 
-            TagData td = TagStream.GetTag(reader);
+            TagData td = reader.Read();
 
             return DevBuildTag(td, reader);
 

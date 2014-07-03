@@ -40,9 +40,9 @@ namespace Raindrop.Backend.Tags
         /// The TagStruct to put information in.
         /// </param>
         /// <param name="reader">
-        /// The InfoProvidingTextReader to read additional tags from.
+        /// The TagReader to read additional tags from.
         /// </param>
-        public void Build(ref TagStruct tag, InfoProvidingTextReader reader)
+        public void Build(ref TagStruct tag, TagReader reader)
         {
             Helpers.RequireParameter(tag.Param, reader);
             tag.Children = Helpers.GetChildren(reader, EndTagPredicate);
@@ -111,9 +111,9 @@ namespace Raindrop.Backend.Tags
         /// The TagStruct to put information in.
         /// </param>
         /// <param name="reader">
-        /// The InfoProvidingTextReader to read additional tags from.
+        /// The TagReader to read additional tags from.
         /// </param>
-        public void Build(ref TagStruct tag, InfoProvidingTextReader reader)
+        public void Build(ref TagStruct tag, TagReader reader)
         {
             tag.ApplyMethod = Apply;
         }

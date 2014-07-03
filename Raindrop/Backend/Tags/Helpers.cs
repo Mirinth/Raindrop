@@ -32,7 +32,7 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Gets a list of child tags.
         /// </summary>
-        /// <param name="reader">An InfoProvidingTextReader to extract children from.</param>
+        /// <param name="reader">A TagReader to extract children from.</param>
         /// <param name="predicate">
         /// The predicate to use when testing whether a given child tag should end
         /// the current template block.
@@ -42,7 +42,7 @@ namespace Raindrop.Backend.Tags
         /// matches the predicate.
         /// </returns>
         public static List<TagStruct> GetChildren(
-            InfoProvidingTextReader reader,
+            TagReader reader,
             EndTagPredicate predicate)
         {
             int startIndex = reader.Index;
@@ -97,10 +97,10 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="param">The parameter to test.</param>
         /// <param name="reader">
-        /// An InfoProvidingTextReader to extract data from for
+        /// A TagReader to extract data from for
         /// error reporting if an exception is thrown.
         /// </param>
-        public static void RequireParameter(string param, InfoProvidingTextReader reader)
+        public static void RequireParameter(string param, TagReader reader)
         {
             if (string.IsNullOrEmpty(param))
             {

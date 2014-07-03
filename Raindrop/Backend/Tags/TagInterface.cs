@@ -46,11 +46,11 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="tag">The TagStruct to complete.</param>
         /// <param name="reader">
-        /// An InfoProvidingTextReader to retrieve child tags from.
+        /// A TagReader to retrieve child tags from.
         /// </param>
         void Build(
             ref TagStruct tag,
-            InfoProvidingTextReader reader);
+            TagReader reader);
 
         /// <summary>
         /// Gets the name of the tag.

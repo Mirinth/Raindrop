@@ -61,7 +61,8 @@ namespace Raindrop
                     "A name for this template source is required for error reporting.",
                     "templateName");
             }
-            InfoProvidingTextReader reader = new InfoProvidingTextReader(templateSource);
+
+            TagReader reader = new TagReader(templateSource);
 
             TagData td = new TagData
             {

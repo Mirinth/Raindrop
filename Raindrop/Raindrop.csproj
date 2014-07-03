@@ -45,6 +45,7 @@
     <Compile Include="Backend\Lexer\FarPeekTextReader.cs" />
     <Compile Include="Backend\Lexer\InfoProvidingTextReader.cs" />
     <Compile Include="Backend\Lexer\DelimiterReader.cs" />
+    <Compile Include="Backend\Lexer\TagReader.cs" />
     <Compile Include="Backend\Tags\Empty tags\EscapeTag.cs" />
     <Compile Include="Backend\Tags\TagInterface.cs" />
     <Compile Include="Backend\Tags\TagStruct.cs" />
