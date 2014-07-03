@@ -62,11 +62,11 @@ namespace Raindrop.Backend.Lexer
         }
 
         /// <summary>
-        /// The index into the stream the TagReader is currently at.
+        /// The offset into the stream the TagReader is currently at.
         /// </summary>
-        public int Index
+        public int Offset
         {
-            get { return reader.Index; }
+            get { return reader.Offset; }
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Raindrop.Backend.Lexer
             {
                 RaindropException exc = new RaindropException(
                     "End-of-file encountered when text was expected");
-                exc["raindrop.start-index"] = reader.Index;
+                exc["raindrop.start-offset"] = reader.Offset;
                 exc["raindrop.start-line"] = reader.Line;
                 throw exc;
             }
@@ -159,7 +159,7 @@ namespace Raindrop.Backend.Lexer
             {
                 RaindropException exc = new RaindropException(
                     "Tag encountered when text was expected");
-                exc["raindrop.start-index"] = reader.Index;
+                exc["raindrop.start-offset"] = reader.Offset;
                 exc["raindrop.start-line"] = reader.Line;
                 throw exc;
             }
@@ -183,7 +183,7 @@ namespace Raindrop.Backend.Lexer
             {
                 RaindropException exc = new RaindropException(
                     "End-of-file found when tag was expected");
-                exc["raindrop.start-index"] = reader.Index;
+                exc["raindrop.start-offset"] = reader.Offset;
                 exc["raindrop.start-line"] = reader.Line;
                 throw exc;
             }
@@ -192,12 +192,12 @@ namespace Raindrop.Backend.Lexer
             {
                 RaindropException exc = new RaindropException(
                     "Plain-text found when tag was expected");
-                exc["raindrop.start-index"] = reader.Index;
+                exc["raindrop.start-offset"] = reader.Offset;
                 exc["raindrop.start-line"] = reader.Line;
                 throw exc;
             }
 
-            int startIndex = reader.Index;
+            int startIndex = reader.Offset;
             int startLine = reader.Line;
 
             string tagString = DelimiterReader.ReadTo(reader, rightCap, include_delimiter);
@@ -207,9 +207,9 @@ namespace Raindrop.Backend.Lexer
                 RaindropException exc = new RaindropException(
                     "Ending tag delimiter not found before end-of-file");
                 exc["raindrop.expected-delimiter"] = rightCap;
-                exc["raindrop.start-index"] = startIndex;
+                exc["raindrop.start-offset"] = startIndex;
                 exc["raindrop.start-line"] = startLine;
-                exc["raindrop.end-index"] = reader.Index;
+                exc["raindrop.end-offset"] = reader.Offset;
                 exc["raindrop.end-line"] = reader.Line;
                 throw exc;
             }

@@ -43,9 +43,9 @@ namespace Raindrop.Backend.Lexer
             : base(source) { }
 
         /// <summary>
-        /// The index into the stream the InfoProvidingTextReader is currently at.
+        /// The offset into the stream the InfoProvidingTextReader is currently at.
         /// </summary>
-        public int Index
+        public int Offset
         {
             get
             {
@@ -63,6 +63,8 @@ namespace Raindrop.Backend.Lexer
             get
             {
                 if (disposed) { throw new ObjectDisposedException("InfoProvidingTextReader"); }
+
+                // Newline convention:
 
                 // \r\n, \n\r, or first line
                 if (nlCount == crCount) { return nlCount; }

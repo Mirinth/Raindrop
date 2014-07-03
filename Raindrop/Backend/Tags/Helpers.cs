@@ -45,7 +45,7 @@ namespace Raindrop.Backend.Tags
             TagReader reader,
             EndTagPredicate predicate)
         {
-            int startIndex = reader.Index;
+            int startIndex = reader.Offset;
             int startLine = reader.Line;
 
             List<TagStruct> children = new List<TagStruct>();
@@ -62,9 +62,9 @@ namespace Raindrop.Backend.Tags
                 RaindropException exc = new RaindropException("End tag didn't match start tag.");
                 exc["raindrop.expected-type"] = child.Name;
                 exc["raindrop.encountered-type"] = child.GetType().FullName;
-                exc["raindrop.start-index"] = startIndex;
+                exc["raindrop.start-offset"] = startIndex;
                 exc["raindrop.start-Line"] = startLine;
-                exc["raindrop.end-index"] = reader.Index;
+                exc["raindrop.end-offset"] = reader.Offset;
                 exc["raindrop.end-line"] = reader.Line;
                 throw exc;
             }
@@ -106,7 +106,7 @@ namespace Raindrop.Backend.Tags
             {
                 RaindropException exc = new RaindropException(
                     "Tag must have a parameter.");
-                exc["raindrop.start-index"] = reader.Index;
+                exc["raindrop.start-offset"] = reader.Offset;
                 exc["raindrop.start-line"] = reader.Line;
                 throw exc;
             }

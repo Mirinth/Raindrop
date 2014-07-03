@@ -97,7 +97,7 @@ namespace Raindrop.Backend.Tags
             {
                 RaindropException exc = new RaindropException("Tag is not supported.");
                 exc["raindrop.encountered-tag-id"] = td.ID;
-                exc["raindrop.start-index"] = reader.Index;
+                exc["raindrop.start-offset"] = reader.Offset;
                 exc["raindrop.start-line"] = reader.Line;
                 throw exc;
             }

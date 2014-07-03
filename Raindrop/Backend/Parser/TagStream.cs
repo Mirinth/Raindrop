@@ -55,7 +55,7 @@ namespace Raindrop.Backend.Parser
                         RaindropException exc = new RaindropException(
                             "Invalid escape sequence");
                         exc["raindrop.escape-sequence"] = sequence;
-                        exc["raindrop.start-index"] = reader.Index;
+                        exc["raindrop.start-offset"] = reader.Offset;
                         exc["raindrop.start-line"] = reader.Line;
                         throw exc;
                 }
