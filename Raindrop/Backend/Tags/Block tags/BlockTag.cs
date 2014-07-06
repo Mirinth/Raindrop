@@ -112,8 +112,6 @@ namespace Raindrop.Backend.Tags
             // built from anywhere (which is good because
             // multiple places need to build it).
 
-            // TODO: Refactor eof tag building code to call here
-            // instead of building a TagStruct itself.
             return new TagStruct()
             {
                 ApplyMethod = Apply,
