@@ -102,7 +102,8 @@ namespace Raindrop.Backend.Lexer
                     Name = "eof",
                     Line = -1, 
                     Param = "eof",
-                    Offset = -1
+                    Offset = -1,
+                    Reader = this
                 };
             }
 
@@ -169,7 +170,8 @@ namespace Raindrop.Backend.Lexer
                 Name = "",
                 Line = reader.Line,
                 Offset = reader.Offset,
-                Param = DelimiterReader.ReadTo(reader, leftCap, exclude_delimiter)
+                Param = DelimiterReader.ReadTo(reader, leftCap, exclude_delimiter),
+                Reader = this
             };
         }
 
@@ -202,7 +204,8 @@ namespace Raindrop.Backend.Lexer
             TagData tag = new TagData()
             {
                 Line = reader.Line,
-                Offset = reader.Offset
+                Offset = reader.Offset,
+                Reader = this
             };
 
             string tagString = DelimiterReader.ReadTo(reader, rightCap, include_delimiter);
