@@ -48,13 +48,7 @@ namespace Raindrop.Backend.Tags
             Helpers.RequireParameter(td.Param, td.Reader);
             td.Param = TagReader.Unescape(td.Reader, td.Param);
 
-            return new TagStruct()
-            {
-                ApplyMethod = Apply,
-                Children = null,
-                Name = td.Name,
-                Param = td.Param
-            };
+            return Helpers.BuildTag(Apply, null, td);
         }
 
         /// <summary>

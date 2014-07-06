@@ -49,13 +49,7 @@ namespace Raindrop.Backend.Tags
             Helpers.RequireParameter(td.Param, td.Reader);
             List<TagStruct> childTags = Helpers.GetChildren(td.Reader, EndTagPredicate);
 
-            return new TagStruct()
-            {
-                ApplyMethod = Apply,
-                Children = childTags,
-                Name = td.Name,
-                Param = td.Param
-            };
+            return Helpers.BuildTag(Apply, childTags, td);
         }
 
         /// <summary>
@@ -125,13 +119,7 @@ namespace Raindrop.Backend.Tags
         /// <param name="td">Information about the tag to build.</param>
         public TagStruct Build(TagData td)
         {
-            return new TagStruct()
-            {
-                ApplyMethod = Apply,
-                Children = null,
-                Name = td.Name,
-                Param = td.Param
-            };
+            return Helpers.BuildTag(Apply, null, td);
         }
 
         /// <summary>

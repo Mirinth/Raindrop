@@ -59,13 +59,7 @@ namespace Raindrop.Backend.Tags
                 throw;
             }
 
-            return new TagStruct()
-            {
-                ApplyMethod = Apply,
-                Children = childTags,
-                Name = td.Name,
-                Param = td.Param
-            };
+            return Helpers.BuildTag(Apply, childTags, td);
         }
 
         /// <summary>

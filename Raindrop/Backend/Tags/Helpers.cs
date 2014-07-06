@@ -31,6 +31,27 @@ namespace Raindrop.Backend.Tags
     public class Helpers
     {
         /// <summary>
+        /// Initializes a TagStruct.
+        /// </summary>
+        /// <param name="apply">The tag's apply method</param>
+        /// <param name="childTags">The tag's children</param>
+        /// <param name="td">Additional information about the tag</param>
+        /// <returns>The initialized TagStruct.</returns>
+        public static TagStruct BuildTag(
+            TagApplyDelegate apply,
+            List<TagStruct> childTags,
+            TagData td)
+        {
+            return new TagStruct()
+            {
+                ApplyMethod = apply,
+                Children = childTags,
+                Name = td.Name,
+                Param = td.Param
+            };
+        }
+
+        /// <summary>
         /// Gets a list of child tags.
         /// </summary>
         /// <param name="reader">A TagReader to extract children from.</param>
