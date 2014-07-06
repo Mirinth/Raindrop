@@ -89,14 +89,14 @@ namespace Raindrop.Backend.Tags
         public static TagStruct DevBuildTag(TagData td, TagReader reader)
         {
             TagStruct tag = new TagStruct();
-            tag.Name = td.ID;
+            tag.Name = td.Name;
             tag.Param = td.Param;
             tag.Children = null;
 
             if (!itags.ContainsKey(tag.Name))
             {
                 RaindropException exc = new RaindropException("Tag is not supported.");
-                exc["raindrop.encountered-tag-id"] = td.ID;
+                exc["raindrop.encountered-tag-id"] = td.Name;
                 exc["raindrop.start-offset"] = reader.Offset;
                 exc["raindrop.start-line"] = reader.Line;
                 throw exc;

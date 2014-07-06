@@ -31,7 +31,7 @@ namespace Raindrop.Backend.Lexer
     {
         public int Line;
         public int Offset;
-        public string ID;
+        public string Name;
         public string Param;
     }
 
@@ -57,7 +57,7 @@ namespace Raindrop.Backend.Lexer
         {
             get
             {
-                if (peekSet && peek.ID == "eof") { return true; }
+                if (peekSet && peek.Name == "eof") { return true; }
                 else if (peekSet) { return false; }
                 else { return reader.Empty; }
             }
@@ -107,7 +107,7 @@ namespace Raindrop.Backend.Lexer
             {
                 return new TagData()
                 {
-                    ID = "eof",
+                    Name = "eof",
                     Line = -1, 
                     Param = "eof",
                     Offset = -1
@@ -174,7 +174,7 @@ namespace Raindrop.Backend.Lexer
 
             return new TagData()
             {
-                ID = "",
+                Name = "",
                 Line = reader.Line,
                 Offset = reader.Offset,
                 Param = DelimiterReader.ReadTo(reader, leftCap, exclude_delimiter)
@@ -232,7 +232,7 @@ namespace Raindrop.Backend.Lexer
 
             string[] pieces = tagString.Split(tagSplitter, 2);
 
-            tag.ID = pieces[0];
+            tag.Name = pieces[0];
 
             if (pieces.Length > 1)
             {

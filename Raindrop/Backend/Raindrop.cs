@@ -66,7 +66,7 @@ namespace Raindrop
 
             TagData td = new TagData
             {
-                ID = "block",
+                Name = "block",
                 Param = templateName
             };
 
