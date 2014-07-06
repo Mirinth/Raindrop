@@ -46,6 +46,7 @@
     <Compile Include="Backend\Lexer\InfoProvidingTextReader.cs" />
     <Compile Include="Backend\Lexer\DelimiterReader.cs" />
     <Compile Include="Backend\Lexer\TagReader.cs" />
+    <Compile Include="Backend\TagData.cs" />
     <Compile Include="Backend\Tags\Empty tags\EscapeTag.cs" />
     <Compile Include="Backend\Tags\ITag.cs" />
     <Compile Include="Backend\Tags\TagStruct.cs" />

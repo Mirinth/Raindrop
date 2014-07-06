@@ -27,14 +27,6 @@ using System.IO;
 
 namespace Raindrop.Backend.Lexer
 {
-    public struct TagData
-    {
-        public int Line;
-        public int Offset;
-        public string Name;
-        public string Param;
-    }
-
     public class TagReader
     {
         private static readonly string leftCap = "<:";
