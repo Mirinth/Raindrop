@@ -28,17 +28,6 @@ using Raindrop.Backend.Lexer;
 
 namespace Raindrop.Backend.Tags
 {
-    /// <summary>
-    /// Determines whether the given TagStruct represents the
-    /// end of the current block tag.
-    /// </summary>
-    /// <param name="endTag">The TagStruct to check.</param>
-    /// <returns>
-    /// True if endTag represents the end of the current block;
-    /// otherwise false.
-    /// </returns>
-    public delegate bool EndTagPredicate(TagStruct endTag);
-
     public interface ITag
     {
         /// <summary>

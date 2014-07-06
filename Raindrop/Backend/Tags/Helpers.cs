@@ -22,6 +22,7 @@
  * Various helper functions for the tags.
  */
 
+using System;
 using System.Collections.Generic;
 using Raindrop.Backend.Lexer;
 
@@ -43,7 +44,7 @@ namespace Raindrop.Backend.Tags
         /// </returns>
         public static List<TagStruct> GetChildren(
             TagReader reader,
-            EndTagPredicate predicate)
+            Predicate<TagStruct> predicate)
         {
             int startIndex = reader.Offset;
             int startLine = reader.Line;
