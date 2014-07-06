@@ -81,7 +81,6 @@ namespace Raindrop.Backend.Tags
                 (IEnumerable<IDictionary<string, object>>)data[tag.Param];
             int index = 0;
 
-            // TODO: Clean up nested try blocks
             try
             {
                 foreach (IDictionary<string, object> item in items)

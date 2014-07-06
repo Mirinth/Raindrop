@@ -124,10 +124,12 @@ namespace Raindrop.Backend.Tags
         /// <param name="td">Information about the tag to build.</param>
         public TagStruct Build(TagData td)
         {
-            // eof tag expects null TagData so it can be easily
-            // built from anywhere (which is good because
-            // multiple places need to build it).
-
+            // eof tag intentionally doesn't access its TagData.
+            // Several places need to construct eof tags without
+            // having read a TagData from the TagReader, and
+            // ignoring the TagData in the eof tag makes it
+            // simpler for those builders without any significant
+            // penalties to the eof tag.
             return new TagStruct()
             {
                 ApplyMethod = Apply,
