@@ -32,7 +32,7 @@ namespace Raindrop.Backend.Tags
         private static Dictionary<string, ITag> itags;
 
         /// <summary>
-        /// The TagFactory constructor. Currently unused.
+        /// The TagFactory constructor.
         /// </summary>
         static TagFactory()
         {
