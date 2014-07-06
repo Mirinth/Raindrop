@@ -25,7 +25,7 @@
 
 using System.Collections.Generic;
 using System.IO;
-using Raindrop.Backend.Parser;
+using Raindrop.Backend.Lexer;
 
 namespace Raindrop.Backend.Tags
 {
@@ -38,7 +38,7 @@ namespace Raindrop.Backend.Tags
         public TagStruct Build(TagData td)
         {
             Helpers.RequireParameter(td.Param, td.Reader);
-            td.Param = TagStream.Unescape(td.Reader, td.Param);
+            td.Param = TagReader.Unescape(td.Reader, td.Param);
 
             return new TagStruct()
             {

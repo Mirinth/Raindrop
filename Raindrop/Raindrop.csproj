@@ -57,7 +57,6 @@
     <Compile Include="Backend\Raindrop.cs" />
     <Compile Include="Backend\RaindropException.cs" />
     <Compile Include="Backend\Tags\TagFactory.cs" />
-    <Compile Include="Backend\Parser\TagStream.cs" />
     <Compile Include="Backend\Tags\Block tags\BlockTag.cs" />
     <Compile Include="Backend\Tags\Block tags\ArrayTag.cs" />
     <Compile Include="Backend\Tags\Block tags\CondTag.cs" />
