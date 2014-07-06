@@ -22,6 +22,8 @@
  * TagData provides additional data to a tag during construction.
  */
 
+using Raindrop.Backend.Lexer;
+
 namespace Raindrop.Backend
 {
     public struct TagData
@@ -30,5 +32,6 @@ namespace Raindrop.Backend
         public int Offset;
         public string Name;
         public string Param;
+        public TagReader Reader;
     }
 }
