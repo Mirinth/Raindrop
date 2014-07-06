@@ -30,6 +30,14 @@ namespace Raindrop.Backend.Tags
     public class TextTag : ITag
     {
         /// <summary>
+        /// Gets the name of the tag.
+        /// </summary>
+        public string Name
+        {
+            get { return string.Empty; }
+        }
+
+        /// <summary>
         /// Builds a text tag.
         /// </summary>
         /// <param name="td">Information about the tag to build.</param>
@@ -57,7 +65,5 @@ namespace Raindrop.Backend.Tags
         {
             output.Write(tag.Param);
         }
-
-        public string GetName() { return string.Empty; }
     }
 }

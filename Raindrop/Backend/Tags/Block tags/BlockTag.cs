@@ -33,6 +33,14 @@ namespace Raindrop.Backend.Tags
     public class BlockTag : ITag
     {
         /// <summary>
+        /// Gets the name of the tag.
+        /// </summary>
+        public string Name
+        {
+            get { return "block"; }
+        }
+
+        /// <summary>
         /// Builds a block tag.
         /// </summary>
         /// <param name="td">Information about the tag to build.</param>
@@ -96,12 +104,18 @@ namespace Raindrop.Backend.Tags
                 throw;
             }
         }
-
-        public string GetName() { return "block"; }
     }
 
     public class EofTag : ITag
     {
+        /// <summary>
+        /// Gets the name of the tag.
+        /// </summary>
+        public string Name
+        {
+            get { return "eof"; }
+        }
+
         /// <summary>
         /// Builds an eof tag.
         /// </summary>
@@ -135,7 +149,5 @@ namespace Raindrop.Backend.Tags
             throw new NotImplementedException(
                 "eof does not support being applied.");
         }
-
-        public string GetName() { return "eof"; }
     }
 }

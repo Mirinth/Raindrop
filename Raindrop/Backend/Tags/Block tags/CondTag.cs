@@ -36,6 +36,14 @@ namespace Raindrop.Backend.Tags
     public class CondTag : ITag
     {
         /// <summary>
+        /// Gets the name of the tag.
+        /// </summary>
+        public string Name
+        {
+            get { return "cond"; }
+        }
+
+        /// <summary>
         /// Builds a cond tag.
         /// </summary>
         /// <param name="td">Information about the tag to build.</param>
@@ -87,12 +95,18 @@ namespace Raindrop.Backend.Tags
                 index++;
             }
         }
-
-        public string GetName() { return "cond"; }
     }
 
     public class CondEndTag : ITag
     {
+        /// <summary>
+        /// Gets the name of the tag.
+        /// </summary>
+        public string Name
+        {
+            get { return "/cond"; }
+        }
+
         /// <summary>
         /// Builds a /cond tag.
         /// </summary>
@@ -122,7 +136,5 @@ namespace Raindrop.Backend.Tags
             throw new NotImplementedException(
                 "/cond does not support being applied.");
         }
-
-        public string GetName() { return "/cond"; }
     }
 }

@@ -39,7 +39,6 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Gets the name of the tag.
         /// </summary>
-        /// <returns>The name of the tag.</returns>
-        string GetName();
+        string Name { get; }
     }
 }

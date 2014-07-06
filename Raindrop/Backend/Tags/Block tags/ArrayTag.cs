@@ -33,6 +33,14 @@ namespace Raindrop.Backend.Tags
     public class ArrayTag : ITag
     {
         /// <summary>
+        /// Gets the name of the tag.
+        /// </summary>
+        public string Name
+        {
+            get { return "array"; }
+        }
+
+        /// <summary>
         /// Builds an array tag.
         /// </summary>
         /// <param name="td">Information about the tag to build.</param>
@@ -99,12 +107,18 @@ namespace Raindrop.Backend.Tags
                 throw;
             }
         }
-
-        public string GetName() { return "array"; }
     }
 
     public class ArrayEndTag : ITag
     {
+        /// <summary>
+        /// Gets the name of the tag.
+        /// </summary>
+        public string Name
+        {
+            get { return "/array"; }
+        }
+
         /// <summary>
         /// Builds a /array tag.
         /// </summary>
@@ -134,7 +148,5 @@ namespace Raindrop.Backend.Tags
             throw new NotImplementedException(
                 "/array does not support being applied.");
         }
-
-        public string GetName() { return "/array"; }
     }
 }

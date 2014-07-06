@@ -44,37 +44,37 @@ namespace Raindrop.Backend.Tags
             Dictionary<string, ITag> itags = new Dictionary<string, ITag>();
 
             ITag itag = new DataTag();
-            itags.Add(itag.GetName(), itag);
+            itags.Add(itag.Name, itag);
 
             itag = new EscapeTag();
-            itags.Add(itag.GetName(), itag);
+            itags.Add(itag.Name, itag);
 
             itag = new TextTag();
-            itags.Add(itag.GetName(), itag);
+            itags.Add(itag.Name, itag);
 
             itag = new ArrayTag();
-            itags.Add(itag.GetName(), itag);
+            itags.Add(itag.Name, itag);
 
             itag = new ArrayEndTag();
-            itags.Add(itag.GetName(), itag);
+            itags.Add(itag.Name, itag);
 
             itag = new EofTag();
-            itags.Add(itag.GetName(), itag);
+            itags.Add(itag.Name, itag);
 
             itag = new CondTag();
-            itags.Add(itag.GetName(), itag);
+            itags.Add(itag.Name, itag);
 
             itag = new CondEndTag();
-            itags.Add(itag.GetName(), itag);
+            itags.Add(itag.Name, itag);
 
             itag = new NCondTag();
-            itags.Add(itag.GetName(), itag);
+            itags.Add(itag.Name, itag);
 
             itag = new NCondEndTag();
-            itags.Add(itag.GetName(), itag);
+            itags.Add(itag.Name, itag);
 
             itag = new BlockTag();
-            itags.Add(itag.GetName(), itag);
+            itags.Add(itag.Name, itag);
 
             return itags;
         }

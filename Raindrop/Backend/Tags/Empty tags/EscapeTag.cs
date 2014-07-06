@@ -32,6 +32,14 @@ namespace Raindrop.Backend.Tags
     public class EscapeTag : ITag
     {
         /// <summary>
+        /// Gets the name of the tag.
+        /// </summary>
+        public string Name
+        {
+            get { return "escape"; }
+        }
+
+        /// <summary>
         /// Builds an escape tag.
         /// </summary>
         /// <param name="td">Information about the tag to build.</param>
@@ -62,7 +70,5 @@ namespace Raindrop.Backend.Tags
         {
             output.Write(tag.Param);
         }
-
-        public string GetName() { return "escape"; }
     }
 }

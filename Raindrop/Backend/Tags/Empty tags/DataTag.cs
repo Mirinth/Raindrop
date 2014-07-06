@@ -31,6 +31,14 @@ namespace Raindrop.Backend.Tags
     public class DataTag : ITag
     {
         /// <summary>
+        /// Gets the name of the tag.
+        /// </summary>
+        public string Name
+        {
+            get { return "data"; }
+        }
+
+        /// <summary>
         /// Builds a data tag.
         /// </summary>
         /// <param name="td">Information about the tag to build.</param>
@@ -61,7 +69,5 @@ namespace Raindrop.Backend.Tags
             Helpers.RequireKey(tag.Param, data);
             output.Write(data[tag.Param]);
         }
-
-        public string GetName() { return "data"; }
     }
 }
