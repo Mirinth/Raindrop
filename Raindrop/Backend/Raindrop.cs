@@ -66,6 +66,8 @@ namespace Raindrop
 
             TagData td = new TagData
             {
+                Line = -1,
+                Offset = -1,
                 Name = "block",
                 Param = templateName,
                 Reader = templateReader
