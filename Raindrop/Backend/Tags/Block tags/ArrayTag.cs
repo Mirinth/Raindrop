@@ -27,7 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Raindrop.Backend.Lexer;
 
 namespace Raindrop.Backend.Tags
 {
@@ -36,17 +35,19 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Builds an array tag.
         /// </summary>
-        /// <param name="tag">
-        /// The TagStruct to put information in.
-        /// </param>
-        /// <param name="reader">
-        /// The TagReader to read additional tags from.
-        /// </param>
-        public void Build(ref TagStruct tag, TagReader reader)
+        /// <param name="td">Information about the tag to build.</param>
+        public TagStruct Build(TagData td)
         {
-            Helpers.RequireParameter(tag.Param, reader);
-            tag.Children = Helpers.GetChildren(reader, EndTagPredicate);
-            tag.ApplyMethod = Apply;
+            Helpers.RequireParameter(td.Param, td.Reader);
+            List<TagStruct> childTags = Helpers.GetChildren(td.Reader, EndTagPredicate);
+
+            return new TagStruct()
+            {
+                ApplyMethod = Apply,
+                Children = childTags,
+                Name = td.Name,
+                Param = td.Param
+            };
         }
 
         /// <summary>
@@ -107,15 +108,16 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Builds a /array tag.
         /// </summary>
-        /// <param name="tag">
-        /// The TagStruct to put information in.
-        /// </param>
-        /// <param name="reader">
-        /// The TagReader to read additional tags from.
-        /// </param>
-        public void Build(ref TagStruct tag, TagReader reader)
+        /// <param name="td">Information about the tag to build.</param>
+        public TagStruct Build(TagData td)
         {
-            tag.ApplyMethod = Apply;
+            return new TagStruct()
+            {
+                ApplyMethod = Apply,
+                Children = null,
+                Name = td.Name,
+                Param = td.Param
+            };
         }
 
         /// <summary>
@@ -129,6 +131,7 @@ namespace Raindrop.Backend.Tags
             TextWriter output,
             IDictionary<string, object> data)
         {
+            // TODO: Remove reference to ArrayEndTag
             throw new NotImplementedException(
                 "ArrayEndTag does not support being applied.");
         }

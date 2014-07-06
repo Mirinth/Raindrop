@@ -31,15 +31,10 @@ namespace Raindrop.Backend.Tags
     public interface ITag
     {
         /// <summary>
-        /// Completes a TagStruct with necessary information.
+        /// Builds a TagStruct.
         /// </summary>
-        /// <param name="tag">The TagStruct to complete.</param>
-        /// <param name="reader">
-        /// A TagReader to retrieve child tags from.
-        /// </param>
-        void Build(
-            ref TagStruct tag,
-            TagReader reader);
+        /// <param name="td">Information about the tag to build.</param>
+        TagStruct Build(TagData td);
 
         /// <summary>
         /// Gets the name of the tag.

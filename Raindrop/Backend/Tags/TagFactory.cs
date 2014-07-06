@@ -88,12 +88,7 @@ namespace Raindrop.Backend.Tags
         /// <returns>A TagStruct representing the next tag in the reader.</returns>
         public static TagStruct DevBuildTag(TagData td, TagReader reader)
         {
-            TagStruct tag = new TagStruct();
-            tag.Name = td.Name;
-            tag.Param = td.Param;
-            tag.Children = null;
-
-            if (!itags.ContainsKey(tag.Name))
+            if (!itags.ContainsKey(td.Name))
             {
                 RaindropException exc = new RaindropException("Tag is not supported.");
                 exc["raindrop.encountered-tag-id"] = td.Name;
@@ -101,9 +96,11 @@ namespace Raindrop.Backend.Tags
                 exc["raindrop.start-line"] = reader.Line;
                 throw exc;
             }
+            
+            // TODO: Fix so this isn't needed
+            td.Reader = reader;
 
-            itags[tag.Name].Build(ref tag, reader);
-            return tag;
+            return itags[td.Name].Build(td);
         }
 
         /// <summary>
@@ -115,13 +112,7 @@ namespace Raindrop.Backend.Tags
         {
             if (reader.Empty)
             {
-                TagStruct tag = new TagStruct();
-                tag.Children = null;
-                tag.Name = "eof";
-                tag.Param = "eof";
-
-                itags["eof"].Build(ref tag, reader);
-                return tag;
+                return itags["eof"].Build(new TagData());
             }
 
             TagData td = reader.Read();

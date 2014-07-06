@@ -49,6 +49,7 @@ namespace Raindrop.Backend.Lexer
         {
             get
             {
+                // TODO: Can peek.Name be defined in terms of eof tag?
                 if (peekSet && peek.Name == "eof") { return true; }
                 else if (peekSet) { return false; }
                 else { return reader.Empty; }

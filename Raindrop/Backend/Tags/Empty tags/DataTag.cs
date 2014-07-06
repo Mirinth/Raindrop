@@ -25,7 +25,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using Raindrop.Backend.Lexer;
 
 namespace Raindrop.Backend.Tags
 {
@@ -34,16 +33,18 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Builds a data tag.
         /// </summary>
-        /// <param name="tag">
-        /// The TagStruct to put information in.
-        /// </param>
-        /// <param name="reader">
-        /// The TagReader to read additional tags from.
-        /// </param>
-        public void Build(ref TagStruct tag, TagReader reader)
+        /// <param name="td">Information about the tag to build.</param>
+        public TagStruct Build(TagData td)
         {
-            Helpers.RequireParameter(tag.Param, reader);
-            tag.ApplyMethod = Apply;
+            Helpers.RequireParameter(td.Param, td.Reader);
+
+            return new TagStruct()
+            {
+                ApplyMethod = Apply,
+                Children = null,
+                Name = td.Name,
+                Param = td.Param
+            };
         }
 
         /// <summary>
