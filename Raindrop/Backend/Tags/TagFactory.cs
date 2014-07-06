@@ -83,22 +83,18 @@ namespace Raindrop.Backend.Tags
         /// A temporary tag builder until the reflection version can be fixed.
         /// </summary>
         /// <param name="td">A TagData representing the tag to be built.</param>
-        /// <param name="reader">A TagReader to read child tags from.</param>
         /// <returns>A TagStruct representing the next tag in the reader.</returns>
-        public static TagStruct DevBuildTag(TagData td, TagReader reader)
+        public static TagStruct DevBuildTag(TagData td)
         {
             if (!itags.ContainsKey(td.Name))
             {
                 RaindropException exc = new RaindropException("Tag is not supported.");
                 exc["raindrop.encountered-tag-id"] = td.Name;
-                exc["raindrop.start-offset"] = reader.Offset;
-                exc["raindrop.start-line"] = reader.Line;
+                exc["raindrop.start-offset"] = td.Reader.Offset;
+                exc["raindrop.start-line"] = td.Reader.Line;
                 throw exc;
             }
             
-            // TODO: Fix so this isn't needed
-            td.Reader = reader;
-
             return itags[td.Name].Build(td);
         }
 
@@ -116,7 +112,7 @@ namespace Raindrop.Backend.Tags
 
             TagData td = reader.Read();
 
-            return DevBuildTag(td, reader);
+            return DevBuildTag(td);
 
             //if (!itags.ContainsKey(td.ID))
             //{
