@@ -111,7 +111,7 @@ namespace Raindrop.Backend.Tags
         {
             if (reader.Empty)
             {
-                return itags["eof"].Build(new TagData());
+                return itags[EofTag.StaticName].Build(new TagData());
             }
 
             TagData td = reader.Read();

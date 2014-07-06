@@ -76,7 +76,7 @@ namespace Raindrop.Backend.Tags
         /// <returns>True if tag should end the block; else false.</returns>
         public static bool EndTagPredicate(TagStruct endTag)
         {
-            if (endTag.Name == "eof") { return true; }
+            if (endTag.Name == EofTag.StaticName) { return true; }
             else { return false; }
         }
 
@@ -113,6 +113,14 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         public string Name
         {
+            get { return StaticName; }
+        }
+
+        /// <summary>
+        /// Gets the name of the tag without an instance.
+        /// </summary>
+        public static string StaticName
+        {
             get { return "eof"; }
         }
 
@@ -130,8 +138,8 @@ namespace Raindrop.Backend.Tags
             {
                 ApplyMethod = Apply,
                 Children = null,
-                Name = "eof",
-                Param = "eof"
+                Name = StaticName,
+                Param = StaticName
             };
         }
 

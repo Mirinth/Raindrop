@@ -22,8 +22,8 @@
  * Wraps a TextReader to allow reading of TagData structs from it.
  */
 
-using System;
 using System.IO;
+using Raindrop.Backend.Tags;
 
 namespace Raindrop.Backend.Lexer
 {
@@ -49,8 +49,7 @@ namespace Raindrop.Backend.Lexer
         {
             get
             {
-                // TODO: Can peek.Name be defined in terms of eof tag?
-                if (peekSet && peek.Name == "eof") { return true; }
+                if (peekSet && peek.Name == EofTag.StaticName) { return true; }
                 else if (peekSet) { return false; }
                 else { return reader.Empty; }
             }
@@ -100,9 +99,9 @@ namespace Raindrop.Backend.Lexer
             {
                 return new TagData()
                 {
-                    Name = "eof",
+                    Name = EofTag.StaticName,
                     Line = -1, 
-                    Param = "eof",
+                    Param = EofTag.StaticName,
                     Offset = -1,
                     Reader = this
                 };
