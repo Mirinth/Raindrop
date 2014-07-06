@@ -134,9 +134,8 @@ namespace Raindrop.Backend.Tags
             TextWriter output,
             IDictionary<string, object> data)
         {
-            // TODO: Fix reference to EofTag (EofTag object no longer exists)
             throw new NotImplementedException(
-                "EofTag does not support being applied.");
+                "eof does not support being applied.");
         }
 
         public string GetName() { return "eof"; }

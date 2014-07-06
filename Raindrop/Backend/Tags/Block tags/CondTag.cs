@@ -119,9 +119,8 @@ namespace Raindrop.Backend.Tags
             TextWriter output,
             IDictionary<string, object> data)
         {
-            // TODO: Fix reference to non-existing CondEndTag
             throw new NotImplementedException(
-                "CondEndTag does not support being applied.");
+                "/cond does not support being applied.");
         }
 
         public string GetName() { return "/cond"; }

@@ -131,9 +131,8 @@ namespace Raindrop.Backend.Tags
             TextWriter output,
             IDictionary<string, object> data)
         {
-            // TODO: Remove reference to ArrayEndTag
             throw new NotImplementedException(
-                "ArrayEndTag does not support being applied.");
+                "/array does not support being applied.");
         }
 
         public string GetName() { return "/array"; }
