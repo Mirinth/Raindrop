@@ -62,18 +62,20 @@ namespace Raindrop
                     "templateName");
             }
 
-            TagReader templateReader = new TagReader(templateSource);
-
-            TagData td = new TagData
+            using (TagReader templateReader = new TagReader(templateSource))
             {
-                Line = -1,
-                Offset = -1,
-                Name = "block",
-                Param = templateName,
-                Reader = templateReader
-            };
 
-            template = TagFactory.DevBuildTag(td);
+                TagData td = new TagData
+                {
+                    Line = -1,
+                    Offset = -1,
+                    Name = "block",
+                    Param = templateName,
+                    Reader = templateReader
+                };
+
+                template = TagFactory.DevBuildTag(td);
+            }
         }
 
         /// <summary>

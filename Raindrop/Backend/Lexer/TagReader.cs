@@ -22,12 +22,13 @@
  * Wraps a TextReader to allow reading of TagData structs from it.
  */
 
+using System;
 using System.IO;
 using Raindrop.Backend.Tags;
 
 namespace Raindrop.Backend.Lexer
 {
-    public class TagReader
+    public class TagReader : IDisposable
     {
         private static readonly string leftCap = "<:";
         private static readonly string rightCap = ":>";
@@ -37,6 +38,7 @@ namespace Raindrop.Backend.Lexer
         const bool include_delimiter = true;
         const bool exclude_delimiter = false;
 
+        private bool disposed;
         private TagData peek;
         private bool peekSet;
         private InfoProvidingTextReader reader;
@@ -81,6 +83,7 @@ namespace Raindrop.Backend.Lexer
             reader = new InfoProvidingTextReader(tr);
             peek = new TagData();
             peekSet = false;
+            disposed = false;
         }
 
         /// <summary>
@@ -273,6 +276,32 @@ namespace Raindrop.Backend.Lexer
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the FarPeekTextReader
+        /// and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources; false to
+        /// release only unmanaged resources.
+        /// </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing) { reader.Dispose(); }
+                disposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Releases all resources used by the FarPeekTextReader object.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

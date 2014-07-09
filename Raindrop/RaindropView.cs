@@ -33,10 +33,14 @@ public class RaindropView : IView
    public void Render(ViewContext viewContext, TextWriter writer)
    {
        string filePath = viewContext.HttpContext.Server.MapPath(this.ViewPath);
+       Raindrop.Raindrop template;
 
-       FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-       StreamReader sr = new StreamReader(fs);
-       Raindrop.Raindrop template = new Raindrop.Raindrop(sr, filePath);
+       using(FileStream fs =
+           new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+       using (StreamReader sr = new StreamReader(fs))
+       {
+           template = new Raindrop.Raindrop(sr, filePath);
+       }
 
        template.Apply(writer, viewContext.ViewData);
    }
