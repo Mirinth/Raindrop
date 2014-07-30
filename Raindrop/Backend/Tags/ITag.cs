@@ -40,5 +40,11 @@ namespace Raindrop.Backend.Tags
         /// Gets the name of the tag.
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Gets whether a blank line before this tag should
+        /// be removed.
+        /// </summary>
+        bool RemoveBlankLine { get; }
     }
 }

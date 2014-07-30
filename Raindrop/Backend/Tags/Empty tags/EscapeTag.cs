@@ -40,6 +40,12 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
+        /// Gets whether a blank line before this tag should
+        /// be removed.
+        /// </summary>
+        public bool RemoveBlankLine { get { return false; } }
+
+        /// <summary>
         /// Builds an escape tag.
         /// </summary>
         /// <param name="td">Information about the tag to build.</param>

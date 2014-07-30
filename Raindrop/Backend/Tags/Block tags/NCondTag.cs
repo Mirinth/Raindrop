@@ -44,6 +44,12 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
+        /// Gets whether a blank line before this tag should
+        /// be removed.
+        /// </summary>
+        public bool RemoveBlankLine { get { return true; } }
+
+        /// <summary>
         /// Builds an ncond tag.
         /// </summary>
         /// <param name="td">Information about the tag to build.</param>
@@ -100,6 +106,12 @@ namespace Raindrop.Backend.Tags
         {
             get { return "/ncond"; }
         }
+
+        /// <summary>
+        /// Gets whether a blank line before this tag should
+        /// be removed.
+        /// </summary>
+        public bool RemoveBlankLine { get { return true; } }
 
         /// <summary>
         /// Builds a /cond tag.
