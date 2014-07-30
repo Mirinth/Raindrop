@@ -131,6 +131,25 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
+        /// Determines whether the next tag requests that blank lines
+        /// before it be removed.
+        /// </summary>
+        /// <param name="reader">The reader to get the next tag from.</param>
+        /// <returns>Whether to remove a preceding blank line.</returns>
+        public static bool RemovePrecedingBlankLine(TagReader reader)
+        {
+            if (reader.Empty)
+            {
+                return itags[EofTag.StaticName].RemoveBlankLine;
+            }
+            else
+            {
+                TagData td = reader.Peek();
+                return itags[td.Name].RemoveBlankLine;
+            }
+        }
+
+        /// <summary>
         /// Generates a Dictionary of Types that inherit from the Tag class,
         /// are not abstract, and have a public static field named "ID" which
         /// is a string. The  Dictionary is indexed by the value of the type's
