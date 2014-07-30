@@ -49,7 +49,49 @@ namespace Raindrop.Backend.Tags
         /// <param name="td">Information about the tag to build.</param>
         public TagStruct Build(TagData td)
         {
+            if (TagFactory.RemovePrecedingBlankLine(td.Reader))
+            {
+                td.Param = RemoveTrailingBlankLine(td.Param);
+            }
+
             return Helpers.BuildTag(Apply, null, td);
+        }
+
+        /// <summary>
+        /// Removes the last line in a string, if that line contains
+        /// only whitespace.
+        /// </summary>
+        /// <param name="str">The string to remove the trailing blank line from.</param>
+        /// <returns>
+        /// The original string with the last line removed if it was blank or the
+        /// original string unaltered if the last line was not blank.</returns>
+        private static string RemoveTrailingBlankLine(string str)
+        {
+            int index = str.LastIndexOfAny(new char[] { '\r', '\n' });
+
+            if (index < 0) { return str; }
+
+            if (str.Length > 0)
+            {
+                if (str[index - 1] == '\n' || str[index - 1] == '\r')
+                {
+                    if (str[index - 1] != str[index])
+                    {
+                        index--;
+                    }
+                }
+            }
+
+            string subStr = str.Substring(index);
+
+            if (subStr.Trim().Length > 0)
+            {
+                // The last line contains only whitespace
+                return str;
+            }
+
+            int length = str.Length - subStr.Length;
+            return str.Substring(0, length);
         }
 
         /// <summary>
