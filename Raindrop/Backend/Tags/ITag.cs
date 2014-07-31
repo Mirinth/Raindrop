@@ -19,16 +19,14 @@
  */
 
 /*
- * ITag describes the interface to be used by tag objects.
- * 
- * EndTagPredicate determines whether a tag ends the current block.
+ * ITagBuilder describes the interface to be used by tag builders.
  */
 
 using Raindrop.Backend.Lexer;
 
 namespace Raindrop.Backend.Tags
 {
-    public interface ITag
+    public interface ITagBuilder
     {
         /// <summary>
         /// Builds a TagStruct.

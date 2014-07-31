@@ -29,7 +29,7 @@ using Raindrop.Backend.Lexer;
 
 namespace Raindrop.Backend.Tags
 {
-    public class EscapeTag : ITag
+    public class EscapeTag : ITagBuilder
     {
         /// <summary>
         /// Gets the name of the tag.

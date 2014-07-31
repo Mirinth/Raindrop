@@ -29,21 +29,21 @@ namespace Raindrop.Backend.Tags
 {
     public class TagFactory
     {
-        private static Dictionary<string, ITag> itags;
+        private static Dictionary<string, ITagBuilder> builders;
 
         /// <summary>
         /// The TagFactory constructor.
         /// </summary>
         static TagFactory()
         {
-            itags = GetITags();
+            builders = GetITags();
         }
 
-        public static Dictionary<string, ITag> GetITags()
+        public static Dictionary<string, ITagBuilder> GetITags()
         {
-            Dictionary<string, ITag> itags = new Dictionary<string, ITag>();
+            Dictionary<string, ITagBuilder> itags = new Dictionary<string, ITagBuilder>();
 
-            ITag itag = new DataTag();
+            ITagBuilder itag = new DataTag();
             itags.Add(itag.Name, itag);
 
             itag = new EscapeTag();
@@ -86,7 +86,7 @@ namespace Raindrop.Backend.Tags
         /// <returns>A TagStruct representing the next tag in the reader.</returns>
         public static TagStruct DevBuildTag(TagData td)
         {
-            if (!itags.ContainsKey(td.Name))
+            if (!builders.ContainsKey(td.Name))
             {
                 RaindropException exc = new RaindropException("Tag is not supported.");
                 exc["raindrop.encountered-tag-id"] = td.Name;
@@ -95,7 +95,7 @@ namespace Raindrop.Backend.Tags
                 throw exc;
             }
             
-            return itags[td.Name].Build(td);
+            return builders[td.Name].Build(td);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Raindrop.Backend.Tags
         {
             if (reader.Empty)
             {
-                return itags[EofTag.StaticName].Build(new TagData());
+                return builders[EofTag.StaticName].Build(new TagData());
             }
 
             TagData td = reader.Read();
@@ -140,12 +140,12 @@ namespace Raindrop.Backend.Tags
         {
             if (reader.Empty)
             {
-                return itags[EofTag.StaticName].RemoveBlankLine;
+                return builders[EofTag.StaticName].RemoveBlankLine;
             }
             else
             {
                 TagData td = reader.Peek();
-                return itags[td.Name].RemoveBlankLine;
+                return builders[td.Name].RemoveBlankLine;
             }
         }
 

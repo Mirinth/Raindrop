@@ -33,7 +33,7 @@ using System.IO;
 
 namespace Raindrop.Backend.Tags
 {
-    public class CondTag : ITag
+    public class CondTag : ITagBuilder
     {
         /// <summary>
         /// Gets the name of the tag.
@@ -97,7 +97,7 @@ namespace Raindrop.Backend.Tags
         }
     }
 
-    public class CondEndTag : ITag
+    public class CondEndTag : ITagBuilder
     {
         /// <summary>
         /// Gets the name of the tag.

@@ -27,7 +27,7 @@ using System.IO;
 
 namespace Raindrop.Backend.Tags
 {
-    public class TextTag : ITag
+    public class TextTag : ITagBuilder
     {
         /// <summary>
         /// Gets the name of the tag.

@@ -30,7 +30,7 @@ using System.IO;
 
 namespace Raindrop.Backend.Tags
 {
-    public class ArrayTag : ITag
+    public class ArrayTag : ITagBuilder
     {
         /// <summary>
         /// Gets the name of the tag.
@@ -108,7 +108,7 @@ namespace Raindrop.Backend.Tags
         }
     }
 
-    public class ArrayEndTag : ITag
+    public class ArrayEndTag : ITagBuilder
     {
         /// <summary>
         /// Gets the name of the tag.
