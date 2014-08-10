@@ -126,17 +126,17 @@ namespace Raindrop.Backend
             // Else find the next punctuation.
             for (int i = index; i < sourceText.Length - Punctuation.Longest; i++)
             {
-                if (sourceText.StartsWith(Punctuation.LeftCap, index))
+                if (sourceText.StartsWith(Punctuation.LeftCap, i))
                 {
-                    return index;
+                    return i;
                 }
-                if (sourceText.StartsWith(Punctuation.RightCap, index))
+                if (sourceText.StartsWith(Punctuation.RightCap, i))
                 {
-                    return index;
+                    return i;
                 }
-                if (sourceText.StartsWith(Punctuation.Divider, index))
+                if (sourceText.StartsWith(Punctuation.Divider, i))
                 {
-                    return index;
+                    return i;
                 }
             }
 
