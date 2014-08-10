@@ -53,9 +53,12 @@ namespace Raindrop.Backend
     class Lexer
     {
         private string sourceText;
-        private int nlCount;
-        private int crCount;
-        private int index;
+        private int nlCount = 0;
+        private int crCount = 0;
+        private int index = 0;
+
+        private Symbol lookahead;
+        private bool lookaheadSet = false;
 
         /// <summary>
         /// Initialize the lexer with a string.
@@ -101,6 +104,25 @@ namespace Raindrop.Backend
             UpdateState(s.Text);
 
             return s;
+        }
+
+        /// <summary>
+        /// Looks at the next symbol in the lexer, but doesn't read it.
+        /// </summary>
+        /// <returns>
+        /// The next symbol in the lexer if available;
+        /// an empty symbol (Text = null, Line = -1) otherwise.
+        /// </returns>
+        public Symbol Peek()
+        {
+            if (!lookaheadSet)
+            {
+                lookahead = Read();
+                Rewind(lookahead.Text);
+                lookaheadSet = true;
+            }
+
+            return lookahead;
         }
 
         /// <summary>
@@ -188,6 +210,22 @@ namespace Raindrop.Backend
             }
 
             index += symbol.Length;
+        }
+
+        /// <summary>
+        /// Reverts the line and index to reflect that the
+        /// given symbol has been *un*read.
+        /// </summary>
+        /// <param name="symbol">The symbol which has been read.</param>
+        private void Rewind(string symbol)
+        {
+            foreach (char c in symbol)
+            {
+                if (c == '\r') { crCount--; }
+                if (c == '\n') { nlCount--; }
+            }
+
+            index -= symbol.Length;
         }
     }
 }
