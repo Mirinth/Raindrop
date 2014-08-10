@@ -91,18 +91,8 @@ namespace Raindrop.Backend
         /// </returns>
         public Symbol Read()
         {
-            if (index == sourceText.Length)
-            {
-                return new Symbol() { Line = -1, Text = null };
-            }
-
-            Symbol s = new Symbol();
-
-            s.Text = GetSymbolText();
-            s.Line = CurrentLine();
-
-            UpdateState(s.Text);
-
+            Symbol s = Peek();
+            Commit(s.Text);
             return s;
         }
 
@@ -115,14 +105,32 @@ namespace Raindrop.Backend
         /// </returns>
         public Symbol Peek()
         {
-            if (!lookaheadSet)
+            if (lookaheadSet) { return lookahead; }
+
+            if (index == sourceText.Length)
             {
-                lookahead = Read();
-                Rewind(lookahead.Text);
+                lookahead = new Symbol() { Line = -1, Text = null };
                 lookaheadSet = true;
+                return lookahead;
             }
 
+            lookahead = new Symbol();
+            lookahead.Text = GetSymbolText();
+            lookahead.Line = CurrentLine();
+
             return lookahead;
+        }
+
+        /// <summary>
+        /// Commits the most recent Peek() as read.
+        /// </summary>
+        public void Commit()
+        {
+            if (lookaheadSet)
+            {
+                Commit(lookahead.Text);
+                lookaheadSet = false;
+            }
         }
 
         /// <summary>
@@ -197,11 +205,10 @@ namespace Raindrop.Backend
         }
 
         /// <summary>
-        /// Updates the line and index to reflect that the
-        /// given symbol has been read.
+        /// Commits a symbol as read.
         /// </summary>
         /// <param name="symbol">The symbol which has been read.</param>
-        private void UpdateState(string symbol)
+        private void Commit(string symbol)
         {
             foreach (char c in symbol)
             {
@@ -210,22 +217,6 @@ namespace Raindrop.Backend
             }
 
             index += symbol.Length;
-        }
-
-        /// <summary>
-        /// Reverts the line and index to reflect that the
-        /// given symbol has been *un*read.
-        /// </summary>
-        /// <param name="symbol">The symbol which has been read.</param>
-        private void Rewind(string symbol)
-        {
-            foreach (char c in symbol)
-            {
-                if (c == '\r') { crCount--; }
-                if (c == '\n') { nlCount--; }
-            }
-
-            index -= symbol.Length;
         }
     }
 }
