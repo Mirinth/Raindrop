@@ -43,10 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backend\Lexer.cs" />
-    <Compile Include="Backend\Lexer\FarPeekTextReader.cs" />
-    <Compile Include="Backend\Lexer\InfoProvidingTextReader.cs" />
-    <Compile Include="Backend\Lexer\DelimiterReader.cs" />
-    <Compile Include="Backend\Lexer\TagReader.cs" />
     <Compile Include="Backend\Parser.cs" />
     <Compile Include="Backend\Punctuation.cs" />
     <Compile Include="Backend\TagData.cs" />
