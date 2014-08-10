@@ -32,6 +32,6 @@ namespace Raindrop.Backend
         public int Offset;
         public string Name;
         public string Param;
-        public TagReader Reader;
+        public Lexer Source;
     }
 }
