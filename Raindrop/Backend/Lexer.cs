@@ -32,6 +32,24 @@ namespace Raindrop.Backend
         public int Line;
     }
 
+    static class StartsWithExtension
+    {
+        public static bool StartsWith(this string str, string value, int index)
+        {
+            if (str.Length - value.Length < index)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < value.Length && index + i < str.Length; i++)
+            {
+                if (str[index + i] != value[i]) { return false; }
+            }
+
+            return true;
+        }
+    }
+
     class Lexer
     {
         private string sourceText;
