@@ -92,25 +92,33 @@ namespace Raindrop.Backend
         private int FindSymbolEnd()
         {
             // Handle when we're already at punctuation
-            if (sourceText[index] == '<' && sourceText[index + 1] == ':')
+            if (sourceText.StartsWith(Punctuation.LeftCap, index))
             {
-                return index + 2;
+                return index + Punctuation.LeftCap.Length;
             }
-            if (sourceText[index] == ':' && sourceText[index + 1] == '>')
+            if (sourceText.StartsWith(Punctuation.RightCap, index))
             {
-                return index + 2;
+                return index + Punctuation.RightCap.Length;
+            }
+            if (sourceText.StartsWith(Punctuation.Divider, index))
+            {
+                return index + Punctuation.Divider.Length;
             }
 
             // Else find the next punctuation.
-            for (int i = index; i < sourceText.Length - 1; i++)
+            for (int i = index; i < sourceText.Length - Punctuation.Longest; i++)
             {
-                if (sourceText[i] == '<' && sourceText[i + 1] == ':')
+                if (sourceText.StartsWith(Punctuation.LeftCap, index))
                 {
-                    return i;
+                    return index;
                 }
-                if (sourceText[i] == ':' && sourceText[i + 1] == '>')
+                if (sourceText.StartsWith(Punctuation.RightCap, index))
                 {
-                    return i;
+                    return index;
+                }
+                if (sourceText.StartsWith(Punctuation.Divider, index))
+                {
+                    return index;
                 }
             }
 

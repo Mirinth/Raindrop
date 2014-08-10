@@ -47,9 +47,11 @@
     <Compile Include="Backend\Lexer\InfoProvidingTextReader.cs" />
     <Compile Include="Backend\Lexer\DelimiterReader.cs" />
     <Compile Include="Backend\Lexer\TagReader.cs" />
+    <Compile Include="Backend\Parser.cs" />
+    <Compile Include="Backend\Punctuation.cs" />
     <Compile Include="Backend\TagData.cs" />
     <Compile Include="Backend\Tags\Empty tags\EscapeTag.cs" />
-    <Compile Include="Backend\Tags\ITag.cs" />
+    <Compile Include="Backend\Tags\ITagBuilder.cs" />
     <Compile Include="Backend\Tags\TagStruct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RaindropView.cs" />
