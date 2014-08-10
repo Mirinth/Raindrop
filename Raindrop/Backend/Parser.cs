@@ -72,7 +72,8 @@ namespace Raindrop.Backend
             td.Name = name.Text;
 
             Symbol paramPart = lex.Peek();
-            while (paramPart.Text != Punctuation.RightCap)
+            while (paramPart.Text != null &&
+                    paramPart.Text != Punctuation.RightCap)
             {
                 td.Param += paramPart.Text + Punctuation.Divider;
                 lex.Commit();
@@ -94,7 +95,8 @@ namespace Raindrop.Backend
 
             Symbol textPart = lex.Peek();
             td.Line = textPart.Line;
-            while (textPart.Text != Punctuation.LeftCap)
+            while (textPart.Text != null &&
+                    textPart.Text != Punctuation.LeftCap)
             {
                 td.Param += textPart.Text + Punctuation.Divider;
                 lex.Commit();
