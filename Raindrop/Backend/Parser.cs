@@ -80,6 +80,15 @@ namespace Raindrop.Backend
                 paramPart = lex.Peek();
             }
 
+            if (paramPart.Text == null)
+            {
+                RaindropException exc = new RaindropException(
+                    "Ending tag delimiter not found before end-of-file");
+                exc["raindrop.expected-delimiter"] = Punctuation.RightCap;
+                exc["raindrop.start-line"] = td.Line;
+                throw exc;
+            }
+
             // Discard trailing cap
             lex.Commit();
 
