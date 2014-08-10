@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backend\Lexer.cs" />
     <Compile Include="Backend\Lexer\FarPeekTextReader.cs" />
     <Compile Include="Backend\Lexer\InfoProvidingTextReader.cs" />
     <Compile Include="Backend\Lexer\DelimiterReader.cs" />
