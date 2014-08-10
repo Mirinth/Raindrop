@@ -19,7 +19,7 @@
  */
 
 /*
- * Breaks an input file into tokens.
+ * Breaks an input file into symbols.
  */
 
 using System.IO;
