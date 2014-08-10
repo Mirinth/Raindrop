@@ -23,7 +23,7 @@
  */
 
 using System.Collections.Generic;
-using Raindrop.Backend.Lexer;
+using Raindrop.Backend.LexerNS;
 
 namespace Raindrop.Backend.Tags
 {

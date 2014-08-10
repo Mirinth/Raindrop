@@ -32,7 +32,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Raindrop.Backend;
-using Raindrop.Backend.Lexer;
+using Raindrop.Backend.LexerNS;
 using Raindrop.Backend.Tags;
 
 namespace Raindrop

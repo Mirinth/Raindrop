@@ -22,7 +22,7 @@
  * TagData provides additional data to a tag during construction.
  */
 
-using Raindrop.Backend.Lexer;
+using Raindrop.Backend.LexerNS;
 
 namespace Raindrop.Backend
 {
