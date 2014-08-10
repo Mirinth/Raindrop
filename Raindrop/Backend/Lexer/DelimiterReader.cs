@@ -26,7 +26,7 @@
 
 using System;
 
-namespace Raindrop.Backend.Lexer
+namespace Raindrop.Backend.LexerNS
 {
     public class DelimiterReader
     {

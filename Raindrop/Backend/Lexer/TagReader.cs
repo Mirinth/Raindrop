@@ -26,7 +26,7 @@ using System;
 using System.IO;
 using Raindrop.Backend.Tags;
 
-namespace Raindrop.Backend.Lexer
+namespace Raindrop.Backend.LexerNS
 {
     public class TagReader : IDisposable
     {
