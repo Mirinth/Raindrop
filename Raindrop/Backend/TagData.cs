@@ -29,7 +29,6 @@ namespace Raindrop.Backend
     public struct TagData
     {
         public int Line;
-        public int Offset;
         public string Name;
         public string Param;
         public Lexer Source;
