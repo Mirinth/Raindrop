@@ -26,7 +26,7 @@ using Raindrop.Backend.Tags;
 
 namespace Raindrop.Backend
 {
-    static class Parser
+    public static class Parser
     {
         /// <summary>
         /// Reads the next TagData out of a lexer.

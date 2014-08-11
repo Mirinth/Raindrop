@@ -54,7 +54,7 @@ namespace Raindrop.Backend
         }
     }
 
-    class Lexer
+    public class Lexer
     {
         private string sourceText;
         private int nlCount = 0;
