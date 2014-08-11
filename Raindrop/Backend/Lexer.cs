@@ -39,24 +39,18 @@ namespace Raindrop.Backend
         /// </summary>
         /// <param name="str">The string to search.</param>
         /// <param name="value">The substring to check for.</param>
-        /// <param name="index">The index to begin the search at.</param>
+        /// <param name="startIndex">The index to begin the search at.</param>
         /// <returns>
         /// True if the given substring is present at the given
         /// location; else false.
         /// </returns>
-        public static bool SubstringIsAt(this string str, string value, int index)
+        public static bool SubstringIsAt(this string str, string value, int startIndex)
         {
-            if (str.Length - value.Length < index)
-            {
-                return false;
-            }
+            if (value.Length + startIndex > str.Length) { return false; }
 
-            for (int i = 0; i < value.Length && index + i < str.Length; i++)
-            {
-                if (str[index + i] != value[i]) { return false; }
-            }
+            int findResult = str.IndexOf(value, startIndex, value.Length);
 
-            return true;
+            return (findResult == startIndex);
         }
     }
 
