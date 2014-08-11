@@ -54,175 +54,107 @@ namespace Raindrop.Backend
         }
     }
 
-    public class Lexer
+    public static class Lexer
     {
-        private string sourceText;
-        private int nlCount = 0;
-        private int crCount = 0;
-        private int index = 0;
-
-        private Symbol lookahead;
-        private bool lookaheadSet = false;
-
         /// <summary>
-        /// Initialize the lexer with a string.
+        /// Reads a symbol from a template.
         /// </summary>
-        /// <param name="source">
-        /// A string containing the text to lex.
-        /// </param>
-        public Lexer(string source)
-        {
-            sourceText = source;
-        }
-
-        /// <summary>
-        /// Initialize the lexer with a string.
-        /// </summary>
-        /// <param name="source">
-        /// A TextReader containing the text to lex.
-        /// </param>
-        public Lexer(TextReader source)
-        {
-            sourceText = source.ReadToEnd();
-        }
-
-        /// <summary>
-        /// Reads a symbol from the lexer.
-        /// </summary>
+        /// <param name="source">The Template to read a symbol from.</param>
         /// <returns>
-        /// The next symbol in the lexer if available;
+        /// The next symbol in the template if available;
         /// an empty symbol (Text = null, Line = -1) otherwise.
         /// </returns>
-        public Symbol Read()
+        public static Symbol Read(Template source)
         {
-            Symbol s = Peek();
-            Commit(s.Text);
+            Symbol s = Peek(source);
+            Commit(source, s);
             return s;
         }
 
         /// <summary>
-        /// Looks at the next symbol in the lexer, but doesn't read it.
+        /// Looks at the next symbol in the template, but doesn't read it.
         /// </summary>
+        /// <param name="source">The template to read from.</param>
         /// <returns>
-        /// The next symbol in the lexer if available;
+        /// The next symbol in the template if available;
         /// an empty symbol (Text = null, Line = -1) otherwise.
         /// </returns>
-        public Symbol Peek()
+        public static Symbol Peek(Template source)
         {
-            if (lookaheadSet) { return lookahead; }
-
-            if (index == sourceText.Length)
+            if (source.Index == source.Text.Length)
             {
-                lookahead = new Symbol() { Line = -1, Text = null };
-                lookaheadSet = true;
-                return lookahead;
+                return new Symbol() { Line = -1, Text = null };
             }
 
-            lookahead = new Symbol();
-            lookahead.Text = GetSymbolText();
-            lookahead.Line = CurrentLine();
+            Symbol s = new Symbol();
+            s.Text = GetSymbolText(source);
+            s.Line = source.Line;
 
-            return lookahead;
+            return s;
         }
 
         /// <summary>
-        /// Commits the most recent Peek() as read.
+        /// Commits a symbol as read.
         /// </summary>
-        public void Commit()
+        /// <param name="source">The template the symbol was read from.</param>
+        /// <param name="s">The symbol that was read.</param>
+        public static void Commit(Template source, Symbol s)
         {
-            if (lookaheadSet)
-            {
-                Commit(lookahead.Text);
-                lookaheadSet = false;
-            }
+            source.Index += s.Text.Length;
         }
 
         /// <summary>
         /// Identifies the index immediately after the current symbol.
         /// </summary>
+        /// <param name="source">The template to search.</param>
+        /// <param name="index">The index to begin searching at.</param>
         /// <returns>The index immediately after the current symbol.</returns>
-        private int FindSymbolEnd()
+        private static int FindSymbolEnd(Template source, int index)
         {
             // Are we already at punctuation?
-            if (sourceText.SubstringIsAt(Punctuation.LeftCap, index))
+            if (source.Text.SubstringIsAt(Punctuation.LeftCap, index))
             {
                 return index + Punctuation.LeftCap.Length;
             }
-            if (sourceText.SubstringIsAt(Punctuation.RightCap, index))
+            if (source.Text.SubstringIsAt(Punctuation.RightCap, index))
             {
                 return index + Punctuation.RightCap.Length;
             }
-            if (sourceText.SubstringIsAt(Punctuation.Divider, index))
+            if (source.Text.SubstringIsAt(Punctuation.Divider, index))
             {
                 return index + Punctuation.Divider.Length;
             }
 
             // Where's the next punctuation?
-            for (int i = index; i < sourceText.Length - Punctuation.Longest; i++)
+            for (int i = index; i < source.Text.Length - Punctuation.Longest; i++)
             {
-                if (sourceText.SubstringIsAt(Punctuation.LeftCap, i))
+                if (source.Text.SubstringIsAt(Punctuation.LeftCap, i))
                 {
                     return i;
                 }
-                if (sourceText.SubstringIsAt(Punctuation.RightCap, i))
+                if (source.Text.SubstringIsAt(Punctuation.RightCap, i))
                 {
                     return i;
                 }
-                if (sourceText.SubstringIsAt(Punctuation.Divider, i))
+                if (source.Text.SubstringIsAt(Punctuation.Divider, i))
                 {
                     return i;
                 }
             }
 
             // Just use the rest of the string.
-            return sourceText.Length;
+            return source.Text.Length;
         }
 
         /// <summary>
         /// Gets the text of the next symbol.
         /// </summary>
+        /// <param name="source">The template to read from.</param>
         /// <returns>The text of the next symbol.</returns>
-        private string GetSymbolText()
+        private static string GetSymbolText(Template source)
         {
-            int symbolEnd = FindSymbolEnd();
-            return sourceText.Substring(index, symbolEnd - index);
-        }
-
-        /// <summary>
-        /// Calculates the current line.
-        /// </summary>
-        /// <returns>The calculated current line.</returns>
-        private int CurrentLine()
-        {
-            // Newline convention:
-
-            // \r\n, \n\r, or first line
-            if (nlCount == crCount) { return nlCount; }
-            // \n system (or first line)
-            else if (crCount == 1) { return nlCount; }
-            // \r system (or first line)
-            else if (nlCount == 1) { return crCount; }
-            // \r\n system between lines
-            else if (crCount - nlCount == 1) { return crCount; }
-            // \n\r system between lines
-            else if (nlCount - crCount == 1) { return nlCount; }
-            // Probably inconsistent line endings.
-            else { return -1; } // 
-        }
-
-        /// <summary>
-        /// Commits a symbol as read.
-        /// </summary>
-        /// <param name="symbol">The symbol which has been read.</param>
-        private void Commit(string symbol)
-        {
-            foreach (char c in symbol)
-            {
-                if (c == '\r') { crCount++; }
-                if (c == '\n') { nlCount++; }
-            }
-
-            index += symbol.Length;
+            int symbolEnd = FindSymbolEnd(source, source.Index);
+            return source.Text.Substring(source.Index, symbolEnd - source.Index);
         }
     }
 }
