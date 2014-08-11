@@ -149,7 +149,7 @@ namespace Raindrop.Backend
         /// <returns>The index immediately after the current symbol.</returns>
         private int FindSymbolEnd()
         {
-            // Handle when we're already at punctuation
+            // Are we already at punctuation?
             if (sourceText.StartsWith(Punctuation.LeftCap, index))
             {
                 return index + Punctuation.LeftCap.Length;
@@ -163,7 +163,7 @@ namespace Raindrop.Backend
                 return index + Punctuation.Divider.Length;
             }
 
-            // Else find the next punctuation.
+            // Where's the next punctuation?
             for (int i = index; i < sourceText.Length - Punctuation.Longest; i++)
             {
                 if (sourceText.StartsWith(Punctuation.LeftCap, i))
@@ -180,7 +180,7 @@ namespace Raindrop.Backend
                 }
             }
 
-            // Else the rest of the string should be used.
+            // Just use the rest of the string.
             return sourceText.Length;
         }
 
