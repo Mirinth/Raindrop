@@ -22,8 +22,6 @@
  * TagData provides additional data to a tag during construction.
  */
 
-using Raindrop.Backend.LexerNS;
-
 namespace Raindrop.Backend
 {
     public struct TagData

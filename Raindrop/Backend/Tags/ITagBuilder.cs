@@ -22,8 +22,6 @@
  * ITagBuilder describes the interface to be used by tag builders.
  */
 
-using Raindrop.Backend.LexerNS;
-
 namespace Raindrop.Backend.Tags
 {
     public interface ITagBuilder
