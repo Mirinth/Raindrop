@@ -63,7 +63,6 @@ namespace Raindrop.Backend
                 Name = EofTag.StaticName,
                 Line = -1,
                 Param = EofTag.StaticName,
-                Offset = -1,
                 Source = lex
             };
         }
