@@ -44,7 +44,7 @@ namespace Raindrop.Backend
         /// True if the given substring is present at the given
         /// location; else false.
         /// </returns>
-        public static bool StartsWith(this string str, string value, int index)
+        public static bool SubstringIsAt(this string str, string value, int index)
         {
             if (str.Length - value.Length < index)
             {
@@ -150,15 +150,15 @@ namespace Raindrop.Backend
         private int FindSymbolEnd()
         {
             // Are we already at punctuation?
-            if (sourceText.StartsWith(Punctuation.LeftCap, index))
+            if (sourceText.SubstringIsAt(Punctuation.LeftCap, index))
             {
                 return index + Punctuation.LeftCap.Length;
             }
-            if (sourceText.StartsWith(Punctuation.RightCap, index))
+            if (sourceText.SubstringIsAt(Punctuation.RightCap, index))
             {
                 return index + Punctuation.RightCap.Length;
             }
-            if (sourceText.StartsWith(Punctuation.Divider, index))
+            if (sourceText.SubstringIsAt(Punctuation.Divider, index))
             {
                 return index + Punctuation.Divider.Length;
             }
@@ -166,15 +166,15 @@ namespace Raindrop.Backend
             // Where's the next punctuation?
             for (int i = index; i < sourceText.Length - Punctuation.Longest; i++)
             {
-                if (sourceText.StartsWith(Punctuation.LeftCap, i))
+                if (sourceText.SubstringIsAt(Punctuation.LeftCap, i))
                 {
                     return i;
                 }
-                if (sourceText.StartsWith(Punctuation.RightCap, i))
+                if (sourceText.SubstringIsAt(Punctuation.RightCap, i))
                 {
                     return i;
                 }
-                if (sourceText.StartsWith(Punctuation.Divider, i))
+                if (sourceText.SubstringIsAt(Punctuation.Divider, i))
                 {
                     return i;
                 }
