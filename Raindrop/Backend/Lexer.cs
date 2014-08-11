@@ -200,6 +200,8 @@ namespace Raindrop.Backend
             if (nlCount == crCount) { return nlCount; }
             // \n system (or first line)
             else if (crCount == 1) { return nlCount; }
+            // \r system (or first line)
+            else if (nlCount == 1) { return crCount; }
             // \r\n system between lines
             else if (crCount - nlCount == 1) { return crCount; }
             // \n\r system between lines
