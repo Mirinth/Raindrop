@@ -34,6 +34,16 @@ namespace Raindrop.Backend
 
     static class StartsWithExtension
     {
+        /// <summary>
+        /// Determines if a string contains a substring at the given location.
+        /// </summary>
+        /// <param name="str">The string to search.</param>
+        /// <param name="value">The substring to check for.</param>
+        /// <param name="index">The index to begin the search at.</param>
+        /// <returns>
+        /// True if the given substring is present at the given
+        /// location; else false.
+        /// </returns>
         public static bool StartsWith(this string str, string value, int index)
         {
             if (str.Length - value.Length < index)

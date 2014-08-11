@@ -26,9 +26,13 @@ using Raindrop.Backend.Tags;
 
 namespace Raindrop.Backend
 {
-
     static class Parser
     {
+        /// <summary>
+        /// Reads the next TagData out of a lexer.
+        /// </summary>
+        /// <param name="lex">The lexer to read from.</param>
+        /// <returns>The next TagData in lex.</returns>
         public static TagData Read(Lexer lex)
         {
             Symbol s = lex.Peek();
@@ -47,6 +51,11 @@ namespace Raindrop.Backend
             }
         }
 
+        /// <summary>
+        /// Reads from a lexer when it is at end-of-file.
+        /// </summary>
+        /// <param name="lex">The lexer to read from.</param>
+        /// <returns>An eof tag.</returns>
         private static TagData ReadEof(Lexer lex)
         {
             return new TagData()
@@ -59,6 +68,11 @@ namespace Raindrop.Backend
             };
         }
 
+        /// <summary>
+        /// Reads from the lexer when it is at a tag.
+        /// </summary>
+        /// <param name="lex">The lexer to read from.</param>
+        /// <returns>The non-text, non-eof tag in the lexer.</returns>
         private static TagData ReadTag(Lexer lex)
         {
             TagData td = new TagData();
@@ -95,6 +109,11 @@ namespace Raindrop.Backend
             return td;
         }
 
+        /// <summary>
+        /// Reads from the lexer when it is at text.
+        /// </summary>
+        /// <param name="lex">The lexer to read from.</param>
+        /// <returns>The text tag in the lexer.</returns>
         private static TagData ReadText(Lexer lex)
         {
             TagData td = new TagData();
