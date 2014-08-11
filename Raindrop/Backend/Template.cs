@@ -27,23 +27,71 @@ using System.IO;
 
 namespace Raindrop.Backend
 {
-    class Template
+    public class Template
     {
-        private string sourceText;
+        private int nlCount = 1;
+        private int crCount = 1;
+        private int offset = 0;
 
-        public char this[int index]
+        public string Text { get; set; }
+
+        public int Index
         {
-            get { return sourceText[index]; }
+            get { return offset; }
+            set
+            {
+                if (value >= offset) { RecalculateLine(value, offset); }
+                else { RecalculateLine(value); }
+                offset = value;
+            }
+        }
+
+        public int Line
+        {
+            get
+            {
+                // Newline convention:
+
+                // \r\n, \n\r, or first line
+                if (nlCount == crCount) { return nlCount; }
+                // \n system (or first line)
+                else if (crCount == 1) { return nlCount; }
+                // \r system (or first line)
+                else if (nlCount == 1) { return crCount; }
+                // \r\n system between lines
+                else if (crCount - nlCount == 1) { return crCount; }
+                // \n\r system between lines
+                else if (nlCount - crCount == 1) { return nlCount; }
+                // Probably inconsistent line endings.
+                else { return -1; }
+            }
         }
 
         public Template(string source)
         {
-            sourceText = source;
+            Text = source;
         }
 
         public Template(TextReader source)
         {
-            sourceText = source.ReadToEnd();
+            Text = source.ReadToEnd();
+        }
+
+        public void IncNewline() { nlCount++; }
+        public void IncCarriageReturn() { crCount++; }
+
+        private void RecalculateLine(int offset)
+        {
+            RecalculateLine(offset, 0);
+        }
+
+        private void RecalculateLine(int offset, int oldOffset)
+        {
+            for (int i = oldOffset; i < offset && i < Text.Length; i++)
+            {
+                if (Text[i] == '\r') { crCount++; }
+                if (Text[i] == '\n') { nlCount++; }
+            }
         }
     }
 }
