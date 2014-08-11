@@ -26,7 +26,7 @@ using System.IO;
 
 namespace Raindrop.Backend
 {
-    struct Symbol
+    public struct Symbol
     {
         public string Text;
         public int Line;
