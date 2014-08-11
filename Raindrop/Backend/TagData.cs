@@ -29,6 +29,6 @@ namespace Raindrop.Backend
         public int Line;
         public string Name;
         public string Param;
-        public Lexer Source;
+        public Template Source;
     }
 }
