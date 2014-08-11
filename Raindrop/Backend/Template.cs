@@ -77,9 +77,6 @@ namespace Raindrop.Backend
             Text = source.ReadToEnd();
         }
 
-        public void IncNewline() { nlCount++; }
-        public void IncCarriageReturn() { crCount++; }
-
         private void RecalculateLine(int offset)
         {
             RecalculateLine(offset, 0);
