@@ -29,68 +29,68 @@ namespace Raindrop.Backend
     public static class Parser
     {
         /// <summary>
-        /// Reads the next TagData out of a lexer.
+        /// Reads the next TagData out of a template.
         /// </summary>
-        /// <param name="lex">The lexer to read from.</param>
-        /// <returns>The next TagData in lex.</returns>
-        public static TagData Read(Lexer lex)
+        /// <param name="source">The template to read from.</param>
+        /// <returns>The next TagData in source.</returns>
+        public static TagData Read(Template source)
         {
-            Symbol s = lex.Peek();
+            Symbol s = Lexer.Peek(source);
 
             if (s.Text == null)
             {
-                return ReadEof(lex);
+                return ReadEof(source);
             }
             else if (s.Text == Punctuation.LeftCap)
             {
-                return ReadTag(lex);
+                return ReadTag(source);
             }
             else
             {
-                return ReadText(lex);
+                return ReadText(source);
             }
         }
 
         /// <summary>
-        /// Reads from a lexer when it is at end-of-file.
+        /// Reads from a template when it is at end-of-file.
         /// </summary>
-        /// <param name="lex">The lexer to read from.</param>
+        /// <param name="source">The template to read from.</param>
         /// <returns>An eof tag.</returns>
-        private static TagData ReadEof(Lexer lex)
+        private static TagData ReadEof(Template source)
         {
             return new TagData()
             {
                 Name = EofTag.StaticName,
                 Line = -1,
                 Param = EofTag.StaticName,
-                Source = lex
+                Source = source
             };
         }
 
         /// <summary>
-        /// Reads from the lexer when it is at a tag.
+        /// Reads from a template when it is at a tag.
         /// </summary>
-        /// <param name="lex">The lexer to read from.</param>
-        /// <returns>The non-text, non-eof tag in the lexer.</returns>
-        private static TagData ReadTag(Lexer lex)
+        /// <param name="source">The template to read from.</param>
+        /// <returns>The non-text, non-eof tag in the template.</returns>
+        private static TagData ReadTag(Template source)
         {
             TagData td = new TagData();
-            td.Source = lex;
+            td.Source = source;
             td.Param = "";
 
-            Symbol leftCap = lex.Read();
+            Symbol leftCap = Lexer.Read(source);
             td.Line = leftCap.Line;
 
-            Symbol name = lex.Read();
+            Symbol name = Lexer.Read(source);
             td.Name = name.Text;
 
-            Symbol paramPart = lex.Peek();
+            Symbol paramPart = Lexer.Peek(source);
             while (paramPart.Text != null &&
                     paramPart.Text != Punctuation.RightCap)
             {
                 td.Param += paramPart.Text + Punctuation.Divider;
-                lex.Commit();
-                paramPart = lex.Peek();
+                Lexer.Commit(source, paramPart);
+                paramPart = Lexer.Peek(source);
             }
 
             if (paramPart.Text == null)
@@ -103,31 +103,31 @@ namespace Raindrop.Backend
             }
 
             // Discard trailing cap
-            lex.Commit();
+            Lexer.Commit(source, paramPart);
 
             return td;
         }
 
         /// <summary>
-        /// Reads from the lexer when it is at text.
+        /// Reads from a template when it is at text.
         /// </summary>
-        /// <param name="lex">The lexer to read from.</param>
-        /// <returns>The text tag in the lexer.</returns>
-        private static TagData ReadText(Lexer lex)
+        /// <param name="source">The template to read from.</param>
+        /// <returns>The text tag in the template.</returns>
+        private static TagData ReadText(Template source)
         {
             TagData td = new TagData();
-            td.Source = lex;
+            td.Source = source;
             td.Param = "";
             td.Name = "";
 
-            Symbol textPart = lex.Peek();
+            Symbol textPart = Lexer.Peek(source);
             td.Line = textPart.Line;
             while (textPart.Text != null &&
                     textPart.Text != Punctuation.LeftCap)
             {
                 td.Param += textPart.Text + Punctuation.Divider;
-                lex.Commit();
-                textPart = lex.Peek();
+                Lexer.Commit(source, textPart);
+                textPart = Lexer.Peek(source);
             }
 
             return td;
