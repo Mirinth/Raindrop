@@ -147,7 +147,12 @@ namespace Raindrop.Backend
             while (textPart.Text != null &&
                     textPart.Text != Punctuation.LeftCap)
             {
-                td.Param += textPart.Text + Punctuation.Divider;
+                if (td.Param.Length > 0 && textPart.Text.Length > 0)
+                {
+                    td.Param += Punctuation.Divider;
+                }
+
+                td.Param += textPart.Text;
                 Lexer.Commit(source, textPart);
                 textPart = Lexer.Peek(source);
             }
