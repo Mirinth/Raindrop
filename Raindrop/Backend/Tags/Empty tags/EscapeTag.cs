@@ -69,5 +69,39 @@ namespace Raindrop.Backend.Tags
         {
             output.Write(tag.Param);
         }
+
+        /// <summary>
+        /// Converts an escape sequence into plain text.
+        /// </summary>
+        /// <param name="reader">The reader to use for error reporting.</param>
+        /// <param name="sequence">The sequence to convert.</param>
+        /// <returns>The unescaped sequence.</returns>
+        public static string Unescape(TagReader reader, string sequence)
+        {
+            string result = string.Empty;
+            string[] pieces = sequence.Split(' ');
+
+            foreach (string piece in pieces)
+            {
+                switch (piece)
+                {
+                    case "lc":
+                        result += "<:";
+                        break;
+                    case "rc":
+                        result += ":>";
+                        break;
+                    default:
+                        RaindropException exc = new RaindropException(
+                            "Invalid escape sequence");
+                        exc["raindrop.escape-sequence"] = sequence;
+                        exc["raindrop.start-offset"] = reader.Offset;
+                        exc["raindrop.start-line"] = reader.Line;
+                        throw exc;
+                }
+            }
+
+            return result;
+        }
     }
 }
