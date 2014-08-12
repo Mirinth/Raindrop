@@ -121,6 +121,9 @@ namespace Raindrop.Backend
             // Discard trailing cap
             Lexer.Commit(source, paramPart);
 
+            td.Name = td.Name.Trim(Punctuation.NameTrim);
+            td.Param = td.Param.Trim(Punctuation.ParamTrim);
+
             return td;
         }
 
