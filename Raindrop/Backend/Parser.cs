@@ -52,6 +52,22 @@ namespace Raindrop.Backend
         }
 
         /// <summary>
+        /// Reads the next TagData out of a template without advancing the
+        /// index of the template.
+        /// </summary>
+        /// <param name="source">The template to read from.</param>
+        /// <returns>The next TagData in source.</returns>
+        public static TagData Peek(Template source)
+        {
+            int oldIndex = source.Index;
+
+            TagData td = Read(source);
+            source.Index = oldIndex;
+
+            return td;
+        }
+
+        /// <summary>
         /// Reads from a template when it is at end-of-file.
         /// </summary>
         /// <param name="source">The template to read from.</param>
