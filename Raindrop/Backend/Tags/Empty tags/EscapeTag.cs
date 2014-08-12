@@ -78,18 +78,22 @@ namespace Raindrop.Backend.Tags
         /// <returns>The unescaped sequence.</returns>
         private static string Unescape(Template source, string sequence)
         {
+            const string left_cap_code = "lc";
+            const string right_cap_code = "rc";
+            const char divider = ' ';
+
             string result = string.Empty;
-            string[] pieces = sequence.Split(' ');
+            string[] pieces = sequence.Split(divider);
 
             foreach (string piece in pieces)
             {
                 switch (piece)
                 {
-                    case "lc":
-                        result += "<:";
+                    case left_cap_code:
+                        result += Punctuation.LeftCap;
                         break;
-                    case "rc":
-                        result += ":>";
+                    case right_cap_code:
+                        result += Punctuation.RightCap;
                         break;
                     default:
                         RaindropException exc = new RaindropException(
