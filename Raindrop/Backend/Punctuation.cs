@@ -7,7 +7,8 @@ namespace Raindrop.Backend
         public static readonly string LeftCap = "<:";
         public static readonly string RightCap = ":>";
         public static readonly string Divider = " ";
-        public static readonly char[] Trim = { ' ', '/' };
+        public static readonly char[] ParamTrim = { ' ', '\r', '\n', '\t', '/' };
+        public static readonly char[] NameTrim = { ' ', '\r', '\n', '\t' };
 
         public static readonly int Longest = Math.Max(Divider.Length,
                                                   Math.Max(LeftCap.Length,
