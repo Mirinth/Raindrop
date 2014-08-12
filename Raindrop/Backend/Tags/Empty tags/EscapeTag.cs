@@ -51,7 +51,7 @@ namespace Raindrop.Backend.Tags
         public TagStruct Build(TagData td)
         {
             Helpers.RequireParameter(td.Param, td.Source);
-            td.Param = TagReader.Unescape(td.Source, td.Param);
+            td.Param = Unescape(td.Source, td.Param);
 
             return Helpers.BuildTag(Apply, null, td);
         }
