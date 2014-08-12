@@ -44,13 +44,13 @@ namespace Raindrop
         /// The Raindrop constructor. Constructs a template using the
         /// given data source.
         /// </summary>
-        /// <param name="templateSource">The data source to construct from.</param>
+        /// <param name="templateReader">The data source to construct from.</param>
         /// <param name="templateName">
         /// The name of the data source. Used for error reporting.
         /// </param>
-        public Raindrop(TextReader templateSource, string templateName)
+        public Raindrop(TextReader templateReader, string templateName)
         {
-            if (templateSource == null)
+            if (templateReader == null)
             {
                 throw new ArgumentNullException("templateSource");
             }
@@ -61,20 +61,17 @@ namespace Raindrop
                     "templateName");
             }
 
-            using (TagReader templateReader = new TagReader(templateSource))
+            Template templateSource = new Template(templateReader);
+
+            TagData td = new TagData
             {
+                Line = -1,
+                Name = "block",
+                Param = templateName,
+                Source = templateSource
+            };
 
-                TagData td = new TagData
-                {
-                    Line = -1,
-                    Offset = -1,
-                    Name = "block",
-                    Param = templateName,
-                    Reader = templateReader
-                };
-
-                template = TagFactory.DevBuildTag(td);
-            }
+            template = TagFactory.DevBuildTag(td);
         }
 
         /// <summary>
