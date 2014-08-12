@@ -115,13 +115,16 @@ namespace Raindrop.Backend
         /// <returns>The text tag in the template.</returns>
         private static TagData ReadText(Template source)
         {
-            TagData td = new TagData();
-            td.Source = source;
-            td.Param = "";
-            td.Name = "";
+            TagData td = new TagData()
+            {
+                Source = source,
+                Param = "",
+                Name = TextTag.StaticName,
+            };
 
             Symbol textPart = Lexer.Peek(source);
             td.Line = textPart.Line;
+
             while (textPart.Text != null &&
                     textPart.Text != Punctuation.LeftCap)
             {
