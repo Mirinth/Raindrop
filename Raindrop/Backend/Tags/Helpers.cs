@@ -53,7 +53,7 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Gets a list of child tags.
         /// </summary>
-        /// <param name="reader">A TagReader to extract children from.</param>
+        /// <param name="source">A template to extract children from.</param>
         /// <param name="predicate">
         /// The predicate to use when testing whether a given child tag should end
         /// the current template block.
@@ -63,19 +63,18 @@ namespace Raindrop.Backend.Tags
         /// matches the predicate.
         /// </returns>
         public static List<TagStruct> GetChildren(
-            TagReader reader,
+            Template source,
             Predicate<TagStruct> predicate)
         {
-            int startIndex = reader.Offset;
-            int startLine = reader.Line;
+            int startLine = source.Line;
 
             List<TagStruct> children = new List<TagStruct>();
-            TagStruct child = TagFactory.Parse(reader);
+            TagStruct child = TagFactory.Parse(source);
 
             while (!predicate(child) && !BlockTag.EndTagPredicate(child))
             {
                 children.Add(child);
-                child = TagFactory.Parse(reader);
+                child = TagFactory.Parse(source);
             }
 
             if (!predicate(child))
@@ -83,10 +82,8 @@ namespace Raindrop.Backend.Tags
                 RaindropException exc = new RaindropException("End tag didn't match start tag.");
                 exc["raindrop.expected-type"] = child.Name;
                 exc["raindrop.encountered-type"] = child.GetType().FullName;
-                exc["raindrop.start-offset"] = startIndex;
                 exc["raindrop.start-Line"] = startLine;
-                exc["raindrop.end-offset"] = reader.Offset;
-                exc["raindrop.end-line"] = reader.Line;
+                exc["raindrop.end-line"] = source.Line;
                 throw exc;
             }
 
@@ -117,18 +114,17 @@ namespace Raindrop.Backend.Tags
         /// an excception is thrown.
         /// </summary>
         /// <param name="param">The parameter to test.</param>
-        /// <param name="reader">
-        /// A TagReader to extract data from for
+        /// <param name="source">
+        /// A template to extract data from for
         /// error reporting if an exception is thrown.
         /// </param>
-        public static void RequireParameter(string param, TagReader reader)
+        public static void RequireParameter(string param, Template source)
         {
             if (string.IsNullOrEmpty(param))
             {
                 RaindropException exc = new RaindropException(
                     "Tag must have a parameter.");
-                exc["raindrop.start-offset"] = reader.Offset;
-                exc["raindrop.start-line"] = reader.Line;
+                exc["raindrop.start-line"] = source.Line;
                 throw exc;
             }
         }
