@@ -89,8 +89,7 @@ namespace Raindrop.Backend.Tags
             {
                 RaindropException exc = new RaindropException("Tag is not supported.");
                 exc["raindrop.encountered-tag-id"] = td.Name;
-                exc["raindrop.start-offset"] = td.Reader.Offset;
-                exc["raindrop.start-line"] = td.Reader.Line;
+                exc["raindrop.start-line"] = td.Source.Line;
                 throw exc;
             }
             
@@ -98,20 +97,15 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
-        /// Parses a tag out of the given reader.
+        /// Parses a tag out of the given template.
         /// </summary>
-        /// <param name="reader">The TagReader to parse a tag from.</param>
-        /// <returns>The tag parsed from the reader.</returns>
-        public static TagStruct Parse(TagReader reader)
+        /// <param name="source">The template to parse a tag from.</param>
+        /// <returns>The tag parsed from the template.</returns>
+        public static TagStruct Parse(Template source)
         {
-            if (reader.Empty)
-            {
-                return builders[EofTag.StaticName].Build(new TagData());
-            }
-
-            TagData td = reader.Read();
-
-            return DevBuildTag(td);
+            TagData td = Parser.Read(source);
+            TagStruct tag = DevBuildTag(td);
+            return tag;
 
             //if (!itags.ContainsKey(td.ID))
             //{
@@ -133,19 +127,15 @@ namespace Raindrop.Backend.Tags
         /// Determines whether the next tag requests that blank lines
         /// before it be removed.
         /// </summary>
-        /// <param name="reader">The reader to get the next tag from.</param>
+        /// <param name="source">The template to get the next tag from.</param>
         /// <returns>Whether to remove a preceding blank line.</returns>
-        public static bool RemovePrecedingBlankLine(TagReader reader)
+        public static bool RemovePrecedingBlankLine(Template source)
         {
-            if (reader.Empty)
-            {
-                return builders[EofTag.StaticName].RemoveBlankLine;
-            }
-            else
-            {
-                TagData td = reader.Peek();
-                return builders[td.Name].RemoveBlankLine;
-            }
+            TagData td = Parser.Peek(source);
+
+            bool shouldRemove = builders[td.Name].RemoveBlankLine;
+            
+            return shouldRemove;
         }
 
         /// <summary>
