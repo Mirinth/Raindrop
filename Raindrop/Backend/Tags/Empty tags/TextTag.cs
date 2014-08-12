@@ -57,7 +57,7 @@ namespace Raindrop.Backend.Tags
         /// <param name="td">Information about the tag to build.</param>
         public TagStruct Build(TagData td)
         {
-            if (TagFactory.RemovePrecedingBlankLine(td.Reader))
+            if (TagFactory.RemovePrecedingBlankLine(td.Source))
             {
                 td.Param = RemoveTrailingBlankLine(td.Param);
             }

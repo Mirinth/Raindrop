@@ -55,8 +55,8 @@ namespace Raindrop.Backend.Tags
         /// <param name="td">Information about the tag to build.</param>
         public TagStruct Build(TagData td)
         {
-            Helpers.RequireParameter(td.Param, td.Reader);
-            List<TagStruct> childTags = Helpers.GetChildren(td.Reader, EndTagPredicate);
+            Helpers.RequireParameter(td.Param, td.Source);
+            List<TagStruct> childTags = Helpers.GetChildren(td.Source, EndTagPredicate);
 
             return Helpers.BuildTag(Apply, childTags, td);
         }

@@ -52,12 +52,12 @@ namespace Raindrop.Backend.Tags
         /// <param name="td">Information about the tag to build.</param>
         public TagStruct Build(TagData td)
         {
-            Helpers.RequireParameter(td.Param, td.Reader);
+            Helpers.RequireParameter(td.Param, td.Source);
             List<TagStruct> childTags;
 
             try
             {
-                childTags = Helpers.GetChildren(td.Reader, EndTagPredicate);
+                childTags = Helpers.GetChildren(td.Source, EndTagPredicate);
             }
             catch (RaindropException exc)
             {
