@@ -39,7 +39,15 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         public string Name
         {
-            get { return "block"; }
+            get { return StaticName; }
+        }
+
+        /// <summary>
+        /// Gets the name of the tag without an instance.
+        /// </summary>
+        public static string StaticName
+        {
+            get { return "template"; }
         }
 
         /// <summary>
