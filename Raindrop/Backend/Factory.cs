@@ -36,10 +36,15 @@ namespace Raindrop.Backend
         /// </summary>
         static Factory()
         {
-            builders = GetITags();
+            builders = GetITagBuilders();
         }
 
-        private static Dictionary<string, ITagBuilder> GetITags()
+        /// <summary>
+        /// Gets a dictionary of classes implementing the ITagBuilder interface
+        /// keyed by the builder's Name property.
+        /// </summary>
+        /// <returns>A dictionary of ITagBuilders.</returns>
+        private static Dictionary<string, ITagBuilder> GetITagBuilders()
         {
             Dictionary<string, ITagBuilder> itags = new Dictionary<string, ITagBuilder>();
 
@@ -81,6 +86,7 @@ namespace Raindrop.Backend
 
         /// <summary>
         /// A temporary tag builder until the reflection version can be fixed.
+        /// TODO: Remove.
         /// </summary>
         /// <param name="data">A TagData representing the tag to be built.</param>
         /// <returns>A TagStruct representing the next tag in the reader.</returns>
