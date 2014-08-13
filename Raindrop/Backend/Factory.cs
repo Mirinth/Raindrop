@@ -78,7 +78,7 @@ namespace Raindrop.Backend
             itag = new NCondEndTag();
             itags.Add(itag.Name, itag);
 
-            itag = new BlockTag();
+            itag = new TemplateTag();
             itags.Add(itag.Name, itag);
 
             return itags;

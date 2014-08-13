@@ -74,7 +74,7 @@ namespace Raindrop.Backend.Tags
             List<TagStruct> children = new List<TagStruct>();
             TagStruct child = Factory.Build(source);
 
-            while (!predicate(child) && !BlockTag.EndTagPredicate(child))
+            while (!predicate(child) && !TemplateTag.EndTagPredicate(child))
             {
                 children.Add(child);
                 child = Factory.Build(source);

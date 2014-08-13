@@ -19,7 +19,9 @@
  */
 
 /*
- * The block tag represents a generic tag that contains children.
+ * The template tag represents a template. It's like the <html> root tag,
+ * but for Raindrop templates. Plus, it doesn't need to be at the start
+ * of the file (it's constructed internally).
  * 
  * The eof tag represents the end of the template file.
  */
@@ -30,7 +32,7 @@ using System.IO;
 
 namespace Raindrop.Backend.Tags
 {
-    public class BlockTag : ITagBuilder
+    public class TemplateTag : ITagBuilder
     {
         /// <summary>
         /// Gets the name of the tag.
@@ -47,7 +49,7 @@ namespace Raindrop.Backend.Tags
         public bool RemoveBlankLine { get { return true; } }
 
         /// <summary>
-        /// Builds a block tag.
+        /// Builds a template tag.
         /// </summary>
         /// <param name="td">Information about the tag to build.</param>
         public TagStruct Build(TagData td)
@@ -70,10 +72,10 @@ namespace Raindrop.Backend.Tags
 
         /// <summary>
         /// Determines whether a given TagStruct should be considered
-        /// the end of the current block.
+        /// the end of the template.
         /// </summary>
         /// <param name="tag">The TagStruct to test.</param>
-        /// <returns>True if tag should end the block; else false.</returns>
+        /// <returns>True if tag should end the template; else false.</returns>
         public static bool EndTagPredicate(TagStruct endTag)
         {
             if (endTag.Name == EofTag.StaticName) { return true; }
@@ -81,7 +83,7 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
-        /// Applies the block tag to the given data and outputs the result.
+        /// Applies the template tag to the given data and outputs the result.
         /// </summary>
         /// <param name="tag">The tag to be applied.</param>
         /// <param name="output">The place to put the output.</param>
