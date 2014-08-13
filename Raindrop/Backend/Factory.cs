@@ -122,21 +122,6 @@ namespace Raindrop.Backend
 
             TagStruct tag = builders[data.Name].Build(data);
             return tag;
-
-            //if (!itags.ContainsKey(td.ID))
-            //{
-            //    RaindropException exc = new RaindropException("Tag is not supported.");
-            //    exc["raindrop.encountered-tag-id"] = td.ID;
-            //    exc["raindrop.start-index"] = ts.Index;
-            //    throw exc;
-            //}
-
-            //ConstructorInfo constructor = itags[td.ID];
-
-            //// Invoke the constructor with the parameter and TagStream.
-            //Tag tag = (Tag)constructor.Invoke(new object[] { td.Param, ts });
-
-            //return tag;
         }
 
         /// <summary>
