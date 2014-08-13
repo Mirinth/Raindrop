@@ -22,31 +22,13 @@
  * TagData provides additional data to a tag during construction.
  */
 
-using System;
-using System.IO;
-
 namespace Raindrop.Backend
 {
     public struct TagData
     {
-        Func<string, TextReader> PathMapper { get; private set; }
-        public int Line { get; private set; }
-        public string Name { get; private set; }
-        public string Param { get; private set; }
-        public Template Source { get; private set; }
-
-        public TagData(
-            int tagLine,
-            string tagName,
-            string tagParam,
-            Template tagSource,
-            Func<string, TextReader> tagPathMapper)
-        {
-            Line = tagLine;
-            Name = tagName;
-            Param = tagParam;
-            Source = tagSource;
-            PathMapper = tagPathMapper;
-        }
+        public int Line;
+        public string Name;
+        public string Param;
+        public Template Source;
     }
 }
