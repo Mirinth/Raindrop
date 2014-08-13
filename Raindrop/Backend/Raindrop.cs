@@ -68,7 +68,7 @@ namespace Raindrop
                 Source = templateSource
             };
 
-            template = TagFactory.DevBuildTag(td);
+            template = Factory.DevBuildTag(td);
         }
 
         /// <summary>

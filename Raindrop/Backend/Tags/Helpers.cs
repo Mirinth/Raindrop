@@ -72,12 +72,12 @@ namespace Raindrop.Backend.Tags
             int startLine = source.Line;
 
             List<TagStruct> children = new List<TagStruct>();
-            TagStruct child = TagFactory.Build(source);
+            TagStruct child = Factory.Build(source);
 
             while (!predicate(child) && !BlockTag.EndTagPredicate(child))
             {
                 children.Add(child);
-                child = TagFactory.Build(source);
+                child = Factory.Build(source);
             }
 
             if (!predicate(child))

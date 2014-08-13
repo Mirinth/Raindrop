@@ -26,14 +26,14 @@ using System.Collections.Generic;
 
 namespace Raindrop.Backend.Tags
 {
-    public class TagFactory
+    public class Factory
     {
         private static Dictionary<string, ITagBuilder> builders;
 
         /// <summary>
-        /// The TagFactory constructor.
+        /// The Factory constructor.
         /// </summary>
-        static TagFactory()
+        static Factory()
         {
             builders = GetITags();
         }
