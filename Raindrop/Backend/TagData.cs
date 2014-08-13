@@ -29,11 +29,11 @@ namespace Raindrop.Backend
 {
     public struct TagData
     {
-        Func<string, TextReader> PathMapper { get; private set; }
-        public int Line { get; private set; }
-        public string Name { get; private set; }
-        public string Param { get; private set; }
-        public Template Source { get; private set; }
+        public readonly Func<string, TextReader> PathMapper;
+        public readonly int Line;
+        public readonly string Name;
+        public readonly string Param;
+        public readonly Template Source;
 
         public TagData(
             int tagLine,
