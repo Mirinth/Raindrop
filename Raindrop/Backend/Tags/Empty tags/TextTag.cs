@@ -19,7 +19,8 @@
  */
 
 /*
- * A text tag represents a block of plain text in the template.
+ * A text tag represents a block of plain text in the template
+ * that is output as-is when the text tag is processed.
  */
 
 using System.Collections.Generic;

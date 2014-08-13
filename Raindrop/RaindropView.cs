@@ -18,6 +18,12 @@
  * <http://www.gnu.org/licenses/>. 
  */
 
+/*
+ * The IView class for Raindrop, used by the MVC framework.
+ * This wraps the Raindrop class to provide the IView
+ * interface for MVC.
+ */
+
 using System.IO;
 using System.Web.Mvc;
 

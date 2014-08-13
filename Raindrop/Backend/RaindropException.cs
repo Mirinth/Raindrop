@@ -20,8 +20,11 @@
 
 /*
  * The exception thrown by Raindrop in various situations when
- * no system exceptions are appropriate.
+ * no system exceptions are appropriate. The Details member
+ * often provides useful information about the cause of an
+ * error.
  */
+
 using System;
 using System.Collections.Generic;
 

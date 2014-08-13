@@ -19,10 +19,10 @@
  */
 
 /*
- * The cond tag represents an optional block of the template.
- * A cond tag's children are only processed if its parameter
- * represents a "true" value in the data dictionary. See
- * Helpers.Truth() for the rules of truth.
+ * The cond ("conditional") tag represents an optional block
+ * of the template. A cond tag's children are only processed
+ * if its parameter represents a "true" value in the data
+ * dictionary. See Helpers.Truth() for the rules of truth.
  * 
  * The /cond tag represents the end of a cond tag block.
  */

@@ -18,6 +18,11 @@
  * <http://www.gnu.org/licenses/>. 
  */
 
+/*
+ * The IViewEngine class for Raindrop. Manages the RaindropView class
+ * and directly interacts with the MVC framework.
+ */
+
 using System.Web.Mvc;
 
 namespace Raindrop

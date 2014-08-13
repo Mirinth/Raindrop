@@ -19,10 +19,10 @@
  */
 
 /*
- * An ncond tag represents an optional block of the template.
- * An ncond tag's children are only processed if its parameter
- * represents a "false" value in the data dictionary. See
- * Helpers.Truth() for the rules of truth.
+ * An ncond ("negative conditional") tag represents an optional
+ * block of the template. An ncond tag's children are only
+ * processed if its parameter represents a "false" value in the
+ * data dictionary. See Helpers.Truth() for the rules of truth.
  * 
  * The /ncond tag represents the end of an ncond tag block.
  */

@@ -19,9 +19,6 @@
  */
 
 /*
- * Raindrop.cs
- * By Mirinth (mirinth@gmail.com)
- * 
  * The Raindrop file contains public functions for using the
  * Raindrop class. These functions handle converting a file
  * name into a template, and applying a template to a data

@@ -20,7 +20,8 @@
 
 /*
  * An escape tag allows the template author to embed reserved
- * tokens directly in the template.
+ * tokens directly in the template rather than inserting them
+ * dynamically via the data tag.
  */
 
 using System.Collections.Generic;
