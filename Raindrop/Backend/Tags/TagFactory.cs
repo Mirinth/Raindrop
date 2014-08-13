@@ -97,11 +97,11 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
-        /// Parses a tag out of the given template.
+        /// Builds the next tag in a template.
         /// </summary>
-        /// <param name="source">The template to parse a tag from.</param>
-        /// <returns>The tag parsed from the template.</returns>
-        public static TagStruct Parse(Template source)
+        /// <param name="source">The template to build a tag from.</param>
+        /// <returns>The tag built from the template.</returns>
+        public static TagStruct Build(Template source)
         {
             TagData td = Parser.Read(source);
             TagStruct tag = DevBuildTag(td);
