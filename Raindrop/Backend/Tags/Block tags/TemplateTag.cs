@@ -62,7 +62,16 @@ namespace Raindrop.Backend.Tags
         /// <param name="data">Information about the tag to build.</param>
         public TagStruct Build(TagData data)
         {
-            Helpers.RequireParameter(data.Param, data.Source);
+            TextReader templateReader = data.PathMapper(data.Param);
+            Template templateSource = new Template(templateReader.ReadToEnd());
+
+            data = new TagData(
+                templateSource.Line,
+                data.Name,
+                data.Param,
+                templateSource,
+                data.PathMapper);
+
             List<TagStruct> childTags;
 
             try
