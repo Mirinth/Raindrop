@@ -111,7 +111,16 @@ namespace Raindrop.Backend
         public static TagStruct Build(Template source)
         {
             TagData data = Parser.Read(source);
-            TagStruct tag = DevBuildTag(data);
+
+            if (!builders.ContainsKey(data.Name))
+            {
+                RaindropException exc = new RaindropException("Tag is not supported.");
+                exc["raindrop.encountered-tag-id"] = data.Name;
+                exc["raindrop.start-line"] = data.Source.Line;
+                throw exc;
+            }
+
+            TagStruct tag = builders[data.Name].Build(data);
             return tag;
 
             //if (!itags.ContainsKey(td.ID))
