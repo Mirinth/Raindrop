@@ -51,12 +51,15 @@ namespace Raindrop.Backend.Tags
         }
 
         /// <summary>
-        /// Gets a list of child tags.
+        /// Builds a list of child tags that should be contained by the
+        /// calling tag builder. The predicate determines whether a  tag
+        /// closes the block opened by the calling tag. The closing tag
+        /// is not included in the child list; it is discarded.
         /// </summary>
         /// <param name="source">A template to extract children from.</param>
         /// <param name="predicate">
-        /// The predicate to use when testing whether a given child tag should end
-        /// the current template block.
+        /// The predicate to use when testing whether a child tag should
+        /// end the current template block.
         /// </param>
         /// <returns>
         /// A list of child tags up to (but not including) the first tag that
