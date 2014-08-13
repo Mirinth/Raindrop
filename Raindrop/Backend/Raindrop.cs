@@ -58,7 +58,7 @@ namespace Raindrop
                     "templateName");
             }
 
-            Template templateSource = new Template(templateReader);
+            Template templateSource = new Template(templateReader.ReadToEnd());
 
             TagData seedTag = new TagData
             {
