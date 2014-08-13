@@ -22,8 +22,6 @@
  * Breaks an input file into symbols.
  */
 
-using System.IO;
-
 namespace Raindrop.Backend
 {
     public struct Symbol

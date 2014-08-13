@@ -22,7 +22,6 @@
  * Contains the text of a template.
  */
 
-using System;
 using System.IO;
 
 namespace Raindrop.Backend
