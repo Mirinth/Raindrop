@@ -48,13 +48,13 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Builds an escape tag.
         /// </summary>
-        /// <param name="td">Information about the tag to build.</param>
-        public TagStruct Build(TagData td)
+        /// <param name="data">Information about the tag to build.</param>
+        public TagStruct Build(TagData data)
         {
-            Helpers.RequireParameter(td.Param, td.Source);
-            td.Param = Unescape(td.Source, td.Param);
+            Helpers.RequireParameter(data.Param, data.Source);
+            data.Param = Unescape(data.Source, data.Param);
 
-            return Helpers.BuildTag(Apply, null, td);
+            return Helpers.BuildTag(Apply, null, data);
         }
 
         /// <summary>

@@ -47,12 +47,12 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Builds a data tag.
         /// </summary>
-        /// <param name="td">Information about the tag to build.</param>
-        public TagStruct Build(TagData td)
+        /// <param name="data">Information about the tag to build.</param>
+        public TagStruct Build(TagData data)
         {
-            Helpers.RequireParameter(td.Param, td.Source);
+            Helpers.RequireParameter(data.Param, data.Source);
 
-            return Helpers.BuildTag(Apply, null, td);
+            return Helpers.BuildTag(Apply, null, data);
         }
 
         /// <summary>

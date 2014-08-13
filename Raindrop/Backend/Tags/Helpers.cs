@@ -34,19 +34,19 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="apply">The tag's apply method</param>
         /// <param name="childTags">The tag's children</param>
-        /// <param name="td">Additional information about the tag</param>
+        /// <param name="data">Additional information about the tag</param>
         /// <returns>The initialized TagStruct.</returns>
         public static TagStruct BuildTag(
             TagApplyDelegate apply,
             List<TagStruct> childTags,
-            TagData td)
+            TagData data)
         {
             return new TagStruct()
             {
                 ApplyMethod = apply,
                 Children = childTags,
-                Name = td.Name,
-                Param = td.Param
+                Name = data.Name,
+                Param = data.Param
             };
         }
 

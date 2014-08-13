@@ -51,23 +51,23 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Builds a template tag.
         /// </summary>
-        /// <param name="td">Information about the tag to build.</param>
-        public TagStruct Build(TagData td)
+        /// <param name="data">Information about the tag to build.</param>
+        public TagStruct Build(TagData data)
         {
-            Helpers.RequireParameter(td.Param, td.Source);
+            Helpers.RequireParameter(data.Param, data.Source);
             List<TagStruct> childTags;
 
             try
             {
-                childTags = Helpers.GetChildren(td.Source, EndTagPredicate);
+                childTags = Helpers.GetChildren(data.Source, EndTagPredicate);
             }
             catch (RaindropException exc)
             {
-                exc["raindrop.template-name"] = td.Param;
+                exc["raindrop.template-name"] = data.Param;
                 throw;
             }
 
-            return Helpers.BuildTag(Apply, childTags, td);
+            return Helpers.BuildTag(Apply, childTags, data);
         }
 
         /// <summary>
@@ -135,8 +135,8 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Builds an eof tag.
         /// </summary>
-        /// <param name="td">Information about the tag to build.</param>
-        public TagStruct Build(TagData td)
+        /// <param name="data">Information about the tag to build.</param>
+        public TagStruct Build(TagData data)
         {
             // eof tag intentionally doesn't access its TagData.
             // Several places need to construct eof tags without

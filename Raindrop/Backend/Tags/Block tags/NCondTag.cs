@@ -52,13 +52,13 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Builds an ncond tag.
         /// </summary>
-        /// <param name="td">Information about the tag to build.</param>
-        public TagStruct Build(TagData td)
+        /// <param name="data">Information about the tag to build.</param>
+        public TagStruct Build(TagData data)
         {
-            Helpers.RequireParameter(td.Param, td.Source);
-            List<TagStruct> childTags = Helpers.GetChildren(td.Source, EndTagPredicate);
+            Helpers.RequireParameter(data.Param, data.Source);
+            List<TagStruct> childTags = Helpers.GetChildren(data.Source, EndTagPredicate);
 
-            return Helpers.BuildTag(Apply, childTags, td);
+            return Helpers.BuildTag(Apply, childTags, data);
         }
 
         /// <summary>
@@ -116,10 +116,10 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Builds a /cond tag.
         /// </summary>
-        /// <param name="td">Information about the tag to build.</param>
-        public TagStruct Build(TagData td)
+        /// <param name="data">Information about the tag to build.</param>
+        public TagStruct Build(TagData data)
         {
-            return Helpers.BuildTag(Apply, null, td);
+            return Helpers.BuildTag(Apply, null, data);
         }
 
         /// <summary>

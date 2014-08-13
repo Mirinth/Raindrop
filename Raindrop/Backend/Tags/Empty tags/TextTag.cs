@@ -55,15 +55,15 @@ namespace Raindrop.Backend.Tags
         /// <summary>
         /// Builds a text tag.
         /// </summary>
-        /// <param name="td">Information about the tag to build.</param>
-        public TagStruct Build(TagData td)
+        /// <param name="data">Information about the tag to build.</param>
+        public TagStruct Build(TagData data)
         {
-            if (Factory.RemovePrecedingBlankLine(td.Source))
+            if (Factory.RemovePrecedingBlankLine(data.Source))
             {
-                td.Param = RemoveTrailingBlankLine(td.Param);
+                data.Param = RemoveTrailingBlankLine(data.Param);
             }
 
-            return Helpers.BuildTag(Apply, null, td);
+            return Helpers.BuildTag(Apply, null, data);
         }
 
         /// <summary>
