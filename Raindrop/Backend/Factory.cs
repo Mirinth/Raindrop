@@ -84,7 +84,7 @@ namespace Raindrop.Backend
         /// </summary>
         /// <param name="td">A TagData representing the tag to be built.</param>
         /// <returns>A TagStruct representing the next tag in the reader.</returns>
-        private static TagStruct DevBuildTag(TagData td)
+        public static TagStruct DevBuildTag(TagData td)
         {
             if (!builders.ContainsKey(td.Name))
             {
