@@ -71,11 +71,6 @@ namespace Raindrop.Backend
             Text = source;
         }
 
-        public Template(TextReader source)
-        {
-            Text = source.ReadToEnd();
-        }
-
         private void RecalculateLine(int offset)
         {
             RecalculateLine(offset, 0);
