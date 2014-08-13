@@ -27,7 +27,7 @@ using Raindrop.Backend.Tags;
 
 namespace Raindrop.Backend
 {
-    public class Factory
+    public static class Factory
     {
         private static Dictionary<string, ITagBuilder> builders;
 
@@ -39,7 +39,7 @@ namespace Raindrop.Backend
             builders = GetITags();
         }
 
-        public static Dictionary<string, ITagBuilder> GetITags()
+        private static Dictionary<string, ITagBuilder> GetITags()
         {
             Dictionary<string, ITagBuilder> itags = new Dictionary<string, ITagBuilder>();
 
@@ -84,7 +84,7 @@ namespace Raindrop.Backend
         /// </summary>
         /// <param name="td">A TagData representing the tag to be built.</param>
         /// <returns>A TagStruct representing the next tag in the reader.</returns>
-        public static TagStruct DevBuildTag(TagData td)
+        private static TagStruct DevBuildTag(TagData td)
         {
             if (!builders.ContainsKey(td.Name))
             {
