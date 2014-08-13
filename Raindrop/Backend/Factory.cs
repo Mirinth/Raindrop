@@ -82,19 +82,19 @@ namespace Raindrop.Backend
         /// <summary>
         /// A temporary tag builder until the reflection version can be fixed.
         /// </summary>
-        /// <param name="td">A TagData representing the tag to be built.</param>
+        /// <param name="data">A TagData representing the tag to be built.</param>
         /// <returns>A TagStruct representing the next tag in the reader.</returns>
-        public static TagStruct DevBuildTag(TagData td)
+        public static TagStruct DevBuildTag(TagData data)
         {
-            if (!builders.ContainsKey(td.Name))
+            if (!builders.ContainsKey(data.Name))
             {
                 RaindropException exc = new RaindropException("Tag is not supported.");
-                exc["raindrop.encountered-tag-id"] = td.Name;
-                exc["raindrop.start-line"] = td.Source.Line;
+                exc["raindrop.encountered-tag-id"] = data.Name;
+                exc["raindrop.start-line"] = data.Source.Line;
                 throw exc;
             }
             
-            return builders[td.Name].Build(td);
+            return builders[data.Name].Build(data);
         }
 
         /// <summary>
@@ -104,8 +104,8 @@ namespace Raindrop.Backend
         /// <returns>The tag built from the template.</returns>
         public static TagStruct Build(Template source)
         {
-            TagData td = Parser.Read(source);
-            TagStruct tag = DevBuildTag(td);
+            TagData data = Parser.Read(source);
+            TagStruct tag = DevBuildTag(data);
             return tag;
 
             //if (!itags.ContainsKey(td.ID))
@@ -132,9 +132,9 @@ namespace Raindrop.Backend
         /// <returns>Whether to remove a preceding blank line.</returns>
         public static bool RemovePrecedingBlankLine(Template source)
         {
-            TagData td = Parser.Peek(source);
+            TagData tag = Parser.Peek(source);
 
-            bool shouldRemove = builders[td.Name].RemoveBlankLine;
+            bool shouldRemove = builders[tag.Name].RemoveBlankLine;
             
             return shouldRemove;
         }

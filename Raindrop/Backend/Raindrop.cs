@@ -60,7 +60,7 @@ namespace Raindrop
 
             Template templateSource = new Template(templateReader);
 
-            TagData td = new TagData
+            TagData seedTag = new TagData
             {
                 Line = -1,
                 Name = "block",
@@ -68,7 +68,7 @@ namespace Raindrop
                 Source = templateSource
             };
 
-            template = Factory.DevBuildTag(td);
+            template = Factory.DevBuildTag(seedTag);
         }
 
         /// <summary>

@@ -64,9 +64,9 @@ namespace Raindrop.Backend
         /// </returns>
         public static Symbol Read(Template source)
         {
-            Symbol s = Peek(source);
-            Commit(source, s);
-            return s;
+            Symbol readSymbol = Peek(source);
+            Commit(source, readSymbol);
+            return readSymbol;
         }
 
         /// <summary>
@@ -84,21 +84,21 @@ namespace Raindrop.Backend
                 return new Symbol() { Line = -1, Text = null };
             }
 
-            Symbol s = new Symbol();
-            s.Text = GetSymbolText(source);
-            s.Line = source.Line;
+            Symbol peekSymbol = new Symbol();
+            peekSymbol.Text = GetSymbolText(source);
+            peekSymbol.Line = source.Line;
 
-            return s;
+            return peekSymbol;
         }
 
         /// <summary>
         /// Commits a symbol as read.
         /// </summary>
         /// <param name="source">The template the symbol was read from.</param>
-        /// <param name="s">The symbol that was read.</param>
-        public static void Commit(Template source, Symbol s)
+        /// <param name="commitSymbol">The symbol that was read.</param>
+        public static void Commit(Template source, Symbol commitSymbol)
         {
-            source.Index += s.Text.Length;
+            source.Index += commitSymbol.Text.Length;
         }
 
         /// <summary>

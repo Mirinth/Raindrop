@@ -41,11 +41,11 @@ public class RaindropView : IView
        string filePath = viewContext.HttpContext.Server.MapPath(this.ViewPath);
        Raindrop.Raindrop template;
 
-       using(FileStream fs =
+       using(FileStream templateFile =
            new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-       using (StreamReader sr = new StreamReader(fs))
+       using (StreamReader templateReader = new StreamReader(templateFile))
        {
-           template = new Raindrop.Raindrop(sr, filePath);
+           template = new Raindrop.Raindrop(templateReader, filePath);
        }
 
        template.Apply(writer, viewContext.ViewData);
