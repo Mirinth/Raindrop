@@ -23,8 +23,9 @@
  */
 
 using System.Collections.Generic;
+using Raindrop.Backend.Tags;
 
-namespace Raindrop.Backend.Tags
+namespace Raindrop.Backend
 {
     public class Factory
     {
