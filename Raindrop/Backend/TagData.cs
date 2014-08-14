@@ -29,7 +29,6 @@ namespace Raindrop.Backend
 {
     public struct TagData
     {
-        public readonly Func<string, TextReader> PathMapper;
         public readonly int Line;
         public readonly string Name;
         public readonly string Param;
@@ -39,14 +38,12 @@ namespace Raindrop.Backend
             int tagLine,
             string tagName,
             string tagParam,
-            Template tagSource,
-            Func<string, TextReader> tagPathMapper)
+            Template tagSource)
         {
             Line = tagLine;
             Name = tagName;
             Param = tagParam;
             Source = tagSource;
-            PathMapper = tagPathMapper;
         }
     }
 }
