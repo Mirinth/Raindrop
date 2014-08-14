@@ -104,6 +104,13 @@ namespace Raindrop.Backend
         /// <param name="oldOffset">The old offset.</param>
         private void RecalculateLine(int offset, int oldOffset)
         {
+            if (offset < oldOffset)
+            {
+                throw new ArgumentOutOfRangeException(
+                    "Template doesn't support rewinding.",
+                    "offset");
+            }
+
             for (int i = oldOffset; i < offset && i < Text.Length; i++)
             {
                 if (Text[i] == '\r') { crCount++; }
