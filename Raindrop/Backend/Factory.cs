@@ -90,6 +90,17 @@ namespace Raindrop.Backend
 
                 object oBuilder = ci.Invoke(null);
                 ITagBuilder builder = (ITagBuilder)oBuilder;
+
+                if (itags.ContainsKey(builder.Name))
+                {
+                    RaindropException exc =
+                        new RaindropException("Duplicate tags found.");
+                    exc["raindrop.original-type"] = itags[builder.Name].GetType().FullName;
+                    exc["raindrop.duplicate-type"] = builder.GetType().FullName;
+                    exc["raindrop.duplicate-tag-name"] = builder.Name;
+                    throw exc;
+                }
+
                 itags.Add(builder.Name, builder);
             }
 
