@@ -22,6 +22,7 @@
  * Contains the text of a template.
  */
 
+using System;
 using System.IO;
 
 namespace Raindrop.Backend
@@ -33,6 +34,7 @@ namespace Raindrop.Backend
         private int offset = 0;
 
         public string Text { get; set; }
+        public Func<string, TextReader> Map { get; set; }
 
         public int Index
         {
@@ -66,9 +68,10 @@ namespace Raindrop.Backend
             }
         }
 
-        public Template(string source)
+        public Template(string source, Func<string, TextReader> mapper)
         {
             Text = source;
+            Map = mapper;
         }
 
         private void RecalculateLine(int offset)
