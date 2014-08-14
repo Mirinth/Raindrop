@@ -86,6 +86,7 @@ namespace Raindrop.Backend
                     RaindropException exc = 
                         new RaindropException("Found ITagBuilder with no default constructor");
                     exc["raindrop.type-name"] = t.FullName;
+                    throw exc;
                 }
 
                 object oBuilder = ci.Invoke(null);
