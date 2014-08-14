@@ -24,30 +24,53 @@
  * interface for MVC.
  */
 
+using System;
 using System.IO;
 using System.Web.Mvc;
 
 public class RaindropView : IView
 {
-   public RaindropView(string viewPath, string masterPath)
-   {
-       this.ViewPath = viewPath;
-   }
+    public RaindropView(string viewPath, string masterPath)
+    {
+        this.ViewPath = viewPath;
+    }
 
-   public string ViewPath { get; private set; }
+    public string ViewPath { get; private set; }
 
-   public void Render(ViewContext viewContext, TextWriter writer)
-   {
-       string filePath = viewContext.HttpContext.Server.MapPath(this.ViewPath);
-       Raindrop.Raindrop template;
+    public void Render(ViewContext viewContext, TextWriter writer)
+    {
+        Raindrop.Raindrop template;
+        Func<string, TextReader> mapper = (unmappedPath) =>
+        {
+                return Map(viewContext.HttpContext.Server.MapPath, unmappedPath);
+        };
 
-       using(FileStream templateFile =
-           new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-       using (StreamReader templateReader = new StreamReader(templateFile))
-       {
-           template = new Raindrop.Raindrop(templateReader, filePath);
-       }
+        template = new Raindrop.Raindrop(this.ViewPath, mapper);
 
-       template.Apply(writer, viewContext.ViewData);
-   }
+        template.Apply(writer, viewContext.ViewData);
+    }
+
+    /// <summary>
+    /// Maps an unmapped path using a mapper; opens it with FileMode.Open,
+    /// FileAccess.Read and FileShare.Read settings; wraps it in a TextReader
+    /// and returns the reader
+    /// </summary>
+    /// <param name="mapper">
+    /// The method to be used to map the path.
+    /// </param>
+    /// <param name="unmappedPath">
+    /// The unmapped path to map and open.
+    /// </param>
+    /// <returns>A TextReader with the contents of the mapped path.</returns>
+    private TextReader Map(Func<string, string> mapper, string unmappedPath)
+    {
+        string mappedPath = mapper(unmappedPath);
+        FileStream templateFile = new FileStream(
+            mappedPath,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read);
+        StreamReader templateReader = new StreamReader(templateFile);
+        return templateReader;
+    }
 }
