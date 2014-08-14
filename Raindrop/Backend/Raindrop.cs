@@ -49,6 +49,8 @@ namespace Raindrop
         /// </param>
         public Raindrop(string templateName, Func<string, TextReader> mapper)
         {
+            // A bootstrap template is used instead of modifying the
+            // real template because it's invisible.
             string bootstrap =
                 Punctuation.LeftCap +
                 TemplateTag.StaticName +
