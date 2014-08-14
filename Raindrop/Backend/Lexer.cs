@@ -124,7 +124,7 @@ namespace Raindrop.Backend
             }
 
             // Where's the next punctuation?
-            for (int i = index; i < source.Text.Length - Punctuation.Longest; i++)
+            for (int i = index; i <= source.Text.Length - Punctuation.Longest; i++)
             {
                 if (source.Text.SubstringIsAt(Punctuation.LeftCap, i))
                 {
