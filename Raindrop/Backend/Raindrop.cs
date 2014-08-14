@@ -49,17 +49,16 @@ namespace Raindrop
         /// </param>
         public Raindrop(string templateName, Func<string, TextReader> mapper)
         {
-            TextReader templateReader = mapper(templateName);
+            string bootstrap =
+                Punctuation.LeftCap +
+                TemplateTag.StaticName +
+                Punctuation.Divider +
+                templateName +
+                Punctuation.RightCap;
 
-            Template templateSource = new Template(templateReader.ReadToEnd(), mapper);
+            Template seedTemplate = new Template(bootstrap, mapper);
 
-            TagData seedTag = new TagData(
-                -1,
-                TemplateTag.StaticName,
-                templateName,
-                templateSource);
-
-            template = Factory.DevBuildTag(seedTag);
+            template = Factory.Build(seedTemplate);
         }
 
         /// <summary>
