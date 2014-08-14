@@ -36,12 +36,12 @@ namespace Raindrop.Backend.Tags
         /// <param name="childTags">The tag's children</param>
         /// <param name="data">Additional information about the tag</param>
         /// <returns>The initialized TagStruct.</returns>
-        public static TagStruct BuildTag(
+        public static Tag BuildTag(
             TagApplyDelegate apply,
-            List<TagStruct> childTags,
+            List<Tag> childTags,
             TagData data)
         {
-            return new TagStruct(data.Name, data.Param, childTags, apply);
+            return new Tag(data.Name, data.Param, childTags, apply);
         }
 
         /// <summary>
@@ -59,14 +59,14 @@ namespace Raindrop.Backend.Tags
         /// A list of child tags up to (but not including) the first tag that
         /// matches the predicate.
         /// </returns>
-        public static List<TagStruct> GetChildren(
+        public static List<Tag> GetChildren(
             Template source,
-            Predicate<TagStruct> predicate)
+            Predicate<Tag> predicate)
         {
             int startLine = source.Line;
 
-            List<TagStruct> children = new List<TagStruct>();
-            TagStruct child = Factory.Build(source);
+            List<Tag> children = new List<Tag>();
+            Tag child = Factory.Build(source);
 
             while (!predicate(child) && !TemplateTag.EndTagPredicate(child))
             {

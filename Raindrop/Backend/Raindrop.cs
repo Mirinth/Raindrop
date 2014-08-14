@@ -35,7 +35,7 @@ namespace Raindrop
 {
     public class Raindrop
     {
-        TagStruct template;
+        Tag template;
 
         /// <summary>
         /// The Raindrop constructor. Constructs a template using the

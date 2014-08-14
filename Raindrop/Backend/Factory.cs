@@ -89,7 +89,7 @@ namespace Raindrop.Backend
         /// </summary>
         /// <param name="source">The template to build a tag from.</param>
         /// <returns>The tag built from the template.</returns>
-        public static TagStruct Build(Template source)
+        public static Tag Build(Template source)
         {
             TagData data = Parser.Read(source);
 
@@ -101,7 +101,7 @@ namespace Raindrop.Backend
                 throw exc;
             }
 
-            TagStruct tag = builders[data.Name].Build(data);
+            Tag tag = builders[data.Name].Build(data);
             return tag;
         }
 

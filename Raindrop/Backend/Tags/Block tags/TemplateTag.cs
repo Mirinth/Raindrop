@@ -60,7 +60,7 @@ namespace Raindrop.Backend.Tags
         /// Builds a template tag.
         /// </summary>
         /// <param name="data">Information about the tag to build.</param>
-        public TagStruct Build(TagData data)
+        public Tag Build(TagData data)
         {
             TextReader templateReader = data.Source.Map(data.Param);
             Template templateSource = new Template(
@@ -73,7 +73,7 @@ namespace Raindrop.Backend.Tags
                 data.Param,
                 templateSource);
 
-            List<TagStruct> childTags;
+            List<Tag> childTags;
 
             try
             {
@@ -94,7 +94,7 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="tag">The TagStruct to test.</param>
         /// <returns>True if tag should end the template; else false.</returns>
-        public static bool EndTagPredicate(TagStruct endTag)
+        public static bool EndTagPredicate(Tag endTag)
         {
             if (endTag.Name == TemplateEndTag.StaticName) { return true; }
             else { return false; }
@@ -107,13 +107,13 @@ namespace Raindrop.Backend.Tags
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public void Apply(
-            TagStruct tag,
+            Tag tag,
             TextWriter output,
             IDictionary<string, object> data)
         {
             try
             {
-                foreach (TagStruct child in tag.Children)
+                foreach (Tag child in tag.Children)
                 {
                     child.Apply(output, data);
                 }
@@ -154,7 +154,7 @@ namespace Raindrop.Backend.Tags
         /// Builds an eof tag.
         /// </summary>
         /// <param name="data">Information about the tag to build.</param>
-        public TagStruct Build(TagData data)
+        public Tag Build(TagData data)
         {
             return Helpers.BuildTag(Apply, null, data);
         }
@@ -166,7 +166,7 @@ namespace Raindrop.Backend.Tags
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public void Apply(
-            TagStruct tag,
+            Tag tag,
             TextWriter output,
             IDictionary<string, object> data)
         {

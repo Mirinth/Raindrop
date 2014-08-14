@@ -29,26 +29,26 @@ using System.IO;
 namespace Raindrop.Backend.Tags
 {
     public delegate void TagApplyDelegate(
-        TagStruct tag,
+        Tag tag,
         TextWriter output,
         IDictionary<string, object> data);
 
-    public struct TagStruct
+    public struct Tag
     {
         private readonly string _name;
         private readonly string _param;
-        private readonly List<TagStruct> _children;
+        private readonly List<Tag> _children;
         private readonly TagApplyDelegate _apply;
 
         public string Name { get { return _name; } }
         public string Param { get { return _param; } }
-        public List<TagStruct> Children { get { return _children; } }
+        public List<Tag> Children { get { return _children; } }
         public TagApplyDelegate ApplyMethod { get { return _apply; } }
 
-        public TagStruct(
+        public Tag(
             string name,
             string param,
-            List<TagStruct> children,
+            List<Tag> children,
             TagApplyDelegate applyMethod)
         {
             _name = name;

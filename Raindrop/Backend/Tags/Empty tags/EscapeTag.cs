@@ -49,7 +49,7 @@ namespace Raindrop.Backend.Tags
         /// Builds an escape tag.
         /// </summary>
         /// <param name="data">Information about the tag to build.</param>
-        public TagStruct Build(TagData data)
+        public Tag Build(TagData data)
         {
             Helpers.RequireParameter(data.Param, data.Source);
             string param = Unescape(data.Source, data.Param);
@@ -66,7 +66,7 @@ namespace Raindrop.Backend.Tags
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public void Apply(
-            TagStruct tag,
+            Tag tag,
             TextWriter output,
             IDictionary<string, object> data)
         {

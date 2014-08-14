@@ -53,10 +53,10 @@ namespace Raindrop.Backend.Tags
         /// Builds an ncond tag.
         /// </summary>
         /// <param name="data">Information about the tag to build.</param>
-        public TagStruct Build(TagData data)
+        public Tag Build(TagData data)
         {
             Helpers.RequireParameter(data.Param, data.Source);
-            List<TagStruct> childTags = Helpers.GetChildren(data.Source, EndTagPredicate);
+            List<Tag> childTags = Helpers.GetChildren(data.Source, EndTagPredicate);
 
             return Helpers.BuildTag(Apply, childTags, data);
         }
@@ -67,7 +67,7 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         /// <param name="tag">The TagStruct to test.</param>
         /// <returns>True if tag should end the block; else false.</returns>
-        public static bool EndTagPredicate(TagStruct tag)
+        public static bool EndTagPredicate(Tag tag)
         {
             if (tag.Name == "/ncond") { return true; }
             else { return false; }
@@ -80,7 +80,7 @@ namespace Raindrop.Backend.Tags
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public void Apply(
-            TagStruct tag,
+            Tag tag,
             TextWriter output,
             IDictionary<string, object> data)
         {
@@ -88,7 +88,7 @@ namespace Raindrop.Backend.Tags
             Helpers.RequireKey(tag.Param, data);
             if (!Helpers.Truth(tag.Param, data))
             {
-                foreach (TagStruct child in tag.Children)
+                foreach (Tag child in tag.Children)
                 {
                     child.Apply(output, data);
                 }
@@ -117,7 +117,7 @@ namespace Raindrop.Backend.Tags
         /// Builds a /cond tag.
         /// </summary>
         /// <param name="data">Information about the tag to build.</param>
-        public TagStruct Build(TagData data)
+        public Tag Build(TagData data)
         {
             return Helpers.BuildTag(Apply, null, data);
         }
@@ -129,7 +129,7 @@ namespace Raindrop.Backend.Tags
         /// <param name="output">The place to put the output.</param>
         /// <param name="data">The data to be applied to.</param>
         public void Apply(
-            TagStruct tag,
+            Tag tag,
             TextWriter output,
             IDictionary<string, object> data)
         {

@@ -30,7 +30,7 @@ namespace Raindrop.Backend.Tags
         /// Builds a TagStruct.
         /// </summary>
         /// <param name="data">Information about the tag to build.</param>
-        TagStruct Build(TagData data);
+        Tag Build(TagData data);
 
         /// <summary>
         /// Gets the name of the tag.
