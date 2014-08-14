@@ -33,8 +33,11 @@ namespace Raindrop.Backend
         private int crCount = 1;
         private int offset = 0;
 
-        public string Text { get; set; }
-        public Func<string, TextReader> Map { get; set; }
+        private string _text;
+        private Func<string, TextReader> _map;
+
+        public string Text { get { return _text; } }
+        public Func<string, TextReader> Map { get { return _map; } }
 
         public int Index
         {
@@ -70,8 +73,8 @@ namespace Raindrop.Backend
 
         public Template(string source, Func<string, TextReader> mapper)
         {
-            Text = source;
-            Map = mapper;
+            _text = source;
+            _map = mapper;
         }
 
         private void RecalculateLine(int offset)
