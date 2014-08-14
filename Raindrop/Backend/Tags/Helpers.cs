@@ -41,13 +41,7 @@ namespace Raindrop.Backend.Tags
             List<TagStruct> childTags,
             TagData data)
         {
-            return new TagStruct()
-            {
-                ApplyMethod = apply,
-                Children = childTags,
-                Name = data.Name,
-                Param = data.Param
-            };
+            return new TagStruct(data.Name, data.Param, childTags, apply);
         }
 
         /// <summary>
