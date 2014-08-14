@@ -74,13 +74,8 @@ namespace Raindrop.Backend
         /// <returns>An eof tag.</returns>
         private static TagData ReadEof(Template source)
         {
-            return new TagData()
-            {
-                Name = EofTag.StaticName,
-                Line = -1,
-                Param = EofTag.StaticName,
-                Source = source
-            };
+            TagData tag = new TagData(-1, EofTag.StaticName, EofTag.StaticName, source);
+            return tag;
         }
 
         /// <summary>
@@ -90,21 +85,19 @@ namespace Raindrop.Backend
         /// <returns>The non-text, non-eof tag in the template.</returns>
         private static TagData ReadTag(Template source)
         {
-            TagData tag = new TagData();
-            tag.Source = source;
-            tag.Param = "";
+            string tagParam = string.Empty;
 
             Symbol leftCap = Lexer.Read(source);
-            tag.Line = leftCap.Line;
+            int tagLine = leftCap.Line;
 
             Symbol name = Lexer.Read(source);
-            tag.Name = name.Text;
+            string tagName = name.Text;
 
             Symbol paramPart = Lexer.Peek(source);
             while (paramPart.Text != null &&
                     paramPart.Text != Punctuation.RightCap)
             {
-                tag.Param += paramPart.Text + Punctuation.Divider;
+                tagParam += paramPart.Text + Punctuation.Divider;
                 Lexer.Commit(source, paramPart);
                 paramPart = Lexer.Peek(source);
             }
@@ -114,16 +107,17 @@ namespace Raindrop.Backend
                 RaindropException exc = new RaindropException(
                     "Ending tag delimiter not found before end-of-file");
                 exc["raindrop.expected-delimiter"] = Punctuation.RightCap;
-                exc["raindrop.start-line"] = tag.Line;
+                exc["raindrop.start-line"] = tagLine;
                 throw exc;
             }
 
             // Discard trailing cap
             Lexer.Commit(source, paramPart);
 
-            tag.Name = tag.Name.Trim(Punctuation.NameTrim);
-            tag.Param = tag.Param.Trim(Punctuation.ParamTrim);
+            tagName = tagName.Trim(Punctuation.NameTrim);
+            tagParam = tagParam.Trim(Punctuation.ParamTrim);
 
+            TagData tag = new TagData(tagLine, tagName, tagParam, source);
             return tag;
         }
 
@@ -134,29 +128,25 @@ namespace Raindrop.Backend
         /// <returns>The text tag in the template.</returns>
         private static TagData ReadText(Template source)
         {
-            TagData tag = new TagData()
-            {
-                Source = source,
-                Param = "",
-                Name = TextTag.StaticName,
-            };
+            string tagParam = string.Empty;
 
             Symbol textPart = Lexer.Peek(source);
-            tag.Line = textPart.Line;
+            int tagLine = textPart.Line;
 
             while (textPart.Text != null &&
                     textPart.Text != Punctuation.LeftCap)
             {
-                if (tag.Param.Length > 0 && textPart.Text.Length > 0)
+                if (tagParam.Length > 0 && textPart.Text.Length > 0)
                 {
-                    tag.Param += Punctuation.Divider;
+                    tagParam += Punctuation.Divider;
                 }
 
-                tag.Param += textPart.Text;
+                tagParam += textPart.Text;
                 Lexer.Commit(source, textPart);
                 textPart = Lexer.Peek(source);
             }
 
+            TagData tag = new TagData(tagLine, TextTag.StaticName, tagParam, source);
             return tag;
         }
     }
