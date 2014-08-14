@@ -96,7 +96,7 @@ namespace Raindrop.Backend.Tags
         /// <returns>True if tag should end the template; else false.</returns>
         public static bool EndTagPredicate(TagStruct endTag)
         {
-            if (endTag.Name == EofTag.StaticName) { return true; }
+            if (endTag.Name == TemplateEndTag.StaticName) { return true; }
             else { return false; }
         }
 
@@ -126,7 +126,7 @@ namespace Raindrop.Backend.Tags
         }
     }
 
-    public class EofTag : ITagBuilder
+    public class TemplateEndTag : ITagBuilder
     {
         /// <summary>
         /// Gets the name of the tag.
@@ -147,7 +147,7 @@ namespace Raindrop.Backend.Tags
         /// </summary>
         public static string StaticName
         {
-            get { return "eof"; }
+            get { return "/template"; }
         }
 
         /// <summary>

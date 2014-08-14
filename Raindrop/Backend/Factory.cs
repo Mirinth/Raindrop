@@ -63,7 +63,7 @@ namespace Raindrop.Backend
             itag = new ArrayEndTag();
             itags.Add(itag.Name, itag);
 
-            itag = new EofTag();
+            itag = new TemplateEndTag();
             itags.Add(itag.Name, itag);
 
             itag = new CondTag();

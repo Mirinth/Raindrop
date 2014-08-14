@@ -39,7 +39,7 @@ namespace Raindrop.Backend
 
             if (typeTest.Text == null)
             {
-                return ReadEof(source);
+                return ReadEot(source);
             }
             else if (typeTest.Text == Punctuation.LeftCap)
             {
@@ -71,10 +71,14 @@ namespace Raindrop.Backend
         /// Reads from a template when it is at end-of-file.
         /// </summary>
         /// <param name="source">The template to read from.</param>
-        /// <returns>An eof tag.</returns>
-        private static TagData ReadEof(Template source)
+        /// <returns>An end-of-template tag.</returns>
+        private static TagData ReadEot(Template source)
         {
-            TagData tag = new TagData(-1, EofTag.StaticName, EofTag.StaticName, source);
+            TagData tag = new TagData(
+                -1,
+                TemplateEndTag.StaticName,
+                TemplateEndTag.StaticName,
+                source);
             return tag;
         }
 
