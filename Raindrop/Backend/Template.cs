@@ -71,17 +71,37 @@ namespace Raindrop.Backend
             }
         }
 
+        /// <summary>
+        /// Initializes the template.
+        /// </summary>
+        /// <param name="source">The text of the template.</param>
+        /// <param name="mapper">
+        /// A method to map strings to child templates.
+        /// </param>
         public Template(string source, Func<string, TextReader> mapper)
         {
             _text = source;
             _map = mapper;
         }
 
+        /// <summary>
+        /// Recalculates the current line of the template
+        /// based on a new offset.
+        /// </summary>
+        /// <param name="offset">
+        /// The new offset of the template.
+        /// </param>
         private void RecalculateLine(int offset)
         {
             RecalculateLine(offset, 0);
         }
 
+        /// <summary>
+        /// Recalculates the current line of the template
+        /// based on an old and new offset.
+        /// </summary>
+        /// <param name="offset">The new offset.</param>
+        /// <param name="oldOffset">The old offset.</param>
         private void RecalculateLine(int offset, int oldOffset)
         {
             for (int i = oldOffset; i < offset && i < Text.Length; i++)
