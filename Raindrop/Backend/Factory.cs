@@ -74,40 +74,24 @@ namespace Raindrop.Backend
         /// <returns>A dictionary of ITagBuilders.</returns>
         private static Dictionary<string, ITagBuilder> GetITagBuilders()
         {
+            List<Type> builderTypes = GetBuilderTypes();
             Dictionary<string, ITagBuilder> itags = new Dictionary<string, ITagBuilder>();
 
-            ITagBuilder itag = new DataTag();
-            itags.Add(itag.Name, itag);
+            foreach (Type t in builderTypes)
+            {
+                ConstructorInfo ci = t.GetConstructor(Type.EmptyTypes);
 
-            itag = new EscapeTag();
-            itags.Add(itag.Name, itag);
+                if (ci == null)
+                {
+                    RaindropException exc = 
+                        new RaindropException("Found ITagBuilder with no default constructor");
+                    exc["raindrop.type-name"] = t.FullName;
+                }
 
-            itag = new TextTag();
-            itags.Add(itag.Name, itag);
-
-            itag = new ArrayTag();
-            itags.Add(itag.Name, itag);
-
-            itag = new ArrayEndTag();
-            itags.Add(itag.Name, itag);
-
-            itag = new TemplateEndTag();
-            itags.Add(itag.Name, itag);
-
-            itag = new CondTag();
-            itags.Add(itag.Name, itag);
-
-            itag = new CondEndTag();
-            itags.Add(itag.Name, itag);
-
-            itag = new NCondTag();
-            itags.Add(itag.Name, itag);
-
-            itag = new NCondEndTag();
-            itags.Add(itag.Name, itag);
-
-            itag = new TemplateTag();
-            itags.Add(itag.Name, itag);
+                object oBuilder = ci.Invoke(null);
+                ITagBuilder builder = (ITagBuilder)oBuilder;
+                itags.Add(builder.Name, builder);
+            }
 
             return itags;
         }
