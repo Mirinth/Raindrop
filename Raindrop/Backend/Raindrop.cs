@@ -49,17 +49,6 @@ namespace Raindrop
         /// </param>
         public Raindrop(string templateName, Func<string, TextReader> mapper)
         {
-            if (templateReader == null)
-            {
-                throw new ArgumentNullException("templateSource");
-            }
-            if (string.IsNullOrEmpty(templateName))
-            {
-                throw new ArgumentException(
-                    "A name for this template source is required for error reporting.",
-                    "templateName");
-            }
-
             TextReader templateReader = mapper(templateName);
 
             Template templateSource = new Template(templateReader.ReadToEnd(), mapper);
