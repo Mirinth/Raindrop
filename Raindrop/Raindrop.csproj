@@ -48,7 +48,7 @@
     <Compile Include="Backend\TagData.cs" />
     <Compile Include="Backend\Tags\Empty tags\EscapeTag.cs" />
     <Compile Include="Backend\Tags\ITagBuilder.cs" />
-    <Compile Include="Backend\Tags\TagStruct.cs" />
+    <Compile Include="Backend\Tags\Tag.cs" />
     <Compile Include="Backend\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RaindropView.cs" />
