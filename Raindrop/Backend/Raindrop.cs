@@ -39,13 +39,15 @@ namespace Raindrop
 
         /// <summary>
         /// The Raindrop constructor. Constructs a template using the
-        /// given data source.
+        /// given data source and mapper.
         /// </summary>
-        /// <param name="templateReader">The data source to construct from.</param>
         /// <param name="templateName">
-        /// The name of the data source. Used for error reporting.
+        /// The name of the template.
         /// </param>
-        public Raindrop(TextReader templateReader, string templateName)
+        /// <param name="mapper">
+        /// Maps templateName to a file on disk.
+        /// </param>
+        public Raindrop(string templateName, Func<string, TextReader> mapper)
         {
             if (templateReader == null)
             {
@@ -58,7 +60,9 @@ namespace Raindrop
                     "templateName");
             }
 
-            Template templateSource = new Template(templateReader.ReadToEnd());
+            TextReader templateReader = mapper(templateName);
+
+            Template templateSource = new Template(templateReader.ReadToEnd(), mapper);
 
             TagData seedTag = new TagData(-1, "block", templateName, templateSource);
 
