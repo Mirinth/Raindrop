@@ -60,7 +60,8 @@ namespace Raindrop.Backend.Tags
         {
             if (Factory.RemovePrecedingBlankLine(data.Source))
             {
-                data.Param = RemoveTrailingBlankLine(data.Param);
+                string param = RemoveTrailingBlankLine(data.Param);
+                data = new TagData(data.Line, data.Name, param, data.Source);
             }
 
             return Helpers.BuildTag(Apply, null, data);
