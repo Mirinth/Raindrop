@@ -53,7 +53,11 @@ namespace Raindrop
 
             Template templateSource = new Template(templateReader.ReadToEnd(), mapper);
 
-            TagData seedTag = new TagData(-1, "block", templateName, templateSource);
+            TagData seedTag = new TagData(
+                -1,
+                TemplateTag.StaticName,
+                templateName,
+                templateSource);
 
             template = Factory.DevBuildTag(seedTag);
         }
