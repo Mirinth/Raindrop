@@ -85,25 +85,6 @@ namespace Raindrop.Backend
         }
 
         /// <summary>
-        /// A temporary tag builder until the reflection version can be fixed.
-        /// TODO: Remove.
-        /// </summary>
-        /// <param name="data">A TagData representing the tag to be built.</param>
-        /// <returns>A TagStruct representing the next tag in the reader.</returns>
-        public static TagStruct DevBuildTag(TagData data)
-        {
-            if (!builders.ContainsKey(data.Name))
-            {
-                RaindropException exc = new RaindropException("Tag is not supported.");
-                exc["raindrop.encountered-tag-id"] = data.Name;
-                exc["raindrop.start-line"] = data.Source.Line;
-                throw exc;
-            }
-            
-            return builders[data.Name].Build(data);
-        }
-
-        /// <summary>
         /// Builds the next tag in a template.
         /// </summary>
         /// <param name="source">The template to build a tag from.</param>
