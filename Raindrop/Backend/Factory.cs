@@ -22,7 +22,9 @@
  * The TagFactory is responsible for constructing tags.
  */
 
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Raindrop.Backend.Tags;
 
 namespace Raindrop.Backend
@@ -37,6 +39,32 @@ namespace Raindrop.Backend
         static Factory()
         {
             builders = GetITagBuilders();
+        }
+
+        /// <summary>
+        /// Gets all the types in the current AppDomain that
+        /// inherit the ITagBuilder interface.
+        /// </summary>
+        /// <returns>
+        /// A List of Types inheriting ITagBuilder.
+        /// </returns>
+        private static List<Type> GetBuilderTypes()
+        {
+            Type builderType = typeof(ITagBuilder);
+            List<Type> types = new List<Type>();
+
+            foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (Type t in asm.GetTypes())
+                {
+                    if (t.GetInterface(builderType.FullName) != null)
+                    {
+                        types.Add(t);
+                    }
+                }
+            }
+
+            return types;
         }
 
         /// <summary>
