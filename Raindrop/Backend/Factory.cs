@@ -143,49 +143,5 @@ namespace Raindrop.Backend
             
             return shouldRemove;
         }
-
-        /// <summary>
-        /// Generates a Dictionary of Types that inherit from the Tag class,
-        /// are not abstract, and have a public static field named "ID" which
-        /// is a string. The  Dictionary is indexed by the value of the type's
-        /// "ID" property, and all loaded assemblies are searched for objects.
-        /// </summary>
-        /// <returns>A Dictionary containing the identified types.</returns>
-        //public static Dictionary<string, ConstructorInfo> GetTagTypes()
-        //{
-        //    const BindingFlags flags = BindingFlags.Public | BindingFlags.Static;
-        //    Type tagBase = typeof(Tag);
-        //    Dictionary<string, ConstructorInfo> types = new Dictionary<string, ConstructorInfo>();
-
-        //    foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
-        //    {
-        //        foreach (Type t in asm.GetTypes())
-        //        {
-        //            if (!t.IsSubclassOf(tagBase)) { continue; }
-        //            if (t.IsAbstract) { continue; }
-        //            if (t.GetField("ID", flags) == null) { continue; }
-
-        //            object key = t.GetField("ID").GetValue(null);
-
-        //            // Tags with non-string ID fields can't be used, so
-        //            // just skip them.
-        //            if (!(key is string)) { continue; }
-
-        //            ConstructorInfo constructor = t.GetConstructor(
-        //                new Type[] { typeof(string), typeof(TagStream) });
-
-        //            // If it doesn't implement the (string,TagStream) constructor,
-        //            // then it can't be used, so skip it.
-        //            if (constructor == null) { continue; }
-
-        //            // Finally out of things to filter!
-        //            // Key is a string; else it would have been filtered by the
-        //            // check for (key is string) above. Casting is safe.
-        //            types.Add((string)key, constructor);
-        //        }
-        //    }
-
-        //    return types;
-        //}
     }
 }
